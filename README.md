@@ -42,7 +42,7 @@ Run migrations.
 php artisan migrate
 ```
 
-> **_TIP:_** All actions in this package are run via jobs, we recommend Laravel Horion or another queueing system to run these
+> **_TIP:_** All actions in this package are run via jobs, we recommend Laravel Horizon or another queueing system to run these
 
 
 ## Setup
