@@ -1,0 +1,128 @@
+<?php
+
+namespace JustBetter\MagentoStock\Tests\Actions;
+
+use Illuminate\Http\Client\Request;
+use Illuminate\Support\Facades\Http;
+use JustBetter\MagentoStock\Actions\UpdateBackorders;
+use JustBetter\MagentoStock\Exceptions\UpdateException;
+use JustBetter\MagentoStock\Models\MagentoStock;
+use JustBetter\MagentoStock\Tests\TestCase;
+
+class UpdateBackordersTest extends TestCase
+{
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        config()->set('magento-stock.backorders', true);
+    }
+
+    public function test_it_updates_backorders(): void
+    {
+        Http::fake([
+            'rest/all/V1/products/::sku::' => Http::response(),
+        ]);
+
+        $model = MagentoStock::query()
+            ->create([
+                'sku' => '::sku::',
+                'backorders' => true,
+            ]);
+
+        /** @var UpdateBackorders $action */
+        $action = app(UpdateBackorders::class);
+
+        $action->update($model);
+
+        Http::assertSent(function (Request $request) {
+            $expectedData = [
+                'product' => [
+                    'extension_attributes' => [
+                        'stock_item' => [
+                            'use_config_backorders' => false,
+                            'backorders' => 1,
+                        ],
+                    ],
+                ],
+            ];
+
+            return $request->data() == $expectedData;
+        });
+    }
+
+    public function test_it_logs_backorders_error(): void
+    {
+        Http::fake([
+            'rest/all/V1/products/::sku::' => Http::response('::error::', 500),
+        ]);
+
+        $this->expectException(UpdateException::class);
+
+        $model = MagentoStock::query()
+            ->create([
+                'sku' => '::sku::',
+                'quantity' => 10,
+                'backorders' => true,
+                'in_stock' => true,
+                'magento_backorders_enabled' => false,
+            ]);
+
+        /** @var UpdateBackorders $action */
+        $action = app(UpdateBackorders::class);
+
+        $action->update($model);
+
+        /** @var MagentoStock $model */
+        $model = MagentoStock::query()
+            ->where('sku', '::sku::')
+            ->first();
+
+        $this->assertCount(1, $model->errors);
+        $this->assertTrue(str_contains($model->errors->first()->details ?? '', '::error::'));
+    }
+
+    public function test_it_stops_when_config_backorders_is_disabled(): void
+    {
+        Http::fake();
+
+        config()->set('magento-stock.backorders', false);
+
+        $model = MagentoStock::query()
+            ->create([
+                'sku' => '::sku::',
+                'quantity' => 10,
+                'backorders' => true,
+                'in_stock' => true,
+                'magento_backorders_enabled' => false,
+            ]);
+
+        /** @var UpdateBackorders $action */
+        $action = app(UpdateBackorders::class);
+
+        $action->update($model);
+
+        Http::assertNothingSent();
+    }
+
+    public function test_it_stops_when_backorders_unchanged(): void
+    {
+        Http::fake();
+
+        $model = MagentoStock::query()
+            ->create([
+                'sku' => '::sku::',
+                'quantity' => 10,
+                'backorders' => true,
+                'in_stock' => true,
+                'magento_backorders_enabled' => true,
+            ]);
+
+        /** @var UpdateBackorders $action */
+        $action = app(UpdateBackorders::class);
+
+        $action->update($model);
+
+        Http::assertNothingSent();
+    }
+}
