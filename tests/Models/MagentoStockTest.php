@@ -4,6 +4,7 @@ namespace JustBetter\MagentoStock\Tests\Models;
 
 use JustBetter\MagentoStock\Models\MagentoStock;
 use JustBetter\MagentoStock\Tests\TestCase;
+use Spatie\Activitylog\LogOptions;
 
 class MagentoStockTest extends TestCase
 {
@@ -68,5 +69,16 @@ class MagentoStockTest extends TestCase
 
         $this->assertFalse($model->retrieve);
         $this->assertTrue($model->update);
+    }
+
+    public function test_activity_log_msi(): void
+    {
+        config()->set('magento-stock.msi', true);
+
+        $model = new MagentoStock();
+
+        $options = $model->getActivitylogOptions();
+
+        $this->assertTrue(is_a($options, LogOptions::class));
     }
 }

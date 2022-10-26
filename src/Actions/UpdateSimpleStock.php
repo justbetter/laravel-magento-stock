@@ -5,6 +5,7 @@ namespace JustBetter\MagentoStock\Actions;
 use Illuminate\Http\Client\RequestException;
 use JustBetter\MagentoClient\Client\Magento;
 use JustBetter\MagentoStock\Contracts\UpdatesStock;
+use JustBetter\MagentoStock\Events\StockUpdatedEvent;
 use JustBetter\MagentoStock\Exceptions\UpdateException;
 use JustBetter\MagentoStock\Models\MagentoStock;
 
@@ -33,6 +34,8 @@ class UpdateSimpleStock implements UpdatesStock
             $response->throw();
 
             $model->update(['last_updated' => now()]);
+
+            event(new StockUpdatedEvent($model));
 
             activity()
                 ->performedOn($model)
