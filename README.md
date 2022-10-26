@@ -79,7 +79,7 @@ For example:
 
 namespace App\Integrations\Stock;
 
-class SomeStockSkuRetriever implements \JustBetter\MagentoStock\Contracts\RetrievesStock
+class SomeStockSkuRetriever implements \JustBetter\MagentoStock\Contracts\RetrievesStockSkus
 {
     public __construct(protected ExternalProductSource $source) []
 
@@ -225,7 +225,7 @@ return [
 This package provides a way to compare stock quantities in Magento with those in the Laravel database.
 If a difference is detected it will start an update for that product.
 
-> **_NOTE:_**  Comparisons for MSI is not supported yet!
+An event is dispatched when a difference is detected `\JustBetter\MagentoStock\Events\DifferenceDetectedEvent`.
 
 ## Handling failures
 

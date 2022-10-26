@@ -2,11 +2,11 @@
 
 namespace JustBetter\MagentoStock\Listeners;
 
-use JustBetter\MagentoStock\Events\StockChanged;
+use JustBetter\MagentoStock\Events\StockChangedEvent;
 
 class SetStockRetrieveListener
 {
-    public function handle(StockChanged $event): void
+    public function handle(StockChangedEvent $event): void
     {
         $event->stock->update([
             'retrieve' => true,

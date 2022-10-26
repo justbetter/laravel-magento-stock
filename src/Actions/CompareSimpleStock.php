@@ -6,9 +6,10 @@ use Exception;
 use JustBetter\MagentoClient\Client\Magento;
 use JustBetter\MagentoProducts\Contracts\ChecksMagentoExistence;
 use JustBetter\MagentoStock\Contracts\ComparesStock;
+use JustBetter\MagentoStock\Events\DifferenceDetectedEvent;
 use JustBetter\MagentoStock\Models\MagentoStock;
 
-class CompareStock implements ComparesStock
+class CompareSimpleStock implements ComparesStock
 {
     public function __construct(
         protected Magento $magento,
@@ -22,8 +23,8 @@ class CompareStock implements ComparesStock
             return;
         }
 
-        /** @var MagentoStock $stock */
-        $stock = MagentoStock::query()
+        /** @var MagentoStock $localStock */
+        $localStock = MagentoStock::query()
             ->where('sku', '=', $sku)
             ->firstOrFail();
 
@@ -33,27 +34,30 @@ class CompareStock implements ComparesStock
 
         $stockItem = $product->json()['extension_attributes']['stock_item'];
 
-        if ($this->quantityEquals($stock, $stockItem)) {
+        if ($this->quantityEquals($localStock, $stockItem)) {
             return;
         }
 
         activity()
-            ->performedOn($stock)
-            ->log('Detected quantity difference: Magento: '.$stockItem['qty'].'. Should be: '.$stock->quantity);
+            ->performedOn($localStock)
+            ->log('Detected quantity difference: Magento: '.$stockItem['qty'].'. Should be: '.$localStock->quantity);
 
-        $stock->update = true;
-        $stock->save();
+        event(new DifferenceDetectedEvent($localStock));
+
+        $localStock->update = true;
+        $localStock->save();
     }
 
     protected function quantityEquals(MagentoStock $stock, array $magentoStockItem): bool
     {
-        if (config('magento-stock.msi')) {
-            throw new Exception('Not implemented');
-        }
-
         $magentoQuantity = $magentoStockItem['qty'];
         $currentQuantity = $stock->quantity;
 
         return $magentoQuantity == $currentQuantity;
+    }
+
+    public static function bind(): void
+    {
+        app()->singleton(ComparesStock::class, static::class);
     }
 }

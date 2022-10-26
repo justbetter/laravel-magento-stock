@@ -2,14 +2,16 @@
 
 namespace JustBetter\MagentoStock\Tests\Actions;
 
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Http;
 use JustBetter\MagentoProducts\Contracts\ChecksMagentoExistence;
-use JustBetter\MagentoStock\Actions\CompareStock;
+use JustBetter\MagentoStock\Actions\CompareSimpleStock;
+use JustBetter\MagentoStock\Events\DifferenceDetectedEvent;
 use JustBetter\MagentoStock\Models\MagentoStock;
 use JustBetter\MagentoStock\Tests\TestCase;
 use Mockery\MockInterface;
 
-class CompareStockTest extends TestCase
+class CompareSimpleStockTest extends TestCase
 {
     public function test_it_does_nothing(): void
     {
@@ -17,8 +19,8 @@ class CompareStockTest extends TestCase
             $mock->shouldReceive('exists')->andReturnFalse()->once();
         });
 
-        /** @var CompareStock $action */
-        $action = app(CompareStock::class);
+        /** @var CompareSimpleStock $action */
+        $action = app(CompareSimpleStock::class);
 
         $action->compare('::sku::');
     }
@@ -26,6 +28,8 @@ class CompareStockTest extends TestCase
     /** @dataProvider dataProvider */
     public function test_quantity_equals(int $magentoQty, int $localQty, bool $shouldUpdate): void
     {
+        Event::fake();
+
         $this->mock(ChecksMagentoExistence::class, function (MockInterface $mock) {
             $mock->shouldReceive('exists')->andReturnTrue();
         });
@@ -47,14 +51,20 @@ class CompareStockTest extends TestCase
             'update' => false,
         ]);
 
-        /** @var CompareStock $action */
-        $action = app(CompareStock::class);
+        /** @var CompareSimpleStock $action */
+        $action = app(CompareSimpleStock::class);
 
         $action->compare('::sku::');
 
         /** @var MagentoStock $model */
         $model = MagentoStock::query()->first();
         $this->assertEquals($shouldUpdate, $model->update);
+
+        if ($shouldUpdate) {
+            Event::assertDispatched(DifferenceDetectedEvent::class);
+        } else {
+            Event::assertNotDispatched(DifferenceDetectedEvent::class);
+        }
     }
 
     public function dataProvider(): array
