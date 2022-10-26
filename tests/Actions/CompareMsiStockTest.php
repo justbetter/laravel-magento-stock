@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Http;
 use JustBetter\MagentoProducts\Contracts\ChecksMagentoExistence;
 use JustBetter\MagentoStock\Actions\CompareMsiStock;
-use JustBetter\MagentoStock\Actions\CompareSimpleStock;
 use JustBetter\MagentoStock\Contracts\ComparesStock;
 use JustBetter\MagentoStock\Events\DifferenceDetectedEvent;
 use JustBetter\MagentoStock\Models\MagentoStock;
@@ -49,7 +48,7 @@ class CompareMsiStockTest extends TestCase
 
         Http::fake([
             '*inventory/source-items*' => Http::response([
-                'items' => $magentoStocks
+                'items' => $magentoStocks,
             ]),
         ]);
 
@@ -83,12 +82,12 @@ class CompareMsiStockTest extends TestCase
                 'magentoStocks' => [
                     [
                         'source_code' => 'A',
-                        'quantity' => 10
+                        'quantity' => 10,
                     ],
                     [
                         'source_code' => 'B',
-                        'quantity' => 10
-                    ]
+                        'quantity' => 10,
+                    ],
                 ],
                 'localStocks' => ['A' => 10, 'B' => 0],
                 'shouldUpdate' => true,
@@ -97,12 +96,12 @@ class CompareMsiStockTest extends TestCase
                 'magentoStocks' => [
                     [
                         'source_code' => 'A',
-                        'quantity' => 10
+                        'quantity' => 10,
                     ],
                     [
                         'source_code' => 'B',
-                        'quantity' => 10
-                    ]
+                        'quantity' => 10,
+                    ],
                 ],
                 'localStocks' => ['A' => 10, 'B' => 10],
                 'shouldUpdate' => false,
@@ -111,12 +110,12 @@ class CompareMsiStockTest extends TestCase
                 'magentoStocks' => [
                     [
                         'source_code' => 'A',
-                        'quantity' => 10
-                    ]
+                        'quantity' => 10,
+                    ],
                 ],
                 'localStocks' => [],
                 'shouldUpdate' => false,
-            ]
+            ],
         ];
     }
 }

@@ -21,7 +21,6 @@ use JustBetter\MagentoStock\Commands\RetrieveStockCommand;
 use JustBetter\MagentoStock\Commands\RetrieveUpdatedStockCommand;
 use JustBetter\MagentoStock\Commands\SyncStockCommand;
 use JustBetter\MagentoStock\Commands\UpdateStockCommand;
-use JustBetter\MagentoStock\Contracts\ComparesStock;
 use JustBetter\MagentoStock\Events\StockChangedEvent;
 use JustBetter\MagentoStock\Listeners\SetStockRetrieveListener;
 

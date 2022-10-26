@@ -2,7 +2,6 @@
 
 namespace JustBetter\MagentoStock\Actions;
 
-use Exception;
 use JustBetter\MagentoClient\Client\Magento;
 use JustBetter\MagentoProducts\Contracts\ChecksMagentoExistence;
 use JustBetter\MagentoStock\Contracts\ComparesStock;

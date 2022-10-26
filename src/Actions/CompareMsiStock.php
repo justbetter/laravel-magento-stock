@@ -2,7 +2,6 @@
 
 namespace JustBetter\MagentoStock\Actions;
 
-use Exception;
 use Illuminate\Support\Collection;
 use JustBetter\MagentoClient\Client\Magento;
 use JustBetter\MagentoClient\Query\SearchCriteria;
@@ -36,7 +35,7 @@ class CompareMsiStock implements ComparesStock
             ->get();
 
         $msiStock = $this->magento
-            ->get("inventory/source-items", $search)
+            ->get('inventory/source-items', $search)
             ->throw()
             ->collect('items');
 
@@ -62,7 +61,6 @@ class CompareMsiStock implements ComparesStock
             }
 
             if ($stock['quantity'] !== $localQuantity) {
-
                 activity()
                     ->performedOn($localStock)
                     ->log("Detected MSI quantity difference {$stock['source_code']} Magento: {$stock['quantity']} - local: $localQuantity");
