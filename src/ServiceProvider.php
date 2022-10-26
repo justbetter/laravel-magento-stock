@@ -4,6 +4,8 @@ namespace JustBetter\MagentoStock;
 
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
+use JustBetter\MagentoStock\Actions\CompareMsiStock;
+use JustBetter\MagentoStock\Actions\CompareSimpleStock;
 use JustBetter\MagentoStock\Actions\DetermineStockModified;
 use JustBetter\MagentoStock\Actions\MonitorWaitTimes;
 use JustBetter\MagentoStock\Actions\ProcessStock;
@@ -19,7 +21,7 @@ use JustBetter\MagentoStock\Commands\RetrieveStockCommand;
 use JustBetter\MagentoStock\Commands\RetrieveUpdatedStockCommand;
 use JustBetter\MagentoStock\Commands\SyncStockCommand;
 use JustBetter\MagentoStock\Commands\UpdateStockCommand;
-use JustBetter\MagentoStock\Events\StockChanged;
+use JustBetter\MagentoStock\Events\StockChangedEvent;
 use JustBetter\MagentoStock\Listeners\SetStockRetrieveListener;
 
 class ServiceProvider extends BaseServiceProvider
@@ -56,8 +58,10 @@ class ServiceProvider extends BaseServiceProvider
 
         if (config('magento-stock.msi')) {
             UpdateMsiStock::bind();
+            CompareMsiStock::bind();
         } else {
             UpdateSimpleStock::bind();
+            CompareSimpleStock::bind();
         }
     }
 
@@ -99,7 +103,7 @@ class ServiceProvider extends BaseServiceProvider
 
     protected function bootEvents(): static
     {
-        Event::listen(StockChanged::class, SetStockRetrieveListener::class);
+        Event::listen(StockChangedEvent::class, SetStockRetrieveListener::class);
 
         return $this;
     }

@@ -5,7 +5,7 @@ namespace JustBetter\MagentoStock\Events;
 use Illuminate\Foundation\Events\Dispatchable;
 use JustBetter\MagentoStock\Models\MagentoStock;
 
-class StockChanged
+class StockChangedEvent
 {
     use Dispatchable;
 

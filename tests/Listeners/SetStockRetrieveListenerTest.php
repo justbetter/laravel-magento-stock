@@ -2,7 +2,7 @@
 
 namespace JustBetter\MagentoStock\Tests\Listeners;
 
-use JustBetter\MagentoStock\Events\StockChanged;
+use JustBetter\MagentoStock\Events\StockChangedEvent;
 use JustBetter\MagentoStock\Models\MagentoStock;
 use JustBetter\MagentoStock\Tests\TestCase;
 
@@ -15,7 +15,7 @@ class SetStockRetrieveListenerTest extends TestCase
             'sku' => '::sku::',
         ]);
 
-        event(new StockChanged($stock));
+        event(new StockChangedEvent($stock));
 
         $this->assertTrue($stock->refresh()->retrieve);
     }
