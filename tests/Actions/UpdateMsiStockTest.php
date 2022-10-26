@@ -3,8 +3,10 @@
 namespace JustBetter\MagentoStock\Tests\Actions;
 
 use Illuminate\Http\Client\Request;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Http;
 use JustBetter\MagentoStock\Actions\UpdateMsiStock;
+use JustBetter\MagentoStock\Events\StockUpdatedEvent;
 use JustBetter\MagentoStock\Exceptions\UpdateException;
 use JustBetter\MagentoStock\Models\MagentoStock;
 use JustBetter\MagentoStock\Tests\TestCase;
@@ -14,6 +16,8 @@ class UpdateMsiStockTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+
+        Event::fake();
 
         config()->set('magento-stock.msi', true);
 
@@ -82,6 +86,8 @@ class UpdateMsiStockTest extends TestCase
                 return $request->data() == $expectedPayload;
             },
         ]);
+
+        Event::assertDispatched(StockUpdatedEvent::class);
     }
 
     public function test_it_logs_error(): void

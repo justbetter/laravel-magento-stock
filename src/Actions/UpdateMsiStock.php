@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Cache;
 use JustBetter\MagentoClient\Client\Magento;
 use JustBetter\MagentoClient\Query\SearchCriteria;
 use JustBetter\MagentoStock\Contracts\UpdatesStock;
+use JustBetter\MagentoStock\Events\StockUpdatedEvent;
 use JustBetter\MagentoStock\Exceptions\UpdateException;
 use JustBetter\MagentoStock\Models\MagentoStock;
 
@@ -47,6 +48,8 @@ class UpdateMsiStock implements UpdatesStock
             $response->throw();
 
             $model->update(['last_updated' => now()]);
+
+            event(new StockUpdatedEvent($model));
 
             activity()
                 ->withProperties($payload)

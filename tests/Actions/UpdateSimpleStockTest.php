@@ -3,9 +3,11 @@
 namespace JustBetter\MagentoStock\Tests\Actions;
 
 use Illuminate\Http\Client\Request;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Http;
 use JustBetter\ErrorLogger\Models\Error;
 use JustBetter\MagentoStock\Actions\UpdateSimpleStock;
+use JustBetter\MagentoStock\Events\StockUpdatedEvent;
 use JustBetter\MagentoStock\Exceptions\UpdateException;
 use JustBetter\MagentoStock\Models\MagentoStock;
 use JustBetter\MagentoStock\Tests\TestCase;
@@ -14,6 +16,7 @@ class UpdateSimpleStockTest extends TestCase
 {
     public function test_it_updates_simple_stock(): void
     {
+        Event::fake();
         Http::fake([
             'rest/all/V1/products/::sku::' => Http::response(),
         ]);
@@ -45,6 +48,8 @@ class UpdateSimpleStockTest extends TestCase
 
             return $request->data() == $expectedData;
         });
+
+        Event::assertDispatched(StockUpdatedEvent::class);
     }
 
     public function test_it_logs_error(): void
