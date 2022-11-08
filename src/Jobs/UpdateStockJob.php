@@ -42,13 +42,10 @@ class UpdateStockJob implements ShouldQueue, ShouldBeUnique
             ->where('sku', '=', $this->sku)
             ->firstOrFail();
 
-        if (! $checksMagentoExistence->exists($this->sku)) {
-            $model->update(['update' => false]);
-            return;
+        if ($checksMagentoExistence->exists($this->sku)) {
+            $stock->update($model);
+            $backorders->update($model);
         }
-
-        $stock->update($model);
-        $backorders->update($model);
 
         $model->update(['update' => false]);
     }
