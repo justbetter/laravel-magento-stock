@@ -40,8 +40,15 @@ class RetrieveStockJob implements ShouldQueue, ShouldBeUnique
 
         $stock = $retriever->retrieve($this->sku);
 
-        /* @phpstan-ignore-next-line */
-        ProcessStockJob::dispatchIf($stock !== null, $stock);
+        if ($stock === null) {
+            MagentoStock::query()
+                ->where('sku', '=', $this->sku)
+                ->update(['retrieve' => false]);
+
+            return;
+        }
+
+        ProcessStockJob::dispatch($stock);
     }
 
     public function uniqueId(): string
