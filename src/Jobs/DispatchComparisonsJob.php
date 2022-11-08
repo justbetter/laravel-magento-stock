@@ -18,6 +18,11 @@ class DispatchComparisonsJob implements ShouldQueue, ShouldBeUnique
     use Queueable;
     use SerializesModels;
 
+    public function __construct()
+    {
+        $this->onQueue(config('magento-stock.queue'));
+    }
+
     public function handle(): void
     {
         $batch = MagentoStock::query()
