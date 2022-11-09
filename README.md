@@ -1,5 +1,10 @@
 # Laravel Magento Stock
 
+<img src="https://img.shields.io/github/workflow/status/justbetter/laravel-magento-stock/tests?label=tests&style=flat-square" alt="Tests">
+<img src="https://img.shields.io/github/workflow/status/justbetter/laravel-magento-stock/coverage?label=coverage&style=flat-square" alt="Coverage">
+<img src="https://img.shields.io/github/workflow/status/justbetter/laravel-magento-stock/analyse?label=analysis&style=flat-square" alt="Analysis">
+<img src="https://img.shields.io/packagist/dt/justbetter/laravel-magento-stock?color=blue&style=flat-square" alt="Total downloads">
+
 This packages facilitates a way to push stock to Magento from a configurable source.
 Both simple stock and MSI are supported.
 
