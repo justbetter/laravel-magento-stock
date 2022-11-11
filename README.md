@@ -27,7 +27,7 @@ Features:
 - Checks if Magento products exist
   using [JustBetter Magento Products](https://github.com/justbetter/laravel-magento-products)
 
-> Also check out our other [Laravel Magento connector packages)(https://github.com/justbetter?q=laravel-magento)!
+> Also check out our other [Laravel Magento packages)(https://github.com/justbetter?q=laravel-magento)!
 > We also have a [Magento Client](https://github.com/justbetter/laravel-magento-client) to easily connect Laravel to Magento!
 
 ## Installation
