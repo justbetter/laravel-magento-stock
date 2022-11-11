@@ -27,6 +27,9 @@ Features:
 - Checks if Magento products exist
   using [JustBetter Magento Products](https://github.com/justbetter/laravel-magento-products)
 
+> Also check out our other [Laravel Magento connector packages)(https://github.com/justbetter?q=laravel-magento)!
+> We also have a [Magento Client](https://github.com/justbetter/laravel-magento-client) to easily connect Laravel to Magento!
+
 ## Installation
 
 Require this package: `composer require justbetter/laravel-magento-stock`
@@ -51,6 +54,9 @@ php artisan migrate
 
 > **_TIP:_** All actions in this package are run via jobs, we recommend Laravel Horizon or another queueing system to run these
 
+### Laravel Nova
+
+We have a [Laravel Nova integration](https://github.com/justbetter/laravel-magento-stock-nova) for this package.
 
 ## Setup
 
