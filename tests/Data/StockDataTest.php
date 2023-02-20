@@ -31,7 +31,7 @@ class StockDataTest extends TestCase
         );
     }
 
-    protected function msiStockDataProvider(): array
+    public function msiStockDataProvider(): array
     {
         return [
             'Unchanged' => [
