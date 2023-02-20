@@ -129,11 +129,36 @@ final class StockData implements Arrayable
 
     public function equals(StockData $other): bool
     {
-        /** @var string $a */
-        $a = json_encode($this->toArray());
-        /** @var string $b */
-        $b = json_encode($other->toArray());
+        if (config('magento-stock.msi', false) === false) {
+            return $this->sku === $other->sku &&
+                $this->quantity === $other->quantity &&
+                $this->inStock === $other->inStock &&
+                $this->backorders === $other->backorders;
+        }
 
-        return md5($a) == md5($b);
+        if (
+            count($this->msiQuantity) !== count($other->msiQuantity) ||
+            count($this->msiStatus) !== count($other->msiStatus)
+        ) {
+            return false;
+        }
+
+        foreach ($this->msiQuantity as $source => $quantity) {
+            $matchingQuantity = $other->msiQuantity[$source] ?? null;
+
+            if ($matchingQuantity === null || $quantity !== $matchingQuantity) {
+                return false;
+            }
+        }
+
+        foreach ($this->msiStatus as $source => $status) {
+            $matchingStatus = $other->msiStatus[$source] ?? null;
+
+            if ($matchingStatus === null || $status !== $matchingStatus) {
+                return false;
+            }
+        }
+
+        return $this->sku === $other->sku;
     }
 }
