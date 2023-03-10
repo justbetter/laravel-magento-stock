@@ -36,7 +36,7 @@ class CommandDispatchTest extends TestCase
         Bus::assertDispatched($job);
     }
 
-    public function dataProvider(): array
+    public static function dataProvider(): array
     {
         return [
             'Retrieve' => [
