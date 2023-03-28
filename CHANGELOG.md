@@ -1,6 +1,14 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/justbetter/laravel-magento-stock/compare/1.2.0...main)
+[Unreleased changes](https://github.com/justbetter/laravel-magento-stock/compare/1.2.1...main)
+## [1.2.1](https://github.com/justbetter/laravel-magento-stock/releases/tag/1.2.1) - 2023-03-28
+
+### What's Changed
+* Stock not equals when in stock / backorders are not equals by @VincentBean in https://github.com/justbetter/laravel-magento-stock/pull/8
+
+
+**Full Changelog**: https://github.com/justbetter/laravel-magento-stock/compare/1.2.0...1.2.1
+
 ## [1.2.0](https://github.com/justbetter/laravel-magento-stock/releases/tag/1.2.0) - 2023-03-10
 
 ### What's Changed
