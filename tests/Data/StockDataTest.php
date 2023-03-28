@@ -148,6 +148,98 @@ class StockDataTest extends TestCase
                 ),
                 'equals' => false,
             ],
+            'In Stock Equals' => [
+                'a' => new StockData(
+                    sku: '::sku::',
+                    inStock: true,
+                    msiQuantity: [
+                        'A' => 5,
+                    ],
+                    msiStatus: [
+                        'A' => true,
+                    ]
+                ),
+                'b' => new StockData(
+                    sku: '::sku::',
+                    inStock: true,
+                    msiQuantity: [
+                        'A' => 5,
+                    ],
+                    msiStatus: [
+                        'A' => true,
+                    ]
+                ),
+                'equals' => true,
+            ],
+            'Backorders Equals' => [
+                'a' => new StockData(
+                    sku: '::sku::',
+                    backorders: true,
+                    msiQuantity: [
+                        'A' => 5,
+                    ],
+                    msiStatus: [
+                        'A' => true,
+                    ]
+                ),
+                'b' => new StockData(
+                    sku: '::sku::',
+                    backorders: true,
+                    msiQuantity: [
+                        'A' => 5,
+                    ],
+                    msiStatus: [
+                        'A' => true,
+                    ]
+                ),
+                'equals' => true,
+            ],
+            'In Stock Change' => [
+                'a' => new StockData(
+                    sku: '::sku::',
+                    inStock: true,
+                    msiQuantity: [
+                        'A' => 5,
+                    ],
+                    msiStatus: [
+                        'A' => true,
+                    ]
+                ),
+                'b' => new StockData(
+                    sku: '::sku::',
+                    inStock: false,
+                    msiQuantity: [
+                        'A' => 5,
+                    ],
+                    msiStatus: [
+                        'A' => true,
+                    ]
+                ),
+                'equals' => false,
+            ],
+            'Backorders change' => [
+                'a' => new StockData(
+                    sku: '::sku::',
+                    backorders: true,
+                    msiQuantity: [
+                        'A' => 5,
+                    ],
+                    msiStatus: [
+                        'A' => true,
+                    ]
+                ),
+                'b' => new StockData(
+                    sku: '::sku::',
+                    backorders: false,
+                    msiQuantity: [
+                        'A' => 5,
+                    ],
+                    msiStatus: [
+                        'A' => true,
+                    ]
+                ),
+                'equals' => false,
+            ],
         ];
     }
 }
