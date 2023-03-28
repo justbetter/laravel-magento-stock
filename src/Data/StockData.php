@@ -129,15 +129,12 @@ final class StockData implements Arrayable
 
     public function equals(StockData $other): bool
     {
-        if ($this->inStock !== $other->inStock || $this->backorders !== $other->backorders) {
+        if ($this->sku !== $other->sku || $this->inStock !== $other->inStock || $this->backorders !== $other->backorders) {
             return false;
         }
 
         if (config('magento-stock.msi', false) === false) {
-            return $this->sku === $other->sku &&
-                $this->quantity === $other->quantity &&
-                $this->inStock === $other->inStock &&
-                $this->backorders === $other->backorders;
+            return $this->quantity === $other->quantity;
         }
 
         if (
@@ -163,6 +160,6 @@ final class StockData implements Arrayable
             }
         }
 
-        return $this->sku === $other->sku;
+        return true;
     }
 }
