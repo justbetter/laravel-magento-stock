@@ -1,6 +1,14 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/justbetter/laravel-magento-stock/compare/1.2.1...main)
+[Unreleased changes](https://github.com/justbetter/laravel-magento-stock/compare/1.2.2...main)
+## [1.2.2](https://github.com/justbetter/laravel-magento-stock/releases/tag/1.2.2) - 2023-04-05
+
+### What's Changed
+* URL encode to support slashes in strings by @VincentBean in https://github.com/justbetter/laravel-magento-stock/pull/9
+
+
+**Full Changelog**: https://github.com/justbetter/laravel-magento-stock/compare/1.2.1...1.2.2
+
 ## [1.2.1](https://github.com/justbetter/laravel-magento-stock/releases/tag/1.2.1) - 2023-03-28
 
 ### What's Changed
