@@ -28,7 +28,7 @@ class UpdateSimpleStock implements UpdatesStock
             ],
         ];
 
-        $response = $this->magento->put("products/" . urlencode($model->sku), $payload);
+        $response = $this->magento->put('products/'.urlencode($model->sku), $payload);
 
         try {
             $response->throw();
