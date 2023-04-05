@@ -18,12 +18,12 @@ class UpdateSimpleStockTest extends TestCase
     {
         Event::fake();
         Http::fake([
-            'rest/all/V1/products/::sku::' => Http::response(),
+            'http://magento.test/rest/all/V1/products/%3A%3Ask%2Fu%3A%3A' => Http::response(),
         ]);
 
         $model = MagentoStock::query()
             ->create([
-                'sku' => '::sku::',
+                'sku' => '::sk/u::',
                 'quantity' => 10,
                 'backorders' => false,
                 'in_stock' => true,
@@ -55,7 +55,7 @@ class UpdateSimpleStockTest extends TestCase
     public function test_it_logs_error(): void
     {
         Http::fake([
-            'rest/all/V1/products/::sku::' => Http::response('::error::', 500),
+            'http://magento.test/rest/all/V1/products/%3A%3Asku%3A%3A' => Http::response('::error::', 500),
         ]);
 
         $this->expectException(UpdateException::class);

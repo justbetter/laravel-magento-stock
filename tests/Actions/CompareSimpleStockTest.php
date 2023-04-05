@@ -35,7 +35,7 @@ class CompareSimpleStockTest extends TestCase
         });
 
         Http::fake([
-            '::magento::/rest/all/V1/products/::sku::' => Http::response([
+            'http://magento.test/rest/all/V1/products/::sku::' => Http::response([
                 'extension_attributes' => [
                     'stock_item' => [
                         'qty' => $magentoQty,
