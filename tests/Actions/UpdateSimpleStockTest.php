@@ -55,7 +55,7 @@ class UpdateSimpleStockTest extends TestCase
     public function test_it_logs_error(): void
     {
         Http::fake([
-            'http://magento.test/rest/all/V1/products/%3A%3Asku%3A%3A"' => Http::response('::error::', 500),
+            'http://magento.test/rest/all/V1/products/%3A%3Asku%3A%3A' => Http::response('::error::', 500),
         ]);
 
         $this->expectException(UpdateException::class);

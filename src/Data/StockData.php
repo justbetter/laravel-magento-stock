@@ -33,12 +33,12 @@ final class StockData implements Arrayable
 
         array $data = [],
     ): static {
-        return new static($sku, $quantity, $inStock, $backorders, $msiQuantity, $msiStatus, $data);
+        return new self($sku, $quantity, $inStock, $backorders, $msiQuantity, $msiStatus, $data);
     }
 
     public static function fromModel(MagentoStock $stock): static
     {
-        return new static(
+        return new self(
             $stock->sku,
 
             $stock->quantity,
