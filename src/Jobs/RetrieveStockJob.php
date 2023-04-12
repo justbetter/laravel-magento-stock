@@ -48,7 +48,7 @@ class RetrieveStockJob implements ShouldQueue, ShouldBeUnique
             return;
         }
 
-        ProcessStockJob::dispatch($stock);
+        ProcessStockJob::dispatch($stock, $this->forceUpdate);
     }
 
     public function uniqueId(): string
