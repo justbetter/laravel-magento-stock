@@ -1,6 +1,14 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/justbetter/laravel-magento-stock/compare/1.2.3...main)
+[Unreleased changes](https://github.com/justbetter/laravel-magento-stock/compare/1.2.4...main)
+## [1.2.4](https://github.com/justbetter/laravel-magento-stock/releases/tag/1.2.4) - 2023-04-19
+
+### What's Changed
+* Set modified if never updated by @VincentBean in https://github.com/justbetter/laravel-magento-stock/pull/11
+
+
+**Full Changelog**: https://github.com/justbetter/laravel-magento-stock/compare/1.2.3...1.2.4
+
 ## [1.2.3](https://github.com/justbetter/laravel-magento-stock/releases/tag/1.2.3) - 2023-04-12
 
 ### What's Changed
