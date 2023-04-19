@@ -4,6 +4,7 @@ namespace JustBetter\MagentoStock\Tests\Actions;
 
 use JustBetter\MagentoStock\Actions\DetermineStockModified;
 use JustBetter\MagentoStock\Data\StockData;
+use JustBetter\MagentoStock\Models\MagentoStock;
 use JustBetter\MagentoStock\Tests\TestCase;
 
 class DetermineStockModifiedTest extends TestCase
@@ -23,9 +24,19 @@ class DetermineStockModifiedTest extends TestCase
 
         $data->toModel()->save();
 
-        $this->assertFalse($action->modified($data));
+        // Newly created
+        $this->assertTrue($action->modified($data));
 
         $data->setQuantity(10);
         $this->assertTrue($action->modified($data));
+
+        MagentoStock::query()
+            ->where('sku', '=', '::some_sku::')
+            ->update([
+                'quantity' => 10,
+                'last_updated' => now(),
+            ]);
+
+        $this->assertFalse($action->modified($data));
     }
 }
