@@ -15,7 +15,7 @@ class DetermineStockModified implements DeterminesStockModified
             ->where('sku', '=', $stockData->sku)
             ->first();
 
-        if ($current === null) {
+        if ($current === null || $current->last_updated === null) {
             return true;
         }
 
