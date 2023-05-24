@@ -3,6 +3,7 @@
 namespace JustBetter\MagentoStock\Tests;
 
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
+use Illuminate\Support\Facades\Http;
 use JustBetter\MagentoClient\Client\Magento;
 use JustBetter\MagentoStock\Calculator\SimpleStockCalculator;
 use JustBetter\MagentoStock\Retriever\DummySkuRetriever;
@@ -18,6 +19,8 @@ abstract class TestCase extends BaseTestCase
     protected function defineEnvironment($app): void
     {
         Magento::fake();
+
+        Http::preventStrayRequests();
 
         config()->set('magento-stock.retriever.sku', DummySkuRetriever::class);
         config()->set('magento-stock.retriever.stock', DummyStockRetriever::class);
