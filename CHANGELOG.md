@@ -1,6 +1,14 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/justbetter/laravel-magento-stock/compare/1.2.4...main)
+[Unreleased changes](https://github.com/justbetter/laravel-magento-stock/compare/1.2.5...main)
+## [1.2.5](https://github.com/justbetter/laravel-magento-stock/releases/tag/1.2.5) - 2023-05-24
+
+### What's Changed
+* URL encode SKU for compare stock by @VincentBean in https://github.com/justbetter/laravel-magento-stock/pull/12
+
+
+**Full Changelog**: https://github.com/justbetter/laravel-magento-stock/compare/1.2.4...1.2.5
+
 ## [1.2.4](https://github.com/justbetter/laravel-magento-stock/releases/tag/1.2.4) - 2023-04-19
 
 ### What's Changed
