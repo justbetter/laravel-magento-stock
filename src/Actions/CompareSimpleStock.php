@@ -28,7 +28,7 @@ class CompareSimpleStock implements ComparesStock
             ->firstOrFail();
 
         $product = $this->magento
-            ->get('products/' . urlencode($sku))
+            ->get('products/'.urlencode($sku))
             ->throw();
 
         $stockItem = $product->json()['extension_attributes']['stock_item'];
