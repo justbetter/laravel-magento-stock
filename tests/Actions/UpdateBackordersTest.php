@@ -21,7 +21,42 @@ class UpdateBackordersTest extends TestCase
     public function test_it_updates_backorders(): void
     {
         Http::fake([
-            'rest/all/V1/products/::sku::' => Http::response(),
+            'http://magento.test/rest/all/V1/products/%3A%3Asku%3A%3A' => Http::response(),
+        ]);
+
+        $model = MagentoStock::query()
+            ->create([
+                'sku' => '::sku::',
+                'backorders' => true,
+            ]);
+
+        /** @var UpdateBackorders $action */
+        $action = app(UpdateBackorders::class);
+
+        $action->update($model);
+
+        Http::assertSent(function (Request $request) {
+            $expectedData = [
+                'product' => [
+                    'extension_attributes' => [
+                        'stock_item' => [
+                            'use_config_backorders' => false,
+                            'backorders' => 1,
+                        ],
+                    ],
+                ],
+            ];
+
+            return $request->data() == $expectedData;
+        });
+    }
+
+    public function test_it_updates_backorders_async(): void
+    {
+        config()->set('magento-stock.async', true);
+
+        Http::fake([
+            'http://magento.test/rest/all/async/V1/products/%3A%3Asku%3A%3A' => Http::response(),
         ]);
 
         $model = MagentoStock::query()
@@ -54,7 +89,7 @@ class UpdateBackordersTest extends TestCase
     public function test_it_logs_backorders_error(): void
     {
         Http::fake([
-            'rest/all/V1/products/::sku::' => Http::response('::error::', 500),
+            'http://magento.test/rest/all/V1/products/%3A%3Asku%3A%3A' => Http::response('::error::', 500),
         ]);
 
         $this->expectException(UpdateException::class);

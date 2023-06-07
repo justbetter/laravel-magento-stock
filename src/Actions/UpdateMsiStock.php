@@ -42,7 +42,11 @@ class UpdateMsiStock implements UpdatesStock
             'sourceItems' => $payload,
         ];
 
-        $response = $this->magento->post('inventory/source-items', $payload);
+        if (config('magento-stock.async')) {
+            $response = $this->magento->postAsync('inventory/source-items', $payload);
+        } else {
+            $response = $this->magento->post('inventory/source-items', $payload);
+        }
 
         try {
             $response->throw();
