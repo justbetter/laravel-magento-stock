@@ -52,6 +52,46 @@ class UpdateSimpleStockTest extends TestCase
         Event::assertDispatched(StockUpdatedEvent::class);
     }
 
+    public function test_it_updates_simple_stock_async(): void
+    {
+        config()->set('magento-stock.async', true);
+
+        Event::fake();
+        Http::fake([
+            'http://magento.test/rest/all/async/V1/products/%3A%3Ask%2Fu%3A%3A' => Http::response(),
+        ]);
+
+        $model = MagentoStock::query()
+            ->create([
+                'sku' => '::sk/u::',
+                'quantity' => 10,
+                'backorders' => false,
+                'in_stock' => true,
+            ]);
+
+        /** @var UpdateSimpleStock $action */
+        $action = app(UpdateSimpleStock::class);
+
+        $action->update($model);
+
+        Http::assertSent(function (Request $request) {
+            $expectedData = [
+                'product' => [
+                    'extension_attributes' => [
+                        'stock_item' => [
+                            'is_in_stock' => true,
+                            'qty' => 10,
+                        ],
+                    ],
+                ],
+            ];
+
+            return $request->data() == $expectedData;
+        });
+
+        Event::assertDispatched(StockUpdatedEvent::class);
+    }
+
     public function test_it_logs_error(): void
     {
         Http::fake([

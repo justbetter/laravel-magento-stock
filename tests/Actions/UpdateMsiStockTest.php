@@ -90,6 +90,51 @@ class UpdateMsiStockTest extends TestCase
         Event::assertDispatched(StockUpdatedEvent::class);
     }
 
+    public function test_it_updates_msi_stock_async(): void
+    {
+        config()->set('magento-stock.async', true);
+
+        Http::fake([
+            '*/rest/all/async/V1/inventory/source-items*' => Http::response(),
+        ]);
+
+        /** @var UpdateMsiStock $action */
+        $action = app(UpdateMsiStock::class);
+
+        /** @var MagentoStock $stock */
+        $stock = MagentoStock::query()->first();
+
+        $expectedPayload = [
+            'sourceItems' => [
+                [
+                    'sku' => '::sku::',
+                    'source_code' => 'A',
+                    'quantity' => 4,
+                    'status' => '1',
+                ],
+                [
+                    'sku' => '::sku::',
+                    'source_code' => 'B',
+                    'quantity' => 0,
+                    'status' => '0',
+                ],
+            ],
+        ];
+
+        $action->update($stock);
+
+        Http::assertSentInOrder([
+            function (Request $request) {
+                return $request->url() == 'http://magento.test/rest/all/V1/inventory/sources?searchCriteria%5BpageSize%5D=50&searchCriteria%5BcurrentPage%5D=1';
+            },
+            function (Request $request) use ($expectedPayload) {
+                return $request->data() == $expectedPayload;
+            },
+        ]);
+
+        Event::assertDispatched(StockUpdatedEvent::class);
+    }
+
     public function test_it_logs_error(): void
     {
         Http::fake([
