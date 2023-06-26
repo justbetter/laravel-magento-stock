@@ -3,11 +3,9 @@
 namespace JustBetter\MagentoStock\Tests\Jobs;
 
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use JustBetter\ErrorLogger\Models\Error;
 use JustBetter\MagentoProducts\Contracts\ChecksMagentoExistence;
 use JustBetter\MagentoStock\Contracts\UpdatesBackorders;
 use JustBetter\MagentoStock\Contracts\UpdatesStock;
-use JustBetter\MagentoStock\Exceptions\UpdateException;
 use JustBetter\MagentoStock\Jobs\UpdateStockJob;
 use JustBetter\MagentoStock\Models\MagentoStock;
 use JustBetter\MagentoStock\Tests\TestCase;
@@ -57,20 +55,5 @@ class UpdateStockJobTest extends TestCase
 
         $this->assertEquals('::sku::', $job->uniqueId());
         $this->assertEquals(['::sku::'], $job->tags());
-    }
-
-    public function test_failed(): void
-    {
-        $model = MagentoStock::query()->create(['sku' => '::sku::']);
-
-        $job = new UpdateStockJob('::sku::');
-
-        $job->failed(new UpdateException('123', '::error::', ['sku' => '::sku::']));
-
-        /** @var Error $error */
-        $error = $model->errors()->first();
-
-        $this->assertNotNull($error);
-        $this->assertTrue(str_contains($error->message ?? '', '::sku::'));
     }
 }

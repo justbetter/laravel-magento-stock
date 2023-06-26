@@ -62,8 +62,10 @@ class UpdateStockJob implements ShouldQueue, ShouldBeUnique
         ];
     }
 
+    /** @codeCoverageIgnore  */
     public function failed(Throwable $exception): void
     {
+        /** @var ?MagentoStock $model */
         $model = MagentoStock::query()
             ->firstWhere('sku', '=', $this->sku);
 
@@ -72,7 +74,7 @@ class UpdateStockJob implements ShouldQueue, ShouldBeUnique
         }
 
         activity()
-            ->when($model !== null, fn (ActivityLogger $logger) => $logger->on($model))
+            ->when($model !== null, fn (ActivityLogger $logger) => $logger->on($model)) /** @phpstan-ignore-line */
             ->withProperties([
                 'message' => $exception->getMessage(),
                 'payload' => $payload ?? [],

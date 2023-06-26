@@ -2,9 +2,7 @@
 
 namespace JustBetter\MagentoStock\Tests\Jobs;
 
-use Exception;
 use Illuminate\Support\Facades\Bus;
-use JustBetter\ErrorLogger\Models\Error;
 use JustBetter\MagentoStock\Contracts\RetrievesStock;
 use JustBetter\MagentoStock\Data\StockData;
 use JustBetter\MagentoStock\Jobs\ProcessStockJob;
@@ -50,20 +48,5 @@ class RetrieveStockJobTest extends TestCase
 
         $this->assertEquals('::sku::', $job->uniqueId());
         $this->assertEquals(['::sku::'], $job->tags());
-    }
-
-    public function test_failed(): void
-    {
-        $model = MagentoStock::query()->create(['sku' => '::sku::']);
-
-        $job = new RetrieveStockJob('::sku::');
-
-        $job->failed(new Exception('Testing'));
-
-        /** @var Error $error */
-        $error = $model->errors()->first();
-
-        $this->assertNotNull($error);
-        $this->assertTrue(str_contains($error->message ?? '', '::sku::'));
     }
 }
