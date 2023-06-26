@@ -8,9 +8,9 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use JustBetter\ErrorLogger\Models\Error;
 use JustBetter\MagentoStock\Contracts\RetrievesStock;
 use JustBetter\MagentoStock\Models\MagentoStock;
+use Spatie\Activitylog\ActivityLogger;
 use Throwable;
 
 class RetrieveStockJob implements ShouldQueue, ShouldBeUnique
@@ -65,19 +65,17 @@ class RetrieveStockJob implements ShouldQueue, ShouldBeUnique
 
     public function failed(Throwable $exception): void
     {
-        $log = Error::log()
-            ->withGroup('Stock')
-            ->withMessage("Failed while retrieving for sku $this->sku")
-            ->fromThrowable($exception);
+        $model = MagentoStock::query()
+            ->firstWhere('sku', '=', $this->sku);
 
-        $stockModel = MagentoStock::query()
-            ->where('sku', $this->sku)
-            ->first();
-
-        if ($stockModel !== null) {
-            $log->withModel($stockModel);
-        }
-
-        $log->save();
+        activity()
+            ->when($model !== null, fn (ActivityLogger $logger) => $logger->on($model))
+            ->withProperties([
+                'message' => $exception->getMessage(),
+                'metadata' => [
+                    'level' => 'error',
+                ],
+            ])
+            ->log("Failed while retrieving for sku $this->sku");
     }
 }

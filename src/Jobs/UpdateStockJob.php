@@ -8,12 +8,12 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use JustBetter\ErrorLogger\Models\Error;
 use JustBetter\MagentoProducts\Contracts\ChecksMagentoExistence;
 use JustBetter\MagentoStock\Contracts\UpdatesBackorders;
 use JustBetter\MagentoStock\Contracts\UpdatesStock;
 use JustBetter\MagentoStock\Exceptions\UpdateException;
 use JustBetter\MagentoStock\Models\MagentoStock;
+use Spatie\Activitylog\ActivityLogger;
 use Throwable;
 
 class UpdateStockJob implements ShouldQueue, ShouldBeUnique
@@ -64,23 +64,22 @@ class UpdateStockJob implements ShouldQueue, ShouldBeUnique
 
     public function failed(Throwable $exception): void
     {
-        $log = Error::log()
-            ->withGroup('Stock')
-            ->withMessage("Failed while updating for sku $this->sku")
-            ->fromThrowable($exception);
-
-        $stockModel = MagentoStock::query()
-            ->where('sku', $this->sku)
-            ->first();
-
-        if ($stockModel !== null) {
-            $log->withModel($stockModel);
-        }
+        $model = MagentoStock::query()
+            ->firstWhere('sku', '=', $this->sku);
 
         if (is_a($exception, UpdateException::class)) {
-            $log->withDetails($exception->payload);
+            $payload = $exception->payload;
         }
 
-        $log->save();
+        activity()
+            ->when($model !== null, fn (ActivityLogger $logger) => $logger->on($model))
+            ->withProperties([
+                'message' => $exception->getMessage(),
+                'payload' => $payload ?? [],
+                'metadata' => [
+                    'level' => 'error',
+                ],
+            ])
+            ->log('Failed to update stock in Magento');
     }
 }
