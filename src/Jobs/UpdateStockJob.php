@@ -16,7 +16,7 @@ use JustBetter\MagentoStock\Exceptions\UpdateException;
 use JustBetter\MagentoStock\Models\MagentoStock;
 use Throwable;
 
-class UpdateStockJob implements ShouldQueue, ShouldBeUnique
+class UpdateStockJob implements ShouldBeUnique, ShouldQueue
 {
     use Dispatchable;
     use InteractsWithQueue;

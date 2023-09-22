@@ -14,7 +14,7 @@ use JustBetter\MagentoStock\Data\StockData;
 use JustBetter\MagentoStock\Models\MagentoStock;
 use Throwable;
 
-class ProcessStockJob implements ShouldQueue, ShouldBeUnique
+class ProcessStockJob implements ShouldBeUnique, ShouldQueue
 {
     use Dispatchable;
     use InteractsWithQueue;

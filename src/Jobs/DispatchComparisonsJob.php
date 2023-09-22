@@ -11,7 +11,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Bus;
 use JustBetter\MagentoStock\Models\MagentoStock;
 
-class DispatchComparisonsJob implements ShouldQueue, ShouldBeUnique
+class DispatchComparisonsJob implements ShouldBeUnique, ShouldQueue
 {
     use Dispatchable;
     use InteractsWithQueue;

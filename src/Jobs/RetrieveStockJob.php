@@ -13,7 +13,7 @@ use JustBetter\MagentoStock\Contracts\RetrievesStock;
 use JustBetter\MagentoStock\Models\MagentoStock;
 use Throwable;
 
-class RetrieveStockJob implements ShouldQueue, ShouldBeUnique
+class RetrieveStockJob implements ShouldBeUnique, ShouldQueue
 {
     use Dispatchable;
     use InteractsWithQueue;

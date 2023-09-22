@@ -10,7 +10,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use JustBetter\MagentoStock\Contracts\SyncsStock;
 
-class SyncStockJob implements ShouldQueue, ShouldBeUnique
+class SyncStockJob implements ShouldBeUnique, ShouldQueue
 {
     use Dispatchable;
     use InteractsWithQueue;

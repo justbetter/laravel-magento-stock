@@ -13,7 +13,7 @@ use JustBetter\ErrorLogger\Models\Error;
 use JustBetter\MagentoStock\Contracts\ComparesStock;
 use Throwable;
 
-class CompareStockJob implements ShouldQueue, ShouldBeUnique
+class CompareStockJob implements ShouldBeUnique, ShouldQueue
 {
     use Batchable;
     use Dispatchable;

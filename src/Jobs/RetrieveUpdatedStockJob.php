@@ -11,7 +11,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Carbon;
 use JustBetter\MagentoStock\Contracts\RetrievesStockSkus;
 
-class RetrieveUpdatedStockJob implements ShouldQueue, ShouldBeUnique
+class RetrieveUpdatedStockJob implements ShouldBeUnique, ShouldQueue
 {
     use Dispatchable;
     use InteractsWithQueue;

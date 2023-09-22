@@ -13,7 +13,7 @@ class DummySkuRetriever implements RetrievesStockSkus
         return collect(['::sku_1::', '::sku_2::']);
     }
 
-    public function retrieveUpdated(?Carbon $from = null): Enumerable
+    public function retrieveUpdated(Carbon $from = null): Enumerable
     {
         return collect(['::sku_1::']);
     }

@@ -10,7 +10,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use JustBetter\MagentoStock\Contracts\RetrievesStockSkus;
 
-class RetrieveAllStockJob implements ShouldQueue, ShouldBeUnique
+class RetrieveAllStockJob implements ShouldBeUnique, ShouldQueue
 {
     use Dispatchable;
     use InteractsWithQueue;
