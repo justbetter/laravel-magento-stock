@@ -135,6 +135,27 @@ class UpdateMsiStockTest extends TestCase
         Event::assertDispatched(StockUpdatedEvent::class);
     }
 
+    public function test_it_stops_when_stockdata_is_empty(): void
+    {
+        Http::fake([
+            '*/rest/all/V1/inventory/source-items*' => Http::response(),
+        ]);
+
+        /** @var UpdateMsiStock $action */
+        $action = app(UpdateMsiStock::class);
+
+        /** @var MagentoStock $stock */
+        $stock = MagentoStock::query()->first();
+
+        $stock->msi_stock = null;
+
+        $stock->msi_status = null;
+
+        $action->update($stock);
+
+        Event::assertNotDispatched(StockUpdatedEvent::class);
+    }
+
     public function test_it_logs_error(): void
     {
         Http::fake([
