@@ -23,6 +23,10 @@ class UpdateMsiStock implements UpdatesStock
 
         $availableSources = $this->getAvailableSources();
 
+        if ($model->msi_stock === null) {
+            return;
+        }
+
         foreach ($model->msi_stock as $location => $quantity) {
             if (! in_array($location, $availableSources)) {
                 continue;
