@@ -11,5 +11,5 @@ interface RetrievesStockSkus
     public function retrieveAll(): Enumerable;
 
     /** @return Enumerable<int, string> */
-    public function retrieveUpdated(Carbon $from = null): Enumerable;
+    public function retrieveUpdated(?Carbon $from = null): Enumerable;
 }
