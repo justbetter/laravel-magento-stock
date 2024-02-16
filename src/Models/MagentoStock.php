@@ -18,8 +18,8 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @property bool $backorders
  * @property bool $magento_backorders_enabled
  * @property int $quantity
- * @property array $msi_stock
- * @property array $msi_status
+ * @property ?array $msi_stock
+ * @property ?array $msi_status
  * @property bool $retrieve
  * @property bool $update
  * @property ?Carbon $last_retrieved
