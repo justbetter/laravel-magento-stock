@@ -1,6 +1,17 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/justbetter/laravel-magento-stock/compare/1.2.6...main)
+[Unreleased changes](https://github.com/justbetter/laravel-magento-stock/compare/1.2.7...main)
+## [1.2.7](https://github.com/justbetter/laravel-magento-stock/releases/tag/1.2.7) - 2024-02-16
+
+### What's Changed
+* Use activity log for error logging by @VincentBean in https://github.com/justbetter/laravel-magento-stock/pull/14
+* Stop stock update if MSI stock is null by @FinnPaes in https://github.com/justbetter/laravel-magento-stock/pull/15
+
+### New Contributors
+* @FinnPaes made their first contribution in https://github.com/justbetter/laravel-magento-stock/pull/15
+
+**Full Changelog**: https://github.com/justbetter/laravel-magento-stock/compare/1.2.6...1.2.7
+
 ## [1.2.6](https://github.com/justbetter/laravel-magento-stock/releases/tag/1.2.6) - 2023-06-07
 
 ### What's Changed
