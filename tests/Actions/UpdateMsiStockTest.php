@@ -154,6 +154,11 @@ class UpdateMsiStockTest extends TestCase
         $action->update($stock);
 
         Event::assertNotDispatched(StockUpdatedEvent::class);
+
+        Http::assertNotSent(function (Request $request): bool {
+            return $request->method() === 'POST' &&
+                $request->url() === 'http://magento.test/rest/all/async/V1/inventory/source-items';
+        });
     }
 
     public function test_it_logs_error(): void
