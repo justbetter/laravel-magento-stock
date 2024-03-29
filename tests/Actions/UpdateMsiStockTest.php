@@ -80,7 +80,7 @@ class UpdateMsiStockTest extends TestCase
 
         Http::assertSentInOrder([
             function (Request $request) {
-                return $request->url() == 'http://magento.test/rest/all/V1/inventory/sources?searchCriteria%5BpageSize%5D=50&searchCriteria%5BcurrentPage%5D=1';
+                return $request->url() == 'magento/rest/all/V1/inventory/sources?searchCriteria%5BpageSize%5D=50&searchCriteria%5BcurrentPage%5D=1';
             },
             function (Request $request) use ($expectedPayload) {
                 return $request->data() == $expectedPayload;
@@ -125,7 +125,7 @@ class UpdateMsiStockTest extends TestCase
 
         Http::assertSentInOrder([
             function (Request $request) {
-                return $request->url() == 'http://magento.test/rest/all/V1/inventory/sources?searchCriteria%5BpageSize%5D=50&searchCriteria%5BcurrentPage%5D=1';
+                return $request->url() == 'magento/rest/all/V1/inventory/sources?searchCriteria%5BpageSize%5D=50&searchCriteria%5BcurrentPage%5D=1';
             },
             function (Request $request) use ($expectedPayload) {
                 return $request->data() == $expectedPayload;
@@ -157,7 +157,7 @@ class UpdateMsiStockTest extends TestCase
 
         Http::assertNotSent(function (Request $request): bool {
             return $request->method() === 'POST' &&
-                $request->url() === 'http://magento.test/rest/all/async/V1/inventory/source-items';
+                $request->url() === 'magento/rest/all/async/V1/inventory/source-items';
         });
     }
 
