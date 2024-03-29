@@ -18,7 +18,7 @@ class UpdateSimpleStockTest extends TestCase
     {
         Event::fake();
         Http::fake([
-            'http://magento.test/rest/all/V1/products/%3A%3Ask%2Fu%3A%3A' => Http::response(),
+            'magento/rest/all/V1/products/%3A%3Ask%2Fu%3A%3A' => Http::response(),
         ]);
 
         $model = MagentoStock::query()
@@ -58,7 +58,7 @@ class UpdateSimpleStockTest extends TestCase
 
         Event::fake();
         Http::fake([
-            'http://magento.test/rest/all/async/V1/products/%3A%3Ask%2Fu%3A%3A' => Http::response(),
+            'magento/rest/all/async/V1/products/%3A%3Ask%2Fu%3A%3A' => Http::response(),
         ]);
 
         $model = MagentoStock::query()
@@ -95,7 +95,7 @@ class UpdateSimpleStockTest extends TestCase
     public function test_it_logs_error(): void
     {
         Http::fake([
-            'http://magento.test/rest/all/V1/products/%3A%3Asku%3A%3A' => Http::response('::error::', 500),
+            'magento/rest/all/V1/products/%3A%3Asku%3A%3A' => Http::response('::error::', 500),
         ]);
 
         $this->expectException(UpdateException::class);
