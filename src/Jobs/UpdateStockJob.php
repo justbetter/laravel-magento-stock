@@ -75,13 +75,11 @@ class UpdateStockJob implements ShouldBeUnique, ShouldQueue
 
         activity()
             ->when($model !== null, fn (ActivityLogger $logger) => $logger->on($model)) /** @phpstan-ignore-line */
+            ->useLog('error')
             ->withProperties([
                 'message' => $exception->getMessage(),
                 'payload' => $payload ?? [],
-                'metadata' => [
-                    'level' => 'error',
-                ],
             ])
-            ->log('Failed to update stock in Magento');
+            ->log('Failed to update stock in Magento for '.$this->sku);
     }
 }

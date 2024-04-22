@@ -63,7 +63,7 @@ class RetrieveStockJob implements ShouldBeUnique, ShouldQueue
         ];
     }
 
-    /** @codeCoverageIgnore  */
+    /** @codeCoverageIgnore */
     public function failed(Throwable $exception): void
     {
         /** @var ?MagentoStock $model */
@@ -72,12 +72,10 @@ class RetrieveStockJob implements ShouldBeUnique, ShouldQueue
 
         activity()
             ->when($model !== null, fn (ActivityLogger $logger) => $logger->on($model)) /** @phpstan-ignore-line */
+            ->useLog('error')
             ->withProperties([
                 'message' => $exception->getMessage(),
-                'metadata' => [
-                    'level' => 'error',
-                ],
             ])
-            ->log("Failed while retrieving for sku $this->sku");
+            ->log('Failed while retrieving for sku '.$this->sku);
     }
 }
