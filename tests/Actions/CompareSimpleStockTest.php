@@ -5,7 +5,7 @@ namespace JustBetter\MagentoStock\Tests\Actions;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Http;
 use JustBetter\MagentoProducts\Contracts\ChecksMagentoExistence;
-use JustBetter\MagentoStock\Actions\Comparinson\CompareSimpleStock;
+use JustBetter\MagentoStock\Actions\Comparison\CompareSimpleSimpleStock;
 use JustBetter\MagentoStock\Events\DifferenceDetectedEvent;
 use JustBetter\MagentoStock\Models\Stock;
 use JustBetter\MagentoStock\Tests\TestCase;
@@ -20,7 +20,7 @@ class CompareSimpleStockTest extends TestCase
         });
 
         /** @var CompareSimpleStock $action */
-        $action = app(CompareSimpleStock::class);
+        $action = app(CompareSimpleSimpleStock::class);
 
         $action->compare('::sku::');
     }
@@ -52,7 +52,7 @@ class CompareSimpleStockTest extends TestCase
         ]);
 
         /** @var CompareSimpleStock $action */
-        $action = app(CompareSimpleStock::class);
+        $action = app(CompareSimpleSimpleStock::class);
 
         $action->compare('::sku::');
 

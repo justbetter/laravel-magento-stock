@@ -232,7 +232,7 @@ return [
         $schedule->command(\JustBetter\MagentoStock\Commands\RetrieveUpdatedStockCommand::class)->everyFiveMinutes();
 
         // Compare all stocks in Magento
-        $schedule->command(\JustBetter\MagentoStock\Commands\Comparinson\CompareStockCommand::class)->dailyAt('08:00');
+        $schedule->command(\JustBetter\MagentoStock\Commands\Comparison\CompareStockCommand::class)->dailyAt('08:00');
     }
 ```
 

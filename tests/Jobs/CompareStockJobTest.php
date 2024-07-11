@@ -4,8 +4,8 @@ namespace JustBetter\MagentoStock\Tests\Jobs;
 
 use Exception;
 use JustBetter\ErrorLogger\Models\Error;
-use JustBetter\MagentoStock\Contracts\Comparinson\ComparesStock;
-use JustBetter\MagentoStock\Jobs\Comparinson\CompareStockJob;
+use JustBetter\MagentoStock\Contracts\Comparinson\ComparesSimpleStock;
+use JustBetter\MagentoStock\Jobs\Comparison\CompareStockJob;
 use JustBetter\MagentoStock\Tests\TestCase;
 use Mockery\MockInterface;
 
@@ -13,7 +13,7 @@ class CompareStockJobTest extends TestCase
 {
     public function test_it_calls_action(): void
     {
-        $this->mock(ComparesStock::class, function (MockInterface $mock) {
+        $this->mock(ComparesSimpleStock::class, function (MockInterface $mock) {
             $mock->shouldReceive('compare')->once();
         });
 

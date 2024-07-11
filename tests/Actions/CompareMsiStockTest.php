@@ -5,8 +5,8 @@ namespace JustBetter\MagentoStock\Tests\Actions;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Http;
 use JustBetter\MagentoProducts\Contracts\ChecksMagentoExistence;
-use JustBetter\MagentoStock\Actions\Comparinson\CompareMsiStock;
-use JustBetter\MagentoStock\Contracts\Comparinson\ComparesStock;
+use JustBetter\MagentoStock\Actions\Comparison\CompareMsiStock;
+use JustBetter\MagentoStock\Contracts\Comparinson\ComparesSimpleStock;
 use JustBetter\MagentoStock\Events\DifferenceDetectedEvent;
 use JustBetter\MagentoStock\Models\Stock;
 use JustBetter\MagentoStock\Tests\TestCase;
@@ -22,7 +22,7 @@ class CompareMsiStockTest extends TestCase
 
         CompareMsiStock::bind();
 
-        $this->assertTrue(is_a(app(ComparesStock::class), CompareMsiStock::class));
+        $this->assertTrue(is_a(app(ComparesSimpleStock::class), CompareMsiStock::class));
     }
 
     public function test_it_does_nothing(): void

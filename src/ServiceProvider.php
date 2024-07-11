@@ -3,8 +3,10 @@
 namespace JustBetter\MagentoStock;
 
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
-use JustBetter\MagentoStock\Actions\Comparinson\CompareMsiStock;
-use JustBetter\MagentoStock\Actions\Comparinson\CompareSimpleStock;
+use JustBetter\MagentoStock\Actions\Comparison\CompareMsiStock;
+use JustBetter\MagentoStock\Actions\Comparison\CompareSimpleSimpleStock;
+use JustBetter\MagentoStock\Actions\Comparison\CompareSimpleStock;
+use JustBetter\MagentoStock\Actions\Comparison\CompareStock;
 use JustBetter\MagentoStock\Actions\ProcessStocks;
 use JustBetter\MagentoStock\Actions\Retrieval\RetrieveAllStock;
 use JustBetter\MagentoStock\Actions\Retrieval\RetrieveStock;
@@ -17,7 +19,7 @@ use JustBetter\MagentoStock\Actions\Update\Sync\UpdateBackorders;
 use JustBetter\MagentoStock\Actions\Update\Sync\UpdateMsiStock;
 use JustBetter\MagentoStock\Actions\Update\Sync\UpdateSimpleStock;
 use JustBetter\MagentoStock\Actions\Update\Sync\UpdateStock;
-use JustBetter\MagentoStock\Commands\Comparinson\CompareStockCommand;
+use JustBetter\MagentoStock\Commands\Comparison\CompareStockCommand;
 use JustBetter\MagentoStock\Commands\ProcessStocksCommand;
 use JustBetter\MagentoStock\Commands\Retrieval\RetrieveAllStockCommand;
 use JustBetter\MagentoStock\Commands\Retrieval\RetrieveStockCommand;
@@ -50,6 +52,7 @@ class ServiceProvider extends BaseServiceProvider
 
         ProcessStocks::bind();
 
+        CompareStock::bind();
         CompareSimpleStock::bind();
         CompareMsiStock::bind();
 

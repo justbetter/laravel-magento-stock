@@ -1,14 +1,14 @@
 <?php
 
-namespace JustBetter\MagentoStock\Actions\Comparinson;
+namespace JustBetter\MagentoStock\Actions\Comparison;
 
 use JustBetter\MagentoClient\Client\Magento;
 use JustBetter\MagentoProducts\Contracts\ChecksMagentoExistence;
-use JustBetter\MagentoStock\Contracts\Comparinson\ComparesStock;
+use JustBetter\MagentoStock\Contracts\Comparinson\ComparesSimpleStock;
 use JustBetter\MagentoStock\Events\DifferenceDetectedEvent;
 use JustBetter\MagentoStock\Models\Stock;
 
-class CompareSimpleStock implements ComparesStock
+class CompareSimpleStock implements ComparesSimpleStock
 {
     public function __construct(
         protected Magento $magento,
@@ -16,35 +16,30 @@ class CompareSimpleStock implements ComparesStock
     ) {
     }
 
-    public function compare(string $sku): void
+    public function compare(Stock $stock): void
     {
-        if (! $this->checksMagentoExistence->exists($sku)) {
+        if (! $this->checksMagentoExistence->exists($stock->sku)) {
             return;
         }
 
-        /** @var Stock $localStock */
-        $localStock = Stock::query()
-            ->where('sku', '=', $sku)
-            ->firstOrFail();
-
         $product = $this->magento
-            ->get('products/'.urlencode($sku))
+            ->get('products/'.urlencode($stock->sku))
             ->throw();
 
         $stockItem = $product->json('extension_attributes.stock_item', []);
 
-        if ($stockItem === null || $this->quantityEquals($localStock, $stockItem)) {
+        if ($stockItem === null || $this->quantityEquals($stock, $stockItem)) {
             return;
         }
 
         activity()
-            ->performedOn($localStock)
-            ->log('Detected quantity difference, Magento: '.$stockItem['qty'].'. Should be: '.$localStock->quantity);
+            ->performedOn($stock)
+            ->log('Detected quantity difference, Magento: '.$stockItem['qty'].'. Should be: '.$stock->quantity);
 
-        $localStock->update = true;
-        $localStock->save();
+        $stock->update = true;
+        $stock->save();
 
-        event(new DifferenceDetectedEvent($localStock));
+        event(new DifferenceDetectedEvent($stock));
     }
 
     protected function quantityEquals(Stock $stock, array $magentoStockItem): bool
@@ -57,6 +52,6 @@ class CompareSimpleStock implements ComparesStock
 
     public static function bind(): void
     {
-        app()->singleton(ComparesStock::class, static::class);
+        app()->singleton(ComparesSimpleStock::class, static::class);
     }
 }

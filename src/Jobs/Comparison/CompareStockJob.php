@@ -1,6 +1,6 @@
 <?php
 
-namespace JustBetter\MagentoStock\Jobs\Comparinson;
+namespace JustBetter\MagentoStock\Jobs\Comparison;
 
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
@@ -9,7 +9,8 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use JustBetter\MagentoStock\Contracts\Comparinson\ComparesStock;
+use JustBetter\MagentoStock\Contracts\Comparison\ComparesStock;
+use JustBetter\MagentoStock\Models\Stock;
 
 class CompareStockJob implements ShouldBeUnique, ShouldQueue
 {
@@ -19,22 +20,25 @@ class CompareStockJob implements ShouldBeUnique, ShouldQueue
     use Queueable;
     use SerializesModels;
 
-    public int $tries = 3;
-
-    public int $backoff = 5;
-
-    public function __construct(public string $sku)
+    public function __construct(public Stock $stock)
     {
         $this->onQueue(config('magento-stock.queue'));
     }
 
     public function handle(ComparesStock $stock): void
     {
-        $stock->compare($this->sku);
+        $stock->compare($this->stock);
     }
 
     public function uniqueId(): string
     {
-        return $this->sku;
+        return $this->stock->sku;
+    }
+
+    public function tags(): array
+    {
+        return [
+            $this->stock->sku,
+        ];
     }
 }

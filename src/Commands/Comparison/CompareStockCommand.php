@@ -1,9 +1,9 @@
 <?php
 
-namespace JustBetter\MagentoStock\Commands\Comparinson;
+namespace JustBetter\MagentoStock\Commands\Comparison;
 
 use Illuminate\Console\Command;
-use JustBetter\MagentoStock\Jobs\Comparinson\DispatchComparisonsJob;
+use JustBetter\MagentoStock\Jobs\Comparison\DispatchComparisonsJob;
 
 class CompareStockCommand extends Command
 {

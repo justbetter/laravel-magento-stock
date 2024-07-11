@@ -3,8 +3,8 @@
 namespace JustBetter\MagentoStock\Tests\Jobs;
 
 use Illuminate\Support\Facades\Bus;
-use JustBetter\MagentoStock\Jobs\Comparinson\CompareStockJob;
-use JustBetter\MagentoStock\Jobs\Comparinson\DispatchComparisonsJob;
+use JustBetter\MagentoStock\Jobs\Comparison\CompareStockJob;
+use JustBetter\MagentoStock\Jobs\Comparison\DispatchComparisonsJob;
 use JustBetter\MagentoStock\Models\Stock;
 use JustBetter\MagentoStock\Tests\TestCase;
 

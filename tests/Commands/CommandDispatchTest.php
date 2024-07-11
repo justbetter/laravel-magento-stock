@@ -3,14 +3,14 @@
 namespace JustBetter\MagentoStock\Tests\Commands;
 
 use Illuminate\Support\Facades\Bus;
-use JustBetter\MagentoStock\Commands\Comparinson\CompareStockCommand;
+use JustBetter\MagentoStock\Commands\Comparison\CompareStockCommand;
 use JustBetter\MagentoStock\Commands\MonitorWaitTimesCommand;
 use JustBetter\MagentoStock\Commands\ProcessStocksCommand;
 use JustBetter\MagentoStock\Commands\Retrieval\RetrieveAllStockCommand;
 use JustBetter\MagentoStock\Commands\Retrieval\RetrieveStockCommand;
 use JustBetter\MagentoStock\Commands\RetrieveUpdatedStockCommand;
 use JustBetter\MagentoStock\Commands\Update\UpdateStockCommand;
-use JustBetter\MagentoStock\Jobs\Comparinson\DispatchComparisonsJob;
+use JustBetter\MagentoStock\Jobs\Comparison\DispatchComparisonsJob;
 use JustBetter\MagentoStock\Jobs\MonitorWaitTimesJob;
 use JustBetter\MagentoStock\Jobs\ProcessStocksJob;
 use JustBetter\MagentoStock\Jobs\Retrieval\RetrieveAllStockJob;

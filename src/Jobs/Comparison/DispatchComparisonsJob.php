@@ -1,6 +1,6 @@
 <?php
 
-namespace JustBetter\MagentoStock\Jobs\Comparinson;
+namespace JustBetter\MagentoStock\Jobs\Comparison;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
@@ -26,8 +26,7 @@ class DispatchComparisonsJob implements ShouldBeUnique, ShouldQueue
     public function handle(): void
     {
         $batch = Stock::query()
-            ->select('sku')
-            ->pluck('sku')
+            ->get()
             ->mapInto(CompareStockJob::class);
 
         Bus::batch($batch)
