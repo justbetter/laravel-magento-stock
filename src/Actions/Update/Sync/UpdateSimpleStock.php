@@ -28,7 +28,7 @@ class UpdateSimpleStock implements UpdatesSimpleStock
 
         $response = $this->magento
             ->put('products/'.urlencode($stock->sku), $payload)
-            ->onError(function (Response $response) use ($stock, $payload) {
+            ->onError(function (Response $response) use ($stock, $payload): void {
                 $stock->failed();
 
                 activity()

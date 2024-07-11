@@ -5,6 +5,8 @@ namespace JustBetter\MagentoStock\Actions\Update\Async;
 use Illuminate\Support\Collection;
 use JustBetter\MagentoProducts\Contracts\ChecksMagentoExistence;
 use JustBetter\MagentoStock\Contracts\Update\Async\UpdatesBackordersAsync;
+use JustBetter\MagentoStock\Contracts\Update\Async\UpdatesMsiStockAsync;
+use JustBetter\MagentoStock\Contracts\Update\Async\UpdatesSimpleStockAsync;
 use JustBetter\MagentoStock\Contracts\Update\Async\UpdatesStocksAsync;
 use JustBetter\MagentoStock\Models\Stock;
 use JustBetter\MagentoStock\Repositories\BaseRepository;
@@ -13,7 +15,9 @@ class UpdateStocksAsync implements UpdatesStocksAsync
 {
     public function __construct(
         protected ChecksMagentoExistence $existence,
-        protected UpdatesBackordersAsync $backorders
+        protected UpdatesBackordersAsync $backorders,
+        protected UpdatesSimpleStockAsync $simpleStock,
+        protected UpdatesMsiStockAsync $msiStock
     ) {
     }
 
@@ -34,5 +38,10 @@ class UpdateStocksAsync implements UpdatesStocksAsync
         $stocks->each(fn (Stock $stock) => $stock->update([
             'update' => false,
         ]));
+    }
+
+    public static function bind(): void
+    {
+        app()->singleton(UpdatesStocksAsync::class, static::class);
     }
 }

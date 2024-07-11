@@ -6,7 +6,6 @@ use Illuminate\Support\Collection;
 use JustBetter\MagentoAsync\Client\MagentoAsync;
 use JustBetter\MagentoStock\Actions\Utility\GetMsiSources;
 use JustBetter\MagentoStock\Contracts\Update\Async\UpdatesMsiStockAsync;
-use JustBetter\MagentoStock\Models\Stock;
 
 class UpdateMsiStockAsync implements UpdatesMsiStockAsync
 {
@@ -18,24 +17,38 @@ class UpdateMsiStockAsync implements UpdatesMsiStockAsync
 
     public function update(Collection $stocks): void
     {
-        $sources = $this->msiSources->get();
+        $availableSources = $this->msiSources->get();
 
-        $payload = $stocks
-            ->map(fn (Stock $stock) => [
-                'product' => [
-                    'extension_attributes' => [
-                        'stock_item' => [
-                            'is_in_stock' => $stock->in_stock,
-                            'qty' => $stock->quantity,
-                        ],
-                    ],
-                ],
-            ])
-            ->toArray();
+        $payload = [];
+
+        foreach ($stocks as $stockIndex => $stock) {
+            $sourceItems = [];
+
+            foreach ($stock->msi_stock ?? [] as $location => $quantity) {
+                if (! in_array($location, $availableSources)) {
+                    continue;
+                }
+
+                $status = $stock->msi_status[$location] ?? $quantity > 0;
+
+                $sourceItems[] = [
+                    'sku' => $stock->sku,
+                    'source_code' => $location,
+                    'quantity' => $quantity,
+                    'status' => $status ? '1' : '0',
+                ];
+            }
+
+            if ($sourceItems === []) {
+               unset($stocks[$stockIndex]);
+            }
+
+            $payload[] = ['sourceItems' => $sourceItems];
+        }
 
         $this->magentoAsync
             ->subjects($stocks->all())
-            ->postBulk('products', $payload);
+            ->postBulk('inventory/source-items', $payload);
     }
 
     public static function bind(): void

@@ -56,9 +56,7 @@ abstract class BaseRepository
         /** @var ?class-string<BaseRepository> $repository */
         $repository = config('magento-stock.repository');
 
-        if ($repository === null) {
-            throw new RepositoryNotFoundException('Repository for has not been found.');
-        }
+        throw_if($repository === null, 'Repository for has not been found.');
 
         /** @var BaseRepository $instance */
         $instance = app($repository);

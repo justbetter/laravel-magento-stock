@@ -3,17 +3,24 @@
 namespace JustBetter\MagentoStock;
 
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
-use JustBetter\MagentoStock\Actions\DetermineStockModified;
+use JustBetter\MagentoStock\Actions\Comparinson\CompareMsiStock;
+use JustBetter\MagentoStock\Actions\Comparinson\CompareSimpleStock;
 use JustBetter\MagentoStock\Actions\ProcessStocks;
-use JustBetter\MagentoStock\Actions\ResolveStockCalculator;
+use JustBetter\MagentoStock\Actions\Retrieval\RetrieveAllStock;
 use JustBetter\MagentoStock\Actions\Retrieval\RetrieveStock;
 use JustBetter\MagentoStock\Actions\Retrieval\SaveStock;
+use JustBetter\MagentoStock\Actions\Update\Async\UpdateBackordersAsync;
+use JustBetter\MagentoStock\Actions\Update\Async\UpdateMsiStockAsync;
+use JustBetter\MagentoStock\Actions\Update\Async\UpdateSimpleStockAsync;
+use JustBetter\MagentoStock\Actions\Update\Async\UpdateStocksAsync;
 use JustBetter\MagentoStock\Actions\Update\Sync\UpdateBackorders;
+use JustBetter\MagentoStock\Actions\Update\Sync\UpdateMsiStock;
+use JustBetter\MagentoStock\Actions\Update\Sync\UpdateSimpleStock;
+use JustBetter\MagentoStock\Actions\Update\Sync\UpdateStock;
 use JustBetter\MagentoStock\Commands\Comparinson\CompareStockCommand;
 use JustBetter\MagentoStock\Commands\ProcessStocksCommand;
 use JustBetter\MagentoStock\Commands\Retrieval\RetrieveAllStockCommand;
 use JustBetter\MagentoStock\Commands\Retrieval\RetrieveStockCommand;
-use JustBetter\MagentoStock\Commands\RetrieveUpdatedStockCommand;
 use JustBetter\MagentoStock\Commands\Update\UpdateStockCommand;
 
 class ServiceProvider extends BaseServiceProvider
@@ -27,14 +34,24 @@ class ServiceProvider extends BaseServiceProvider
 
     protected function registerActions(): static
     {
+        RetrieveAllStock::bind();
         RetrieveStock::bind();
         SaveStock::bind();
-        DetermineStockModified::bind();
-        ResolveStockCalculator::bind();
 
         UpdateBackorders::bind();
+        UpdateMsiStock::bind();
+        UpdateSimpleStock::bind();
+        UpdateStock::bind();
+
+        UpdateBackordersAsync::bind();
+        UpdateMsiStockAsync::bind();
+        UpdateSimpleStockAsync::bind();
+        UpdateStocksAsync::bind();
 
         ProcessStocks::bind();
+
+        CompareSimpleStock::bind();
+        CompareMsiStock::bind();
 
         return $this;
     }

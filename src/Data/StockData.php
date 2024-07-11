@@ -6,36 +6,41 @@ use Illuminate\Validation\Rule;
 use JustBetter\MagentoStock\Enums\Backorders;
 use JustBetter\MagentoStock\Repositories\BaseRepository;
 
-/**
- * @property string $sku
- * @property int $quantity
- * @property ?Backorders $backorders
- * @property array $msi_quantity
- * @property array $msi_status
- */
 class StockData extends Data
 {
-    public function getRules(): array
+    public function rules(): array
     {
         $repository = BaseRepository::resolve();
 
-        if ($repository->msi()) {
-            return [
-                'sku' => ['required'],
-                'backorders' => ['nullable', Rule::enum(Backorders::class)],
+        $rules = [
+            'sku' => ['required'],
+            'backorders' => ['nullable', Rule::enum(Backorders::class)],
+        ];
 
+        if ($repository->msi()) {
+            $rules = array_merge($rules, [
                 'msi_quantity' => ['required', 'array'],
                 'msi_quantity.*' => ['integer'],
 
                 'msi_status' => ['required', 'array'],
                 'msi_status.*' => ['boolean'],
-            ];
+            ]);
+        } else {
+            $rules = array_merge($rules, [
+                'in_stock' => ['required', 'boolean'],
+                'quantity' => ['required', 'numeric'],
+            ]);
         }
 
-        return [
-            'sku' => ['required'],
-            'quantity' => ['required', 'numeric'],
-            'backorders' => ['nullable', Rule::enum(Backorders::class)],
-        ];
+        return $rules;
+    }
+
+    public function checksum(): string
+    {
+        $json = json_encode($this->validated());
+
+        throw_if($json === false, 'Failed to generate checksum');
+
+        return md5($json);
     }
 }

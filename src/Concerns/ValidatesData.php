@@ -10,11 +10,16 @@ trait ValidatesData
 
     public function validate(array $data): void
     {
-        Validator::make($data, $this->rules)->validate();
+        Validator::make($data, $this->rules())->validate();
     }
 
     public function validated(): array
     {
-        return Validator::make($this->toArray(), $this->rules)->validated();
+        return Validator::make($this->toArray(), $this->rules())->validated();
+    }
+
+    public function rules(): array
+    {
+       return $this->rules;
     }
 }

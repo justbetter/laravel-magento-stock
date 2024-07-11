@@ -4,6 +4,7 @@ namespace JustBetter\MagentoStock\Actions\Retrieval;
 
 use JustBetter\MagentoStock\Contracts\Retrieval\RetrievesStock;
 use JustBetter\MagentoStock\Jobs\ProcessStockJob;
+use JustBetter\MagentoStock\Jobs\Retrieval\SaveStockJob;
 use JustBetter\MagentoStock\Models\Stock;
 use JustBetter\MagentoStock\Repositories\BaseRepository;
 
@@ -23,7 +24,7 @@ class RetrieveStock implements RetrievesStock
             return;
         }
 
-        ProcessStockJob::dispatch($stockData, $forceUpdate);
+        SaveStockJob::dispatch($stockData, $forceUpdate);
     }
 
     public static function bind(): void

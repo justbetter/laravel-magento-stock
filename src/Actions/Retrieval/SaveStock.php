@@ -3,7 +3,6 @@
 namespace JustBetter\MagentoStock\Actions\Retrieval;
 
 use JustBetter\MagentoStock\Contracts\Retrieval\SavesStock;
-use JustBetter\MagentoStock\Data\MsiData;
 use JustBetter\MagentoStock\Data\StockData;
 use JustBetter\MagentoStock\Models\Stock;
 
@@ -13,23 +12,22 @@ class SaveStock implements SavesStock
     {
         /** @var Stock $model */
         $model = Stock::query()->firstOrCreate([
-           'sku' => $stock->sku,
+            'sku' => $stock['sku'],
         ]);
 
-        $model->in_stock = $stock->in_stock;
-        $model->quantity = $stock->quantity;
-        $model->backorders = $stock->backorders;
+        $model->in_stock = $stock['in_stock'];
+        $model->quantity = $stock['quantity'];
+        $model->backorders = $stock['backorders'];
 
-        if ($stock instanceof MsiData) {
-            $model->msi_stock = $stock->msi_quantity;
-            $model->msi_status = $stock->msi_status;
-        }
+        $model->msi_stock = $stock['msi_quantity'];
+        $model->msi_status = $stock['msi_status'];
 
         $model->sync = true;
         $model->retrieve = false;
         $model->last_retrieved = now();
 
         $model->update = $forceUpdate || $model->checksum !== $stock->checksum();
+        $model->checksum = $stock->checksum();
 
         $model->save();
     }

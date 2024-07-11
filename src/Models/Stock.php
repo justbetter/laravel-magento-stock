@@ -4,7 +4,9 @@ namespace JustBetter\MagentoStock\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use JustBetter\MagentoAsync\Concerns\HasOperations;
+use JustBetter\MagentoProducts\Models\MagentoProduct;
 use JustBetter\MagentoStock\Enums\Backorders;
 use JustBetter\MagentoStock\Repositories\BaseRepository;
 use Spatie\Activitylog\LogOptions;
@@ -32,6 +34,8 @@ class Stock extends Model
     use LogsActivity;
     use HasOperations;
 
+    protected $table = 'magento_stocks';
+
     public $casts = [
         'sync' => 'bool',
         'in_stock' => 'bool',
@@ -58,6 +62,11 @@ class Stock extends Model
                 }
             }
         });
+    }
+
+    public function product(): HasOne
+    {
+       return $this->hasOne(MagentoProduct::class, 'sku', 'sku');
     }
 
     public function failed(): void

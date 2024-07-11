@@ -4,6 +4,7 @@ namespace JustBetter\MagentoStock\Commands\Update;
 
 use Illuminate\Console\Command;
 use JustBetter\MagentoStock\Jobs\Update\UpdateStockJob;
+use JustBetter\MagentoStock\Models\Stock;
 
 class UpdateStockCommand extends Command
 {
@@ -16,7 +17,12 @@ class UpdateStockCommand extends Command
         /** @var string $sku */
         $sku = $this->argument('sku');
 
-        UpdateStockJob::dispatch($sku);
+        /** @var Stock $stock */
+        $stock = Stock::query()
+            ->where('sku', '=', $sku)
+            ->firstOrFail();
+
+        UpdateStockJob::dispatch($stock);
 
         return static::SUCCESS;
     }

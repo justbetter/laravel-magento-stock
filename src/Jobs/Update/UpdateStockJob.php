@@ -29,7 +29,7 @@ class UpdateStockJob implements ShouldBeUnique, ShouldQueue
         $stock->update($this->stock);
     }
 
-    public function uniqueId(): string
+    public function uniqueId(): int
     {
         return $this->stock->id;
     }
