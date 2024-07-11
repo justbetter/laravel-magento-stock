@@ -4,8 +4,8 @@ namespace JustBetter\MagentoStock\Tests\Jobs;
 
 use Exception;
 use JustBetter\ErrorLogger\Models\Error;
-use JustBetter\MagentoStock\Contracts\ComparesStock;
-use JustBetter\MagentoStock\Jobs\CompareStockJob;
+use JustBetter\MagentoStock\Contracts\Comparinson\ComparesStock;
+use JustBetter\MagentoStock\Jobs\Comparinson\CompareStockJob;
 use JustBetter\MagentoStock\Tests\TestCase;
 use Mockery\MockInterface;
 

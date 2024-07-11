@@ -75,7 +75,7 @@ For example:
 
 namespace App\Integrations\Stock;
 
-class SomeStockRetriever implements \JustBetter\MagentoStock\Contracts\RetrievesStock
+class SomeStockRetriever implements \JustBetter\MagentoStock\Contracts\Retrieval\RetrievesStock
 {
     public function retrieve(string $sku): ?StockData
     {
@@ -152,7 +152,7 @@ For example:
 
 namespace App\Integrations\Stock;
 
-class SomeStockRetriever implements \JustBetter\MagentoStock\Contracts\RetrievesStock
+class SomeStockRetriever implements \JustBetter\MagentoStock\Contracts\Retrieval\RetrievesStock
 {
     public function retrieve(string $sku): ?StockData
     {
@@ -226,17 +226,19 @@ return [
     protected function schedule(Schedule $schedule): void
     {
         // Run every minute to dispatch retrieve & update jobs
-        $schedule->command(\JustBetter\MagentoStock\Commands\SyncStockCommand::class)->everyMinute();
+        $schedule->command(\JustBetter\MagentoStock\Commands\ProcessStocksCommand::class)->everyMinute();
 
-        $schedule->command(\JustBetter\MagentoStock\Commands\RetrieveAllStockCommand::class)->dailyAt('05:00');
+        $schedule->command(\JustBetter\MagentoStock\Commands\Retrieval\RetrieveAllStockCommand::class)->dailyAt('05:00');
         $schedule->command(\JustBetter\MagentoStock\Commands\RetrieveUpdatedStockCommand::class)->everyFiveMinutes();
 
         // Compare all stocks in Magento
-        $schedule->command(\JustBetter\MagentoStock\Commands\CompareStockCommand::class)->dailyAt('08:00');
+        $schedule->command(\JustBetter\MagentoStock\Commands\Comparinson\CompareStockCommand::class)->dailyAt('08:00');
     }
 ```
 
 ## Comparisons
+
+> This feature requires job batching
 
 This package provides a way to compare stock quantities in Magento with those in the Laravel database.
 If a difference is detected it will start an update for that product.
@@ -317,5 +319,4 @@ Please review [our security policy](../../security/policy) on how to report secu
 The MIT License (MIT). Please see [License File](LICENSE) for more information.
 
 <a href="https://justbetter.nl" title="JustBetter">
-    <img src="./art/footer.svg" alt="Package footer">
-</a>
+    <img src="./art/f

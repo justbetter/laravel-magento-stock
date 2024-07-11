@@ -2,8 +2,8 @@
 
 namespace JustBetter\MagentoStock\Tests\Provider;
 
-use JustBetter\MagentoStock\Actions\UpdateMsiStock;
-use JustBetter\MagentoStock\Actions\UpdateSimpleStock;
+use JustBetter\MagentoStock\Actions\Update\Sync\UpdateMsiStock;
+use JustBetter\MagentoStock\Actions\Update\Sync\UpdateSimpleStock;
 use JustBetter\MagentoStock\Contracts\UpdatesStock;
 use JustBetter\MagentoStock\ServiceProvider;
 use JustBetter\MagentoStock\Tests\TestCase;

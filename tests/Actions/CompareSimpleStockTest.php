@@ -5,9 +5,9 @@ namespace JustBetter\MagentoStock\Tests\Actions;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Http;
 use JustBetter\MagentoProducts\Contracts\ChecksMagentoExistence;
-use JustBetter\MagentoStock\Actions\CompareSimpleStock;
+use JustBetter\MagentoStock\Actions\Comparinson\CompareSimpleStock;
 use JustBetter\MagentoStock\Events\DifferenceDetectedEvent;
-use JustBetter\MagentoStock\Models\MagentoStock;
+use JustBetter\MagentoStock\Models\Stock;
 use JustBetter\MagentoStock\Tests\TestCase;
 use Mockery\MockInterface;
 
@@ -44,7 +44,7 @@ class CompareSimpleStockTest extends TestCase
             ]),
         ]);
 
-        MagentoStock::query()->create([
+        Stock::query()->create([
             'sku' => '::sku::',
             'quantity' => $localQty,
             'in_stock' => true,
@@ -57,7 +57,7 @@ class CompareSimpleStockTest extends TestCase
         $action->compare('::sku::');
 
         /** @var MagentoStock $model */
-        $model = MagentoStock::query()->first();
+        $model = Stock::query()->first();
         $this->assertEquals($shouldUpdate, $model->update);
 
         if ($shouldUpdate) {

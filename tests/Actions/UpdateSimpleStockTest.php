@@ -6,10 +6,10 @@ use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Http;
 use JustBetter\ErrorLogger\Models\Error;
-use JustBetter\MagentoStock\Actions\UpdateSimpleStock;
+use JustBetter\MagentoStock\Actions\Update\Sync\UpdateSimpleStock;
 use JustBetter\MagentoStock\Events\StockUpdatedEvent;
 use JustBetter\MagentoStock\Exceptions\UpdateException;
-use JustBetter\MagentoStock\Models\MagentoStock;
+use JustBetter\MagentoStock\Models\Stock;
 use JustBetter\MagentoStock\Tests\TestCase;
 
 class UpdateSimpleStockTest extends TestCase
@@ -21,7 +21,7 @@ class UpdateSimpleStockTest extends TestCase
             'magento/rest/all/V1/products/%3A%3Ask%2Fu%3A%3A' => Http::response(),
         ]);
 
-        $model = MagentoStock::query()
+        $model = Stock::query()
             ->create([
                 'sku' => '::sk/u::',
                 'quantity' => 10,
@@ -61,7 +61,7 @@ class UpdateSimpleStockTest extends TestCase
             'magento/rest/all/async/V1/products/%3A%3Ask%2Fu%3A%3A' => Http::response(),
         ]);
 
-        $model = MagentoStock::query()
+        $model = Stock::query()
             ->create([
                 'sku' => '::sk/u::',
                 'quantity' => 10,
@@ -101,7 +101,7 @@ class UpdateSimpleStockTest extends TestCase
         $this->expectException(UpdateException::class);
 
         /** @var MagentoStock $stock */
-        $stock = MagentoStock::query()
+        $stock = Stock::query()
             ->create([
                 'sku' => '::sku::',
                 'quantity' => 10,
@@ -115,7 +115,7 @@ class UpdateSimpleStockTest extends TestCase
         $action->update($stock);
 
         /** @var MagentoStock $stock */
-        $stock = MagentoStock::query()
+        $stock = Stock::query()
             ->where('sku', '::sku::')
             ->first();
 

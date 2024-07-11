@@ -5,10 +5,10 @@ namespace JustBetter\MagentoStock\Tests\Actions;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Http;
 use JustBetter\MagentoProducts\Contracts\ChecksMagentoExistence;
-use JustBetter\MagentoStock\Actions\CompareMsiStock;
-use JustBetter\MagentoStock\Contracts\ComparesStock;
+use JustBetter\MagentoStock\Actions\Comparinson\CompareMsiStock;
+use JustBetter\MagentoStock\Contracts\Comparinson\ComparesStock;
 use JustBetter\MagentoStock\Events\DifferenceDetectedEvent;
-use JustBetter\MagentoStock\Models\MagentoStock;
+use JustBetter\MagentoStock\Models\Stock;
 use JustBetter\MagentoStock\Tests\TestCase;
 use Mockery\MockInterface;
 
@@ -52,7 +52,7 @@ class CompareMsiStockTest extends TestCase
             ]),
         ]);
 
-        MagentoStock::query()->create([
+        Stock::query()->create([
             'sku' => '::sku::',
             'msi_stock' => $localStocks,
             'in_stock' => true,
@@ -65,7 +65,7 @@ class CompareMsiStockTest extends TestCase
         $action->compare('::sku::');
 
         /** @var MagentoStock $model */
-        $model = MagentoStock::query()->first();
+        $model = Stock::query()->first();
         $this->assertEquals($shouldUpdate, $model->update);
 
         if ($shouldUpdate) {

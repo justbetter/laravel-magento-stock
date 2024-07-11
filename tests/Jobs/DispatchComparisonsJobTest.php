@@ -3,9 +3,9 @@
 namespace JustBetter\MagentoStock\Tests\Jobs;
 
 use Illuminate\Support\Facades\Bus;
-use JustBetter\MagentoStock\Jobs\CompareStockJob;
-use JustBetter\MagentoStock\Jobs\DispatchComparisonsJob;
-use JustBetter\MagentoStock\Models\MagentoStock;
+use JustBetter\MagentoStock\Jobs\Comparinson\CompareStockJob;
+use JustBetter\MagentoStock\Jobs\Comparinson\DispatchComparisonsJob;
+use JustBetter\MagentoStock\Models\Stock;
 use JustBetter\MagentoStock\Tests\TestCase;
 
 class DispatchComparisonsJobTest extends TestCase
@@ -14,7 +14,7 @@ class DispatchComparisonsJobTest extends TestCase
     {
         Bus::fake([CompareStockJob::class]);
 
-        MagentoStock::query()->create([
+        Stock::query()->create([
             'sku' => '::sku::',
         ]);
 

@@ -3,20 +3,20 @@
 namespace JustBetter\MagentoStock\Tests\Commands;
 
 use Illuminate\Support\Facades\Bus;
-use JustBetter\MagentoStock\Commands\CompareStockCommand;
+use JustBetter\MagentoStock\Commands\Comparinson\CompareStockCommand;
 use JustBetter\MagentoStock\Commands\MonitorWaitTimesCommand;
-use JustBetter\MagentoStock\Commands\RetrieveAllStockCommand;
-use JustBetter\MagentoStock\Commands\RetrieveStockCommand;
+use JustBetter\MagentoStock\Commands\ProcessStocksCommand;
+use JustBetter\MagentoStock\Commands\Retrieval\RetrieveAllStockCommand;
+use JustBetter\MagentoStock\Commands\Retrieval\RetrieveStockCommand;
 use JustBetter\MagentoStock\Commands\RetrieveUpdatedStockCommand;
-use JustBetter\MagentoStock\Commands\SyncStockCommand;
-use JustBetter\MagentoStock\Commands\UpdateStockCommand;
-use JustBetter\MagentoStock\Jobs\DispatchComparisonsJob;
+use JustBetter\MagentoStock\Commands\Update\UpdateStockCommand;
+use JustBetter\MagentoStock\Jobs\Comparinson\DispatchComparisonsJob;
 use JustBetter\MagentoStock\Jobs\MonitorWaitTimesJob;
-use JustBetter\MagentoStock\Jobs\RetrieveAllStockJob;
-use JustBetter\MagentoStock\Jobs\RetrieveStockJob;
+use JustBetter\MagentoStock\Jobs\ProcessStocksJob;
+use JustBetter\MagentoStock\Jobs\Retrieval\RetrieveAllStockJob;
+use JustBetter\MagentoStock\Jobs\Retrieval\RetrieveStockJob;
 use JustBetter\MagentoStock\Jobs\RetrieveUpdatedStockJob;
-use JustBetter\MagentoStock\Jobs\SyncStockJob;
-use JustBetter\MagentoStock\Jobs\UpdateStockJob;
+use JustBetter\MagentoStock\Jobs\Update\UpdateStockJob;
 use JustBetter\MagentoStock\Tests\TestCase;
 
 class CommandDispatchTest extends TestCase
@@ -67,8 +67,8 @@ class CommandDispatchTest extends TestCase
                 'job' => DispatchComparisonsJob::class,
             ],
             'Sync' => [
-                'command' => SyncStockCommand::class,
-                'job' => SyncStockJob::class,
+                'command' => ProcessStocksCommand::class,
+                'job' => ProcessStocksJob::class,
             ],
             'Monitor Wait' => [
                 'command' => MonitorWaitTimesCommand::class,

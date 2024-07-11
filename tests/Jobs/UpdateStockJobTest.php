@@ -4,10 +4,10 @@ namespace JustBetter\MagentoStock\Tests\Jobs;
 
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use JustBetter\MagentoProducts\Contracts\ChecksMagentoExistence;
-use JustBetter\MagentoStock\Contracts\UpdatesBackorders;
+use JustBetter\MagentoStock\Contracts\Update\Sync\UpdatesBackorders;
 use JustBetter\MagentoStock\Contracts\UpdatesStock;
-use JustBetter\MagentoStock\Jobs\UpdateStockJob;
-use JustBetter\MagentoStock\Models\MagentoStock;
+use JustBetter\MagentoStock\Jobs\Update\UpdateStockJob;
+use JustBetter\MagentoStock\Models\Stock;
 use JustBetter\MagentoStock\Tests\TestCase;
 use Mockery\MockInterface;
 
@@ -27,7 +27,7 @@ class UpdateStockJobTest extends TestCase
             $mock->shouldReceive('update')->once();
         });
 
-        MagentoStock::query()
+        Stock::query()
             ->create([
                 'sku' => '::sku::',
                 'quantity' => 10,

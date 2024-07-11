@@ -3,8 +3,8 @@
 namespace JustBetter\MagentoStock\Tests\Jobs;
 
 use Illuminate\Support\Facades\Bus;
-use JustBetter\MagentoStock\Jobs\RetrieveAllStockJob;
-use JustBetter\MagentoStock\Jobs\RetrieveStockJob;
+use JustBetter\MagentoStock\Jobs\Retrieval\RetrieveAllStockJob;
+use JustBetter\MagentoStock\Jobs\Retrieval\RetrieveStockJob;
 use JustBetter\MagentoStock\Jobs\RetrieveUpdatedStockJob;
 use JustBetter\MagentoStock\Tests\TestCase;
 

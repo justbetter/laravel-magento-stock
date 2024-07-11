@@ -4,9 +4,9 @@ namespace JustBetter\MagentoStock\Tests\Actions;
 
 use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Http;
-use JustBetter\MagentoStock\Actions\UpdateBackorders;
+use JustBetter\MagentoStock\Actions\Update\Sync\UpdateBackorders;
 use JustBetter\MagentoStock\Exceptions\UpdateException;
-use JustBetter\MagentoStock\Models\MagentoStock;
+use JustBetter\MagentoStock\Models\Stock;
 use JustBetter\MagentoStock\Tests\TestCase;
 
 class UpdateBackordersTest extends TestCase
@@ -24,7 +24,7 @@ class UpdateBackordersTest extends TestCase
             'magento/rest/all/V1/products/%3A%3Asku%3A%3A' => Http::response(),
         ]);
 
-        $model = MagentoStock::query()
+        $model = Stock::query()
             ->create([
                 'sku' => '::sku::',
                 'backorders' => true,
@@ -59,7 +59,7 @@ class UpdateBackordersTest extends TestCase
             'magento/rest/all/async/V1/products/%3A%3Asku%3A%3A' => Http::response(),
         ]);
 
-        $model = MagentoStock::query()
+        $model = Stock::query()
             ->create([
                 'sku' => '::sku::',
                 'backorders' => true,
@@ -94,7 +94,7 @@ class UpdateBackordersTest extends TestCase
 
         $this->expectException(UpdateException::class);
 
-        $model = MagentoStock::query()
+        $model = Stock::query()
             ->create([
                 'sku' => '::sku::',
                 'quantity' => 10,
@@ -109,7 +109,7 @@ class UpdateBackordersTest extends TestCase
         $action->update($model);
 
         /** @var MagentoStock $model */
-        $model = MagentoStock::query()
+        $model = Stock::query()
             ->where('sku', '::sku::')
             ->first();
 
@@ -123,7 +123,7 @@ class UpdateBackordersTest extends TestCase
 
         config()->set('magento-stock.backorders', false);
 
-        $model = MagentoStock::query()
+        $model = Stock::query()
             ->create([
                 'sku' => '::sku::',
                 'quantity' => 10,
@@ -144,7 +144,7 @@ class UpdateBackordersTest extends TestCase
     {
         Http::fake();
 
-        $model = MagentoStock::query()
+        $model = Stock::query()
             ->create([
                 'sku' => '::sku::',
                 'quantity' => 10,

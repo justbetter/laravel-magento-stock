@@ -4,10 +4,10 @@ namespace JustBetter\MagentoStock\Tests\Jobs;
 
 use Exception;
 use JustBetter\ErrorLogger\Models\Error;
-use JustBetter\MagentoStock\Contracts\ProcessesStock;
+use JustBetter\MagentoStock\Contracts\Retrieval\SavesStock;
 use JustBetter\MagentoStock\Data\StockData;
 use JustBetter\MagentoStock\Jobs\ProcessStockJob;
-use JustBetter\MagentoStock\Models\MagentoStock;
+use JustBetter\MagentoStock\Models\Stock;
 use JustBetter\MagentoStock\Retriever\DummyStockRetriever;
 use JustBetter\MagentoStock\Tests\TestCase;
 use Mockery\MockInterface;
@@ -16,7 +16,7 @@ class ProcessStockJobTest extends TestCase
 {
     public function test_it_calls_action(): void
     {
-        $this->mock(ProcessesStock::class, function (MockInterface $mock) {
+        $this->mock(SavesStock::class, function (MockInterface $mock) {
             $mock->shouldReceive('process')->once();
         });
 
@@ -39,7 +39,7 @@ class ProcessStockJobTest extends TestCase
 
     public function test_failed(): void
     {
-        $model = MagentoStock::query()->create(['sku' => '::sku::']);
+        $model = Stock::query()->create(['sku' => '::sku::']);
 
         $job = new ProcessStockJob(StockData::make('::sku::'));
 

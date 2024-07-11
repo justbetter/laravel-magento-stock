@@ -5,10 +5,10 @@ namespace JustBetter\MagentoStock\Tests\Actions;
 use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Http;
-use JustBetter\MagentoStock\Actions\UpdateMsiStock;
+use JustBetter\MagentoStock\Actions\Update\Sync\UpdateMsiStock;
 use JustBetter\MagentoStock\Events\StockUpdatedEvent;
 use JustBetter\MagentoStock\Exceptions\UpdateException;
-use JustBetter\MagentoStock\Models\MagentoStock;
+use JustBetter\MagentoStock\Models\Stock;
 use JustBetter\MagentoStock\Tests\TestCase;
 
 class UpdateMsiStockTest extends TestCase
@@ -21,7 +21,7 @@ class UpdateMsiStockTest extends TestCase
 
         config()->set('magento-stock.msi', true);
 
-        MagentoStock::query()
+        Stock::query()
             ->create([
                 'sku' => '::sku::',
                 'msi_stock' => json_decode('{"A": 4, "B": 0, "C": 0}', true),
@@ -57,7 +57,7 @@ class UpdateMsiStockTest extends TestCase
         $action = app(UpdateMsiStock::class);
 
         /** @var MagentoStock $stock */
-        $stock = MagentoStock::query()->first();
+        $stock = Stock::query()->first();
 
         $expectedPayload = [
             'sourceItems' => [
@@ -102,7 +102,7 @@ class UpdateMsiStockTest extends TestCase
         $action = app(UpdateMsiStock::class);
 
         /** @var MagentoStock $stock */
-        $stock = MagentoStock::query()->first();
+        $stock = Stock::query()->first();
 
         $expectedPayload = [
             'sourceItems' => [
@@ -145,7 +145,7 @@ class UpdateMsiStockTest extends TestCase
         $action = app(UpdateMsiStock::class);
 
         /** @var MagentoStock $stock */
-        $stock = MagentoStock::query()->first();
+        $stock = Stock::query()->first();
 
         $stock->msi_stock = null;
 
@@ -175,12 +175,12 @@ class UpdateMsiStockTest extends TestCase
         $action = app(UpdateMsiStock::class);
 
         /** @var MagentoStock $stock */
-        $stock = MagentoStock::query()->first();
+        $stock = Stock::query()->first();
 
         $action->update($stock);
 
         /** @var MagentoStock $stock */
-        $stock = MagentoStock::query()->first();
+        $stock = Stock::query()->first();
 
         $this->assertEquals(1, $stock->fail_count);
     }

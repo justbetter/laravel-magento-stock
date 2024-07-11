@@ -2,27 +2,19 @@
 
 namespace JustBetter\MagentoStock;
 
-use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
-use JustBetter\MagentoStock\Actions\CompareMsiStock;
-use JustBetter\MagentoStock\Actions\CompareSimpleStock;
 use JustBetter\MagentoStock\Actions\DetermineStockModified;
-use JustBetter\MagentoStock\Actions\MonitorWaitTimes;
-use JustBetter\MagentoStock\Actions\ProcessStock;
+use JustBetter\MagentoStock\Actions\ProcessStocks;
 use JustBetter\MagentoStock\Actions\ResolveStockCalculator;
-use JustBetter\MagentoStock\Actions\SyncStock;
-use JustBetter\MagentoStock\Actions\UpdateBackorders;
-use JustBetter\MagentoStock\Actions\UpdateMsiStock;
-use JustBetter\MagentoStock\Actions\UpdateSimpleStock;
-use JustBetter\MagentoStock\Commands\CompareStockCommand;
-use JustBetter\MagentoStock\Commands\MonitorWaitTimesCommand;
-use JustBetter\MagentoStock\Commands\RetrieveAllStockCommand;
-use JustBetter\MagentoStock\Commands\RetrieveStockCommand;
+use JustBetter\MagentoStock\Actions\Retrieval\RetrieveStock;
+use JustBetter\MagentoStock\Actions\Retrieval\SaveStock;
+use JustBetter\MagentoStock\Actions\Update\Sync\UpdateBackorders;
+use JustBetter\MagentoStock\Commands\Comparinson\CompareStockCommand;
+use JustBetter\MagentoStock\Commands\ProcessStocksCommand;
+use JustBetter\MagentoStock\Commands\Retrieval\RetrieveAllStockCommand;
+use JustBetter\MagentoStock\Commands\Retrieval\RetrieveStockCommand;
 use JustBetter\MagentoStock\Commands\RetrieveUpdatedStockCommand;
-use JustBetter\MagentoStock\Commands\SyncStockCommand;
-use JustBetter\MagentoStock\Commands\UpdateStockCommand;
-use JustBetter\MagentoStock\Events\StockChangedEvent;
-use JustBetter\MagentoStock\Listeners\SetStockRetrieveListener;
+use JustBetter\MagentoStock\Commands\Update\UpdateStockCommand;
 
 class ServiceProvider extends BaseServiceProvider
 {
@@ -35,15 +27,14 @@ class ServiceProvider extends BaseServiceProvider
 
     protected function registerActions(): static
     {
-        ProcessStock::bind();
+        RetrieveStock::bind();
+        SaveStock::bind();
         DetermineStockModified::bind();
         ResolveStockCalculator::bind();
 
         UpdateBackorders::bind();
 
-        SyncStock::bind();
-
-        MonitorWaitTimes::bind();
+        ProcessStocks::bind();
 
         return $this;
     }
@@ -53,16 +44,7 @@ class ServiceProvider extends BaseServiceProvider
         $this
             ->bootMigrations()
             ->bootConfig()
-            ->bootCommands()
-            ->bootEvents();
-
-        if (config('magento-stock.msi')) {
-            UpdateMsiStock::bind();
-            CompareMsiStock::bind();
-        } else {
-            UpdateSimpleStock::bind();
-            CompareSimpleStock::bind();
-        }
+            ->bootCommands();
     }
 
     protected function bootConfig(): static
@@ -79,15 +61,13 @@ class ServiceProvider extends BaseServiceProvider
         if ($this->app->runningInConsole()) {
             $this->commands([
                 RetrieveStockCommand::class,
-                RetrieveUpdatedStockCommand::class,
                 RetrieveAllStockCommand::class,
 
                 UpdateStockCommand::class,
 
-                SyncStockCommand::class,
+                ProcessStocksCommand::class,
 
                 CompareStockCommand::class,
-                MonitorWaitTimesCommand::class,
             ]);
         }
 
@@ -97,13 +77,6 @@ class ServiceProvider extends BaseServiceProvider
     protected function bootMigrations(): static
     {
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
-
-        return $this;
-    }
-
-    protected function bootEvents(): static
-    {
-        Event::listen(StockChangedEvent::class, SetStockRetrieveListener::class);
 
         return $this;
     }
