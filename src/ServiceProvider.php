@@ -2,7 +2,9 @@
 
 namespace JustBetter\MagentoStock;
 
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
+use JustBetter\MagentoAsync\Events\BulkOperationStatusEvent;
 use JustBetter\MagentoStock\Actions\Comparison\CompareMsiStock;
 use JustBetter\MagentoStock\Actions\Comparison\CompareSimpleStock;
 use JustBetter\MagentoStock\Actions\Comparison\CompareStock;
@@ -24,6 +26,7 @@ use JustBetter\MagentoStock\Commands\Retrieval\RetrieveAllStockCommand;
 use JustBetter\MagentoStock\Commands\Retrieval\RetrieveStockCommand;
 use JustBetter\MagentoStock\Commands\Update\UpdateAllStockCommand;
 use JustBetter\MagentoStock\Commands\Update\UpdateStockCommand;
+use JustBetter\MagentoStock\Listeners\BulkOperationStatusListener;
 
 class ServiceProvider extends BaseServiceProvider
 {
@@ -64,7 +67,8 @@ class ServiceProvider extends BaseServiceProvider
         $this
             ->bootMigrations()
             ->bootConfig()
-            ->bootCommands();
+            ->bootCommands()
+            ->bootEvents();
     }
 
     protected function bootConfig(): static
@@ -98,6 +102,13 @@ class ServiceProvider extends BaseServiceProvider
     protected function bootMigrations(): static
     {
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
+
+        return $this;
+    }
+
+    protected function bootEvents(): static
+    {
+        Event::listen(BulkOperationStatusEvent::class, BulkOperationStatusListener::class);
 
         return $this;
     }
