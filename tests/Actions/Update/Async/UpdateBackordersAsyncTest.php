@@ -51,27 +51,27 @@ class UpdateBackordersAsyncTest extends TestCase
 
         Http::assertSent(function (Request $request) {
             return $request->data() === [
-                    [
-                        "product" => [
-                            "extension_attributes" => [
-                                "stock_item" => [
-                                    "use_config_backorders" => false,
-                                    "backorders" => 1,
-                                ],
+                [
+                    'product' => [
+                        'extension_attributes' => [
+                            'stock_item' => [
+                                'use_config_backorders' => false,
+                                'backorders' => 1,
                             ],
                         ],
                     ],
-                    [
-                        "product" => [
-                            "extension_attributes" => [
-                                "stock_item" => [
-                                    "use_config_backorders" => false,
-                                    "backorders" => 0,
-                                ],
+                ],
+                [
+                    'product' => [
+                        'extension_attributes' => [
+                            'stock_item' => [
+                                'use_config_backorders' => false,
+                                'backorders' => 0,
                             ],
                         ],
                     ],
-                ];
+                ],
+            ];
         });
     }
 }

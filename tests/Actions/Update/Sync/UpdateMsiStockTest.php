@@ -41,28 +41,28 @@ class UpdateMsiStockTest extends TestCase
                 'A' => true,
                 'B' => false,
                 'C' => false,
-            ]
+            ],
         ]);
 
         $action->update($stock);
 
         Http::assertSent(function (Request $request): bool {
             return $request->data() == [
-                    'sourceItems' => [
-                        [
-                            'sku' => '::sku::',
-                            'source_code' => 'A',
-                            'quantity' => 4,
-                            'status' => '1',
-                        ],
-                        [
-                            'sku' => '::sku::',
-                            'source_code' => 'B',
-                            'quantity' => 0,
-                            'status' => '0',
-                        ],
+                'sourceItems' => [
+                    [
+                        'sku' => '::sku::',
+                        'source_code' => 'A',
+                        'quantity' => 4,
+                        'status' => '1',
                     ],
-                ];
+                    [
+                        'sku' => '::sku::',
+                        'source_code' => 'B',
+                        'quantity' => 0,
+                        'status' => '0',
+                    ],
+                ],
+            ];
         });
     }
 
@@ -111,7 +111,7 @@ class UpdateMsiStockTest extends TestCase
                 'A' => true,
                 'B' => false,
                 'C' => false,
-            ]
+            ],
         ]);
 
         $action->update($stock);
@@ -121,5 +121,4 @@ class UpdateMsiStockTest extends TestCase
         $this->assertEquals(1, $stock->fail_count);
         $this->assertNotNull($stock->last_failed);
     }
-
 }

@@ -108,5 +108,4 @@ class UpdateStockTest extends TestCase
 
         Event::assertDispatched(StockUpdatedEvent::class);
     }
-
 }
