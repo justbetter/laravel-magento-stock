@@ -1,21 +1,21 @@
 <?php
 
-namespace JustBetter\MagentoStock\Tests\Jobs\Update;
+namespace JustBetter\MagentoStock\Tests\Jobs\Comparison;
 
-use JustBetter\MagentoStock\Contracts\Update\Sync\UpdatesStock;
-use JustBetter\MagentoStock\Jobs\Update\UpdateStockJob;
+use JustBetter\MagentoStock\Contracts\Comparison\ComparesStock;
+use JustBetter\MagentoStock\Jobs\Comparison\CompareStockJob;
 use JustBetter\MagentoStock\Models\Stock;
 use JustBetter\MagentoStock\Tests\TestCase;
 use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\Test;
 
-class UpdateStockJobTest extends TestCase
+class CompareStockJobTest extends TestCase
 {
     #[Test]
     public function it_calls_action(): void
     {
-        $this->mock(UpdatesStock::class, function (MockInterface $mock): void {
-            $mock->shouldReceive('update')->once();
+        $this->mock(ComparesStock::class, function (MockInterface $mock): void {
+            $mock->shouldReceive('compare')->once();
         });
 
         /** @var Stock $model */
@@ -24,7 +24,7 @@ class UpdateStockJobTest extends TestCase
             'update' => true,
         ]);
 
-        UpdateStockJob::dispatch($model);
+        CompareStockJob::dispatch($model);
     }
 
     #[Test]
@@ -36,9 +36,9 @@ class UpdateStockJobTest extends TestCase
             'update' => true,
         ]);
 
-        $job = new UpdateStockJob($model);
+        $job = new CompareStockJob($model);
 
-        $this->assertEquals($model->id, $job->uniqueId());
+        $this->assertEquals('::sku::', $job->uniqueId());
     }
 
     #[Test]
@@ -50,7 +50,7 @@ class UpdateStockJobTest extends TestCase
             'update' => true,
         ]);
 
-        $job = new UpdateStockJob($model);
+        $job = new CompareStockJob($model);
 
         $this->assertEquals(['::sku::'], $job->tags());
     }

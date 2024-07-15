@@ -1,7 +1,5 @@
 <?php
 
-namespace JustBetter\MagentoStock\Tests\Actions;
-
 use Illuminate\Support\Facades\Bus;
 use JustBetter\MagentoStock\Actions\ProcessStocks;
 use JustBetter\MagentoStock\Jobs\Retrieval\RetrieveStockJob;
@@ -25,7 +23,7 @@ class SyncStockTest extends TestCase
             'update' => true,
         ]);
 
-        /** @var SyncStock $action */
+        /** @var \JustBetter\MagentoStock\Tests\Actions\SyncStock $action */
         $action = app(ProcessStocks::class);
 
         $action->sync();

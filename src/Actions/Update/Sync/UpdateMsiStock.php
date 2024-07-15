@@ -19,11 +19,11 @@ class UpdateMsiStock implements UpdatesMsiStock
     {
         $sourceItems = [];
 
-        $availableSources = $this->msiSources->get();
-
         if ($stock->msi_stock === null) {
             return;
         }
+
+        $availableSources = $this->msiSources->get();
 
         foreach ($stock->msi_stock as $location => $quantity) {
             if (! in_array($location, $availableSources)) {

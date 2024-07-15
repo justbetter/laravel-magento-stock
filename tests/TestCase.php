@@ -35,6 +35,7 @@ abstract class TestCase extends BaseTestCase
             ServiceProvider::class,
             \JustBetter\MagentoClient\ServiceProvider::class,
             \JustBetter\MagentoProducts\ServiceProvider::class,
+            \JustBetter\MagentoAsync\ServiceProvider::class,
             ActivitylogServiceProvider::class,
         ];
     }

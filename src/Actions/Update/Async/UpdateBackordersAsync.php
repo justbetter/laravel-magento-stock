@@ -14,7 +14,7 @@ class UpdateBackordersAsync implements UpdatesBackordersAsync
     public function update(Collection $stocks): void
     {
         $payload = $stocks
-            ->map(fn (Stock $stock) => [
+            ->map(fn (Stock $stock): array => [
                 'product' => [
                     'extension_attributes' => [
                         'stock_item' => [

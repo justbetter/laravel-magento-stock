@@ -15,7 +15,7 @@ class SaveStockJobTest extends TestCase
     public function it_calls_action(): void
     {
         $this->mock(SavesStock::class, function (MockInterface $mock): void {
-            $mock->shouldReceive('update')->once();
+            $mock->shouldReceive('save')->once();
         });
 
         $data = StockData::of([

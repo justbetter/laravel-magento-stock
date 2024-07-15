@@ -10,8 +10,6 @@ use JustBetter\MagentoStock\Exceptions\NotImplementedException;
 
 class Repository extends BaseRepository
 {
-    protected bool $msi = true;
-
     public function retrieve(string $sku): ?StockData
     {
         throw new NotImplementedException();

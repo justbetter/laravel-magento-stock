@@ -14,7 +14,7 @@ class UpdateStockAsyncJobTest extends TestCase
     public function it_calls_action(): void
     {
         $this->mock(UpdatesStockAsync::class, function (MockInterface $mock): void {
-            $mock->shouldReceive('process')->once();
+            $mock->shouldReceive('update')->once();
         });
 
         UpdateStockAsyncJob::dispatch(collect());

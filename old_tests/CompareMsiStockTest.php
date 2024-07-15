@@ -1,7 +1,5 @@
 <?php
 
-namespace JustBetter\MagentoStock\Tests\Actions;
-
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Http;
 use JustBetter\MagentoProducts\Contracts\ChecksMagentoExistence;
@@ -64,7 +62,7 @@ class CompareMsiStockTest extends TestCase
 
         $action->compare('::sku::');
 
-        /** @var MagentoStock $model */
+        /** @var \JustBetter\MagentoStock\Tests\Actions\MagentoStock $model */
         $model = Stock::query()->first();
         $this->assertEquals($shouldUpdate, $model->update);
 

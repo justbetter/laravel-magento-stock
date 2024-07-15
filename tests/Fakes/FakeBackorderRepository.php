@@ -7,24 +7,18 @@ use Illuminate\Support\Collection;
 use JustBetter\MagentoStock\Data\StockData;
 use JustBetter\MagentoStock\Repositories\Repository;
 
-class FakeMsiRepository extends Repository
+class FakeBackorderRepository extends Repository
 {
-    protected string $name = 'Fake MSI Repository';
+    protected string $name = 'Fake Backorder Repository';
 
-    protected bool $msi = true;
+    protected bool $backorders = true;
 
     public function retrieve(string $sku): ?StockData
     {
         return StockData::of([
             'sku' => $sku,
-            'msi_quantity' => [
-                'A' => 0,
-                'B' => 10,
-            ],
-            'msi_status' => [
-                'A' => false,
-                'B' => true,
-            ],
+            'quantity' => 10,
+            'in_stock' => true,
         ]);
     }
 

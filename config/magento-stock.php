@@ -10,5 +10,5 @@ return [
     'compare_queue' => 'default',
 
     /* Send stock updates using Magento 2's async endpoints, a configured message queue in Magento is required for this */
-    'async' => true,
+    'async' => false,
 ];

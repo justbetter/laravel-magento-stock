@@ -22,6 +22,7 @@ use JustBetter\MagentoStock\Commands\Comparison\CompareStockCommand;
 use JustBetter\MagentoStock\Commands\ProcessStocksCommand;
 use JustBetter\MagentoStock\Commands\Retrieval\RetrieveAllStockCommand;
 use JustBetter\MagentoStock\Commands\Retrieval\RetrieveStockCommand;
+use JustBetter\MagentoStock\Commands\Update\UpdateAllStockCommand;
 use JustBetter\MagentoStock\Commands\Update\UpdateStockCommand;
 
 class ServiceProvider extends BaseServiceProvider
@@ -83,6 +84,7 @@ class ServiceProvider extends BaseServiceProvider
                 RetrieveAllStockCommand::class,
 
                 UpdateStockCommand::class,
+                UpdateAllStockCommand::class,
 
                 ProcessStocksCommand::class,
 

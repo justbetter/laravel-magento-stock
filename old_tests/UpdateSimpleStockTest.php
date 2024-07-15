@@ -1,7 +1,5 @@
 <?php
 
-namespace JustBetter\MagentoStock\Tests\Actions;
-
 use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Http;
@@ -100,7 +98,7 @@ class UpdateSimpleStockTest extends TestCase
 
         $this->expectException(UpdateException::class);
 
-        /** @var MagentoStock $stock */
+        /** @var \JustBetter\MagentoStock\Tests\Actions\MagentoStock $stock */
         $stock = Stock::query()
             ->create([
                 'sku' => '::sku::',
@@ -114,7 +112,7 @@ class UpdateSimpleStockTest extends TestCase
 
         $action->update($stock);
 
-        /** @var MagentoStock $stock */
+        /** @var \JustBetter\MagentoStock\Tests\Actions\MagentoStock $stock */
         $stock = Stock::query()
             ->where('sku', '::sku::')
             ->first();
