@@ -1,6 +1,6 @@
 <?php
 
-namespace JustBetter\MagentoStock\Contracts\Comparinson;
+namespace JustBetter\MagentoStock\Contracts\Comparison;
 
 use JustBetter\MagentoStock\Models\Stock;
 

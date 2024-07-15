@@ -4,7 +4,7 @@ namespace JustBetter\MagentoStock\Actions\Comparison;
 
 use JustBetter\MagentoClient\Client\Magento;
 use JustBetter\MagentoProducts\Contracts\ChecksMagentoExistence;
-use JustBetter\MagentoStock\Contracts\Comparinson\ComparesSimpleStock;
+use \JustBetter\MagentoStock\Contracts\Comparison\ComparesSimpleStock;
 use JustBetter\MagentoStock\Events\DifferenceDetectedEvent;
 use JustBetter\MagentoStock\Models\Stock;
 

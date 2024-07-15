@@ -6,8 +6,7 @@ use Illuminate\Support\Collection;
 use JustBetter\MagentoClient\Client\Magento;
 use JustBetter\MagentoClient\Query\SearchCriteria;
 use JustBetter\MagentoProducts\Contracts\ChecksMagentoExistence;
-use JustBetter\MagentoStock\Contracts\Comparinson\ComparesMsiStock;
-use JustBetter\MagentoStock\Contracts\Comparinson\ComparesSimpleStock;
+use JustBetter\MagentoStock\Contracts\Comparison\ComparesMsiStock;
 use JustBetter\MagentoStock\Events\DifferenceDetectedEvent;
 use JustBetter\MagentoStock\Models\Stock;
 
@@ -68,6 +67,6 @@ class CompareMsiStock implements ComparesMsiStock
 
     public static function bind(): void
     {
-        app()->singleton(ComparesSimpleStock::class, static::class);
+        app()->singleton(ComparesMsiStock::class, static::class);
     }
 }

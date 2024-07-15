@@ -4,7 +4,6 @@ namespace JustBetter\MagentoStock;
 
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 use JustBetter\MagentoStock\Actions\Comparison\CompareMsiStock;
-use JustBetter\MagentoStock\Actions\Comparison\CompareSimpleSimpleStock;
 use JustBetter\MagentoStock\Actions\Comparison\CompareSimpleStock;
 use JustBetter\MagentoStock\Actions\Comparison\CompareStock;
 use JustBetter\MagentoStock\Actions\ProcessStocks;

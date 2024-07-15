@@ -5,7 +5,6 @@ namespace JustBetter\MagentoStock\Repositories;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use JustBetter\MagentoStock\Data\StockData;
-use JustBetter\MagentoStock\Exceptions\RepositoryNotFoundException;
 
 abstract class BaseRepository
 {

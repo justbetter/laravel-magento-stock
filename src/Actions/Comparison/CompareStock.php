@@ -2,8 +2,8 @@
 
 namespace JustBetter\MagentoStock\Actions\Comparison;
 
-use JustBetter\MagentoStock\Contracts\Comparinson\ComparesMsiStock;
-use JustBetter\MagentoStock\Contracts\Comparinson\ComparesSimpleStock;
+use JustBetter\MagentoStock\Contracts\Comparison\ComparesMsiStock;
+use \JustBetter\MagentoStock\Contracts\Comparison\ComparesSimpleStock;
 use JustBetter\MagentoStock\Contracts\Comparison\ComparesStock;
 use JustBetter\MagentoStock\Models\Stock;
 use JustBetter\MagentoStock\Repositories\BaseRepository;
