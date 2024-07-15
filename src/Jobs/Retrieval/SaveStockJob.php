@@ -50,7 +50,9 @@ class SaveStockJob implements ShouldBeUnique, ShouldQueue
         $model = Stock::query()->firstWhere('sku', '=', $this->data['sku']);
 
         activity()
-            ->when($model !== null, fn (ActivityLogger $logger): ActivityLogger => $logger->on($model)) /** @phpstan-ignore-line */
+            ->when($model, function (ActivityLogger $logger, Stock $stock): ActivityLogger {
+                return $logger->on($stock);
+            })
             ->useLog('error')
             ->log('Failed to save stock: '.$exception->getMessage());
     }

@@ -7,11 +7,11 @@ use JustBetter\MagentoProducts\Contracts\ChecksMagentoExistence;
 use JustBetter\MagentoStock\Contracts\Update\Async\UpdatesBackordersAsync;
 use JustBetter\MagentoStock\Contracts\Update\Async\UpdatesMsiStockAsync;
 use JustBetter\MagentoStock\Contracts\Update\Async\UpdatesSimpleStockAsync;
-use JustBetter\MagentoStock\Contracts\Update\Async\UpdatesStocksAsync;
+use JustBetter\MagentoStock\Contracts\Update\Async\UpdatesStockAsync;
 use JustBetter\MagentoStock\Models\Stock;
 use JustBetter\MagentoStock\Repositories\BaseRepository;
 
-class UpdateStocksAsync implements UpdatesStocksAsync
+class UpdateStockAsync implements UpdatesStockAsync
 {
     public function __construct(
         protected ChecksMagentoExistence $existence,
@@ -42,6 +42,6 @@ class UpdateStocksAsync implements UpdatesStocksAsync
 
     public static function bind(): void
     {
-        app()->singleton(UpdatesStocksAsync::class, static::class);
+        app()->singleton(UpdatesStockAsync::class, static::class);
     }
 }

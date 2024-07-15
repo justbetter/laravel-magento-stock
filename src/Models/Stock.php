@@ -2,9 +2,9 @@
 
 namespace JustBetter\MagentoStock\Models;
 
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Carbon;
 use JustBetter\MagentoAsync\Concerns\HasOperations;
 use JustBetter\MagentoProducts\Models\MagentoProduct;
 use JustBetter\MagentoStock\Enums\Backorders;
@@ -36,7 +36,7 @@ class Stock extends Model
 
     protected $table = 'magento_stocks';
 
-    public $casts = [
+    protected $casts = [
         'sync' => 'bool',
         'in_stock' => 'bool',
         'backorders' => Backorders::class,
@@ -72,6 +72,7 @@ class Stock extends Model
     public function failed(): void
     {
         $this->last_failed = now();
+        $this->fail_count++;
 
         $shouldRetry = $this->fail_count < BaseRepository::resolve()->failLimit();
         $this->sync = $shouldRetry;

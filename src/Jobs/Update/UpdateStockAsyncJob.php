@@ -8,7 +8,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Collection;
-use JustBetter\MagentoStock\Contracts\Update\Async\UpdatesStocksAsync;
+use JustBetter\MagentoStock\Contracts\Update\Async\UpdatesStockAsync;
 
 class UpdateStockAsyncJob implements ShouldQueue
 {
@@ -22,7 +22,7 @@ class UpdateStockAsyncJob implements ShouldQueue
         $this->onQueue(config('magento-stock.queue'));
     }
 
-    public function handle(UpdatesStocksAsync $stock): void
+    public function handle(UpdatesStockAsync $stock): void
     {
         $stock->update($this->stocks);
     }

@@ -13,7 +13,7 @@ use JustBetter\MagentoStock\Actions\Retrieval\SaveStock;
 use JustBetter\MagentoStock\Actions\Update\Async\UpdateBackordersAsync;
 use JustBetter\MagentoStock\Actions\Update\Async\UpdateMsiStockAsync;
 use JustBetter\MagentoStock\Actions\Update\Async\UpdateSimpleStockAsync;
-use JustBetter\MagentoStock\Actions\Update\Async\UpdateStocksAsync;
+use JustBetter\MagentoStock\Actions\Update\Async\UpdateStockAsync;
 use JustBetter\MagentoStock\Actions\Update\Sync\UpdateBackorders;
 use JustBetter\MagentoStock\Actions\Update\Sync\UpdateMsiStock;
 use JustBetter\MagentoStock\Actions\Update\Sync\UpdateSimpleStock;
@@ -47,7 +47,7 @@ class ServiceProvider extends BaseServiceProvider
         UpdateBackordersAsync::bind();
         UpdateMsiStockAsync::bind();
         UpdateSimpleStockAsync::bind();
-        UpdateStocksAsync::bind();
+        UpdateStockAsync::bind();
 
         ProcessStocks::bind();
 

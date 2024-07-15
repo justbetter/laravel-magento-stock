@@ -20,9 +20,8 @@ class ProcessStocksJob implements ShouldBeUnique, ShouldQueue
         $this->onQueue(config('magento-stock.queue'));
     }
 
-    public function handle(
-        ProcessesStocks $sync
-    ): void {
-        $sync->process();
+    public function handle(ProcessesStocks $contract): void
+    {
+        $contract->process();
     }
 }

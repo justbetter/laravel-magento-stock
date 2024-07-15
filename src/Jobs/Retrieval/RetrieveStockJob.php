@@ -19,7 +19,6 @@ class RetrieveStockJob implements ShouldBeUnique, ShouldQueue
     use Dispatchable;
     use InteractsWithQueue;
     use Queueable;
-    use SerializesModels;
 
     public function __construct(
         public string $sku,
@@ -52,7 +51,9 @@ class RetrieveStockJob implements ShouldBeUnique, ShouldQueue
         $model = Stock::query()->firstWhere('sku', '=', $this->sku);
 
         activity()
-            ->when($model !== null, fn (ActivityLogger $logger): ActivityLogger => $logger->on($model)) /** @phpstan-ignore-line */
+            ->when($model, function (ActivityLogger $logger, Stock $stock): ActivityLogger {
+                return $logger->on($stock);
+            })
             ->useLog('error')
             ->log('Failed to retrieve stock: '.$exception->getMessage());
     }
