@@ -11,7 +11,5 @@ class StockUpdatedEvent
     use Dispatchable;
     use SerializesModels;
 
-    public function __construct(public Stock $stock)
-    {
-    }
+    public function __construct(public Stock $stock) {}
 }

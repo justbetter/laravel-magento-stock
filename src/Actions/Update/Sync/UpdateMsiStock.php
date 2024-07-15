@@ -13,9 +13,7 @@ class UpdateMsiStock implements UpdatesMsiStock
     public function __construct(
         protected Magento $magento,
         protected GetMsiSources $msiSources
-    )
-    {
-    }
+    ) {}
 
     public function update(Stock $stock): void
     {

@@ -4,7 +4,7 @@ namespace JustBetter\MagentoStock\Actions\Comparison;
 
 use JustBetter\MagentoClient\Client\Magento;
 use JustBetter\MagentoProducts\Contracts\ChecksMagentoExistence;
-use \JustBetter\MagentoStock\Contracts\Comparison\ComparesSimpleStock;
+use JustBetter\MagentoStock\Contracts\Comparison\ComparesSimpleStock;
 use JustBetter\MagentoStock\Events\DifferenceDetectedEvent;
 use JustBetter\MagentoStock\Models\Stock;
 
@@ -13,8 +13,7 @@ class CompareSimpleStock implements ComparesSimpleStock
     public function __construct(
         protected Magento $magento,
         protected ChecksMagentoExistence $checksMagentoExistence
-    ) {
-    }
+    ) {}
 
     public function compare(Stock $stock): void
     {

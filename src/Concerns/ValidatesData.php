@@ -20,6 +20,6 @@ trait ValidatesData
 
     public function rules(): array
     {
-       return $this->rules;
+        return $this->rules;
     }
 }

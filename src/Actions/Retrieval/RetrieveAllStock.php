@@ -21,7 +21,7 @@ class RetrieveAllStock implements RetrievesAllStock
                     ->whereIn('sku', $chunk)
                     ->update([
                         'sync' => true,
-                        'update' => true
+                        'update' => true,
                     ])
             );
     }

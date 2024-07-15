@@ -16,7 +16,7 @@ class UpdateAllStockCommand extends Command
         Stock::query()
             ->update([
                 'sync' => true,
-                'update' => true
+                'update' => true,
             ]);
 
         return static::SUCCESS;

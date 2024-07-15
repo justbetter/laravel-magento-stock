@@ -18,8 +18,7 @@ class UpdateStockAsync implements UpdatesStockAsync
         protected UpdatesBackordersAsync $backorders,
         protected UpdatesSimpleStockAsync $simpleStock,
         protected UpdatesMsiStockAsync $msiStock
-    ) {
-    }
+    ) {}
 
     public function update(Collection $stocks): void
     {

@@ -3,7 +3,6 @@
 namespace JustBetter\MagentoStock\Actions\Retrieval;
 
 use JustBetter\MagentoStock\Contracts\Retrieval\RetrievesStock;
-use JustBetter\MagentoStock\Jobs\ProcessStockJob;
 use JustBetter\MagentoStock\Jobs\Retrieval\SaveStockJob;
 use JustBetter\MagentoStock\Models\Stock;
 use JustBetter\MagentoStock\Repositories\BaseRepository;

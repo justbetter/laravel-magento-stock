@@ -9,9 +9,7 @@ use JustBetter\MagentoStock\Models\Stock;
 
 class UpdateSimpleStock implements UpdatesSimpleStock
 {
-    public function __construct(protected Magento $magento)
-    {
-    }
+    public function __construct(protected Magento $magento) {}
 
     public function update(Stock $stock): void
     {
@@ -45,7 +43,7 @@ class UpdateSimpleStock implements UpdatesSimpleStock
             activity()
                 ->withProperties($payload)
                 ->performedOn($stock)
-                ->log("Updated Stock for $stock->sku in Magento to " . ($stock->in_stock ? 'in stock' : 'out of stock')  . " with quantity $stock->quantity");
+                ->log("Updated Stock for $stock->sku in Magento to ".($stock->in_stock ? 'in stock' : 'out of stock')." with quantity $stock->quantity");
         }
     }
 

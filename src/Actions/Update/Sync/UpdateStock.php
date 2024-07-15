@@ -18,8 +18,7 @@ class UpdateStock implements UpdatesStock
         protected UpdatesBackorders $backorders,
         protected UpdatesSimpleStock $simpleStock,
         protected UpdatesMsiStock $msiStock,
-    ) {
-    }
+    ) {}
 
     public function update(Stock $stock): void
     {

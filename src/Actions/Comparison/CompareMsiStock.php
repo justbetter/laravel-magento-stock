@@ -15,8 +15,7 @@ class CompareMsiStock implements ComparesMsiStock
     public function __construct(
         protected Magento $magento,
         protected ChecksMagentoExistence $checksMagentoExistence
-    ) {
-    }
+    ) {}
 
     public function compare(Stock $stock): void
     {

@@ -12,8 +12,7 @@ class UpdateMsiStockAsync implements UpdatesMsiStockAsync
     public function __construct(
         protected MagentoAsync $magentoAsync,
         protected GetMsiSources $msiSources
-    ) {
-    }
+    ) {}
 
     public function update(Collection $stocks): void
     {
@@ -40,7 +39,7 @@ class UpdateMsiStockAsync implements UpdatesMsiStockAsync
             }
 
             if ($sourceItems === []) {
-               unset($stocks[$stockIndex]);
+                unset($stocks[$stockIndex]);
             }
 
             $payload[] = ['sourceItems' => $sourceItems];

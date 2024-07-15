@@ -6,9 +6,7 @@ use JustBetter\MagentoClient\Client\Magento;
 
 class GetMsiSources
 {
-    public function __construct(protected Magento $magento)
-    {
-    }
+    public function __construct(protected Magento $magento) {}
 
     public function get(): array
     {

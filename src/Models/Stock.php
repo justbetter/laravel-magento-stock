@@ -31,8 +31,8 @@ use Spatie\Activitylog\Traits\LogsActivity;
  */
 class Stock extends Model
 {
-    use LogsActivity;
     use HasOperations;
+    use LogsActivity;
 
     protected $table = 'magento_stocks';
 
@@ -66,7 +66,7 @@ class Stock extends Model
 
     public function product(): HasOne
     {
-       return $this->hasOne(MagentoProduct::class, 'sku', 'sku');
+        return $this->hasOne(MagentoProduct::class, 'sku', 'sku');
     }
 
     public function failed(): void

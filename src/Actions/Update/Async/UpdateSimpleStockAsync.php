@@ -9,9 +9,7 @@ use JustBetter\MagentoStock\Models\Stock;
 
 class UpdateSimpleStockAsync implements UpdatesSimpleStockAsync
 {
-    public function __construct(protected MagentoAsync $magentoAsync)
-    {
-    }
+    public function __construct(protected MagentoAsync $magentoAsync) {}
 
     public function update(Collection $stocks): void
     {

@@ -9,9 +9,7 @@ use JustBetter\MagentoStock\Models\Stock;
 
 class UpdateBackordersAsync implements UpdatesBackordersAsync
 {
-    public function __construct(protected MagentoAsync $magentoAsync)
-    {
-    }
+    public function __construct(protected MagentoAsync $magentoAsync) {}
 
     public function update(Collection $stocks): void
     {
@@ -21,7 +19,7 @@ class UpdateBackordersAsync implements UpdatesBackordersAsync
                     'extension_attributes' => [
                         'stock_item' => [
                             'use_config_backorders' => false,
-                            'backorders' => $stock->backorders->value
+                            'backorders' => $stock->backorders->value,
                         ],
                     ],
                 ],
