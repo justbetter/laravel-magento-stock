@@ -15,9 +15,10 @@ class SaveStock implements SavesStock
             'sku' => $stock['sku'],
         ]);
 
-        $model->in_stock = $stock['in_stock'];
-        $model->quantity = $stock['quantity'];
-        $model->backorders = $stock['backorders'];
+        $model->in_stock = $stock['in_stock'] ?? false;
+        $model->quantity = $stock['quantity'] ?? 0;
+
+        $model->backorders = $stock['backorders'] ?? false;
 
         $model->msi_stock = $stock['msi_quantity'];
         $model->msi_status = $stock['msi_status'];
