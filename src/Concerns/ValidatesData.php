@@ -18,6 +18,7 @@ trait ValidatesData
         return Validator::make($this->toArray(), $this->rules())->validated();
     }
 
+    /** @codeCoverageIgnore  */
     public function rules(): array
     {
         return $this->rules;

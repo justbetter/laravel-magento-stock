@@ -16,23 +16,21 @@ Both simple stock and MSI are supported.
 
 ## Features
 
-This package provides all the logic of synchronizing stock to Magento so that you only have to write the way stock is
-retrieved.
+This package provides all the logic of pushing stock to Magento. It only requires an implementation for retrieving the stock.
 
 Features:
 
-- Retrieve stock from any source using your own retriever class
+- Retrieve stock from any source
 - MSI support
 - Only update stock when there are modifications
 - Automatically stop syncing when there are too many errors (configurable)
 - Compare stock between Magento and this package
+- Supports Magento 2 async bulk requests for updating stock using [Laravel Magento Async](https://github.com/justbetter/laravel-magento-async)
 - Logs activities using [Spatie activitylog](https://github.com/spatie/laravel-activitylog)
-- Logs errors using [JustBetter Error Logger](https://github.com/justbetter/laravel-error-logger)
-- Checks if Magento products exist
-  using [JustBetter Magento Products](https://github.com/justbetter/laravel-magento-products)
+- Checks if Magento products exist using [JustBetter Magento Products](https://github.com/justbetter/laravel-magento-products)
 
-> Also check out our other [Laravel Magento packages)(https://github.com/justbetter?q=laravel-magento)! We also have
-> a [Magento Client](https://github.com/justbetter/laravel-magento-client) to easily connect Laravel to Magento!
+> Also check out our other [Laravel Magento packages)(https://github.com/justbetter?q=laravel-magento)!
+> We also have a [Magento Client](https://github.com/justbetter/laravel-magento-client) to easily connect Laravel to Magento!
 
 ## Installation
 
@@ -59,182 +57,200 @@ php artisan migrate
 > **_TIP:_** All actions in this package are run via jobs, we recommend Laravel Horizon or another queueing system to
 > run these
 
+Add the following commands to your scheduler.
+```php
+    protected function schedule(Schedule $schedule): void
+    {
+       // Process stocks marked for retrieval / update
+       $schedule->command(\JustBetter\MagentoStock\Commands\ProcessStocksCommand::class)->everyMinute();
+
+       // Retrieve all stock daily
+       $schedule->job(\JustBetter\MagentoStock\Commands\Retrieval\RetrieveAllStockCommand::class)->dailyAt('05:00');
+
+       // Retrieve modified stock every fifteen minutes, with a small overlap
+       $schedule->job(\JustBetter\MagentoStock\Commands\Retrieval\RetrieveAllStockCommand::class, ['from' => 'now -1 hour'])->everyFifteenMinutes();
+    }
+```
+
+
 ### Laravel Nova
 
 We have a [Laravel Nova integration](https://github.com/justbetter/laravel-magento-stock-nova) for this package.
 
 ## Setup
 
-In order to sync stock you have to write a retriever class.
-This class is responsible for retrieving stock from your source for a single sku.
+This package requires you to implement a stock repository which is responsible for retrieving stock.
 
-For example:
+
+### Retrieving stock
+
+Implement the `retrieve` method and return a `StockData` object that contains the stock fields.
 
 ```php
 <?php
 
-namespace App\Integrations\Stock;
+namespace App\Integrations\MagentoStock;
 
-class SomeStockRetriever implements \JustBetter\MagentoStock\Contracts\Retrieval\RetrievesStock
+use JustBetter\MagentoStock\Repositories\Repository;
+use JustBetter\MagentoStock\Data\StockData;
+use JustBetter\MagentoStock\Enums\Backorders;
+
+class MyStockRepository implements Repository
 {
     public function retrieve(string $sku): ?StockData
     {
-        $quantity = 5;
+        // Retrieve stock from your source
 
-        return StockData::make($sku, $quantity);
+        return StockData::of([
+            'sku' => $sku,
+            'quantity' => 10,
+            'in_stock' => true,
+            'backorders' => Backorders::BackordersNotify,
+        ]);
     }
 }
 ```
 
-You also have to implement a class that retrieves skus.
+### Retrieving SKU's
 
-For example:
+By default the `Repository` that you are extending will retrieve the SKU's from [justbetter/laravel-magento-products](https://github.com/justbetter/laravel-magento-products).
+If you wish to use this you have to add the commands to your scheduler to automatically import products.
+
+If you have another source for your SKU's you may implement the `skus` method yourself.
+It accepts an optional carbon instance to only retrieve modified stock.
 
 ```php
 <?php
 
-namespace App\Integrations\Stock;
+namespace App\Integrations\MagentoStock;
 
-class SomeStockSkuRetriever implements \JustBetter\MagentoStock\Contracts\RetrievesStockSkus
+use JustBetter\MagentoStock\Repositories\Repository;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Collection;
+
+class MyStockRepository implements Repository
 {
-    public function retrieveAll(): Enumerable
+    public function skus(?Carbon $from = null): ?Collection
     {
-        return collect(['sku_1', 'sku_2', 'sku_3']);
-    }
-
-     public function retrieveUpdated(?Carbon $from = null): Enumerable
-    {
-        return collect(['sku_1']);
+        return collect(['sku_1', 'sku_2']);
     }
 }
 ```
 
-These should return a simple collection of skus:
-```['sku_1', 'sku_2', ...]```
+### Configuring the repository
 
-You can then register your retrievers in the config file:
+The repository class has a couple of settings that you can adjust:
+
+```php
+class BaseRepository
+{
+    protected string $name = 'Repository';
+
+    // How many stocks may be retrieved at once when the process job runs
+    protected int $retrieveLimit = 250;
+
+    // How many stocks may be updated at once when the process job runs
+    protected int $updateLimit = 250;
+
+    // How many times an update to Magento may fail before it stops trying
+    protected int $failLimit = 3;
+
+    // If MSI is enabled
+    protected bool $msi = false;
+
+    // Enable if the package should update backorders
+    protected bool $backorders = false;
+}
+```
+
+After you've created and configured the repository you have to set it in your configuration file:
 
 ```php
 <?php
 
 return [
-    'retriever' => [
-        /* Class that is responsible for retrieving stock */
-        'stock' => \App\Integrations\Stock\SomeStockRetriever::class,
-
-        /* Class that is responsible for retrieving sku's */
-        'sku' => \App\Integrations\Stock\SomeStockSkuRetriever::class,
-    ],
+    'repository' => \App\Integrations\MagentoStock\MyStockRepository::class,
 ];
 
 ```
 
-### Testing your retrievers
+### Usage
 
-To test your retrievers you can use the following commands:
+To retrieve stock you can use the following commands.
 
-```
-php artisan magento:stock:retrieve {sku}
-php artisan magento:stock:retrieve-all
-php artisan magento:stock:retrieve-updated {from?}
-```
+#### Processing stocks that are marked for retrieval/update
+
+`php artisan magento-stock:process`
+
+Each stock record has two flags, `retrieve` and `update`.
+This command will dispatch the jobs to run those actions.
+It is primarily used for updates, but you can implement the retrieve flag in your application to slow down retrievals.
+
+#### Retrieving stock for a single SKU
+
+`php artisan magento-stock:retrieve {sku}`
+
+This will directly pass the SKU to your repository and process the result.
+If the stock has been modified it will set the update flag.
+
+
+#### Retrieving stock for all or modified SKU's
+
+`php artisan magento-stock:retrieve-all {from?}`
+
+This will call the `skus` method on your repository and dispatch retrieval jobs for all the SKU's that are returned from your repository.
+
+#### Updating stock for a single SKU
+
+`php artisan magento-stock:update {sku}`
+
+#### Updating all stock
+
+`php artisan magento-stock:update-all`
+
+#### Comparing stock
+
+`php artisan magento-stock:compare`
+
+This will compare the stock in Magento and the database table. If it differs it will force an update to Magento.
 
 ### Magento MSI
 
-If you have Magento MSI enabled you have to return the quantity of each source in our retriever.
+If you have Magento MSI enabled you have to return the quantity and status of each source in the repository.
 
-> **_NOTE:_**  Be sure to set the `msi` config setting to true!
+> **_NOTE:_**  Be sure to set the `msi` setting in the repository to `true`!
 
 For example:
 
 ```php
 <?php
 
-namespace App\Integrations\Stock;
+namespace App\Integrations\MagentoStock;
 
-class SomeStockRetriever implements \JustBetter\MagentoStock\Contracts\Retrieval\RetrievesStock
+use JustBetter\MagentoStock\Repositories\Repository;
+use JustBetter\MagentoStock\Data\StockData;
+use JustBetter\MagentoStock\Enums\Backorders;
+
+class MyStockRepository implements Repository
 {
     public function retrieve(string $sku): ?StockData
     {
-        $data = StockData::make($sku);
-
-        // You can set the quantity/status per source
-        $data->setMsiQuantity('A', 10);
-        $data->setMsiQuantity('B', 0); // Will also set the status to out of stock
-        $data->setMsiQuantity('C', 0);
-
-        $data->setMsiStatus('C', true);
-
-        // Or you can set it in bulk
-        $data->setMsiQuantities([
-            'A' => 10,
-            'B' => 0,
-            'C' => 0,
+        return StockData::of([
+            'sku' => $sku,
+            'backorders' => Backorders::BackordersNotify,
+            'msi_status' => [
+                'A' => true, // Source A is in stock
+                'B' => false, // Source B is out of stock
+            ],
+            'msi_quantity' => [
+                'A' => 10, // Source A has qty of 10
+                'B' => 0, // Source B has qty of 0
+            ],
         ]);
-
-        $data->setMsiStatusses([
-            'A' => true,
-            'B' => false,
-            'C' => true,
-        ]);
-
-        return $data;
     }
 }
 ```
 
-### Custom retrievers
-
-If you cannot retrieve the sku's and stock data separately you can setup a custom retriever.
-For example if you have XML or CSV files with stock data that include the sku and a quantity.
-
-The basic flow of your retriever should be:
-
-1. Read stock data your source per sku
-2. Build a `\JustBetter\MagentoStock\Data\StockData` object
-3. Dispatch a `\JustBetter\MagentoStock\Jobs\ProcessStockJob` job
-
-You can then never run the `magento:stock:retrieve*` commands and schedule your own retriever. To be extra safe you can
-still register your own retrieve and return `null` and empty collections to be sure that the default dummy sku/stock
-retrievers never execute.
-
-## Processing complex stock logic
-
-If you need to apply complex stock logic you can implement a calculator. A calculator's goal is to modify
-the `\JustBetter\MagentoStock\Data\StockData` object. By default, this only sets the in/out of stock status based on the
-quantity.
-
-See the `\JustBetter\MagentoStock\Calculators\SimpleStockCalculator` for an example.
-
-If you want to use your own calculator you can set it in the config file:
-
-```php
-<?php
-
-return [
-    /* Class to calculate stock */
-    'calculator' => SimpleStockCalculator::class,
-];
-
-```
-
-## Schedule
-
-```php
-<?php
-
-    protected function schedule(Schedule $schedule): void
-    {
-        // Run every minute to dispatch retrieve & update jobs
-        $schedule->command(\JustBetter\MagentoStock\Commands\ProcessStocksCommand::class)->everyMinute();
-
-        $schedule->command(\JustBetter\MagentoStock\Commands\Retrieval\RetrieveAllStockCommand::class)->dailyAt('05:00');
-        $schedule->command(\JustBetter\MagentoStock\Commands\RetrieveUpdatedStockCommand::class)->everyFiveMinutes();
-
-        // Compare all stocks in Magento
-        $schedule->command(\JustBetter\MagentoStock\Commands\Comparison\CompareStockCommand::class)->dailyAt('08:00');
-    }
-```
 
 ## Comparisons
 
@@ -248,44 +264,8 @@ An event is dispatched when a difference is detected `\JustBetter\MagentoStock\E
 ## Handling failures
 
 When an update fails it will try again. A fail counter is stored with the model which is increased at each failure.
-
-In the config you can specify how many times the update may be attempted:
-
-```php
-<?php
-
-return [
-    /* How many times can a stock update failed before being cancelled */
-    'fail_count' => 5,
-];
-```
-
+In the repository you can specify how many times the update may be attempted.
 You can restart the updates for a product by setting the `sync` field in the DB to true.
-
-## Long Waits
-
-The sync limits the amount of products that are retrieved/updated each sync.
-This may result in long waits if not properly configured for the amount of updates you get.
-
-To detect this you can add the `\JustBetter\MagentoStock\Commands\MonitorWaitTimesCommand` to your schedule. This will
-fire the `\JustBetter\MagentoStock\Events\LongWaitDetectedEvent` event in which you can for example trigger more updates
-or send a notification.
-
-You can configure the limits of when the event will be fired in the config:
-
-```php
-<?php
-
-return [
-    'monitor' => [
-        /* Max wait time in minutes, if exceeded the LongWaitDetected event is dispatched */
-        'retrieval_max_wait' => 30,
-
-        /* Max wait time in minutes, if exceeded the LongWaitDetected event is dispatched */
-        'update_max_wait' => 30,
-    ]
-];
-```
 
 ## Quality
 
@@ -319,4 +299,5 @@ Please review [our security policy](../../security/policy) on how to report secu
 The MIT License (MIT). Please see [License File](LICENSE) for more information.
 
 <a href="https://justbetter.nl" title="JustBetter">
-    <img src="./art/f
+    <img src="./art/footer.svg" alt="JustBetter logo">
+</a>

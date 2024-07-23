@@ -16,7 +16,7 @@ class RetrieveAllStockJob implements ShouldBeUnique, ShouldQueue
     use InteractsWithQueue;
     use Queueable;
 
-    public function __construct(protected ?Carbon $from = null)
+    public function __construct(public ?Carbon $from = null)
     {
         $this->onQueue(config('magento-stock.queue'));
     }

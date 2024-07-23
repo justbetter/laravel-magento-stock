@@ -4,6 +4,7 @@ namespace JustBetter\MagentoStock\Actions\Retrieval;
 
 use JustBetter\MagentoStock\Contracts\Retrieval\SavesStock;
 use JustBetter\MagentoStock\Data\StockData;
+use JustBetter\MagentoStock\Enums\Backorders;
 use JustBetter\MagentoStock\Models\Stock;
 
 class SaveStock implements SavesStock
@@ -18,7 +19,7 @@ class SaveStock implements SavesStock
         $model->in_stock = $stock['in_stock'] ?? false;
         $model->quantity = $stock['quantity'] ?? 0;
 
-        $model->backorders = $stock['backorders'] ?? false;
+        $model->backorders = $stock['backorders'] ?? Backorders::NoBackorders;
 
         $model->msi_stock = $stock['msi_quantity'];
         $model->msi_status = $stock['msi_status'];
