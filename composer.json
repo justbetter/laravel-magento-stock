@@ -8,14 +8,14 @@
     "justbetter/laravel-magento-async": "^1.0",
     "justbetter/laravel-magento-client": "^2.4",
     "justbetter/laravel-magento-products": "^1.4",
-    "laravel/framework": "^10.0|^11.0",
+    "laravel/framework": "^11.0",
     "spatie/laravel-activitylog": "^4.7"
   },
   "require-dev": {
     "doctrine/dbal": "^3.4",
     "larastan/larastan": "^2.9",
     "laravel/pint": "^1.6",
-    "orchestra/testbench": "^8.0|^9.0",
+    "orchestra/testbench": "^9.0",
     "phpstan/phpstan-mockery": "^1.1",
     "phpunit/phpunit": "^10.0",
       "ext-http": "*"
