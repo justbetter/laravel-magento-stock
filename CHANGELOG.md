@@ -1,6 +1,14 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/justbetter/laravel-magento-stock/compare/1.3.1...main)
+[Unreleased changes](https://github.com/justbetter/laravel-magento-stock/compare/2.0.0...main)
+## [2.0.0](https://github.com/justbetter/laravel-magento-stock/releases/tag/2.0.0) - 2024-07-24
+
+### What's Changed
+* Refactor by @VincentBean in https://github.com/justbetter/laravel-magento-stock/pull/18
+
+
+**Full Changelog**: https://github.com/justbetter/laravel-magento-stock/compare/1.3.1...2.0.0
+
 ## [1.3.1](https://github.com/justbetter/laravel-magento-stock/releases/tag/1.3.1) - 2024-04-22
 
 ### What's Changed
