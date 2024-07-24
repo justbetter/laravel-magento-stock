@@ -2,244 +2,104 @@
 
 namespace JustBetter\MagentoStock\Tests\Data;
 
+use Illuminate\Validation\ValidationException;
 use JustBetter\MagentoStock\Data\StockData;
+use JustBetter\MagentoStock\Tests\Fakes\FakeMsiRepository;
+use JustBetter\MagentoStock\Tests\Fakes\FakeRepository;
 use JustBetter\MagentoStock\Tests\TestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 class StockDataTest extends TestCase
 {
-    public function test_msi_setters(): void
+    #[Test]
+    public function it_passes_simple_rules(): void
     {
-        $data = StockData::make('::sku::');
+        config()->set('magento-stock.repository', FakeRepository::class);
 
-        $data->setMsiQuantity('A', 10);
-        $data->setMsiStatus('A', false);
+        StockData::of([
+            'sku' => '::sku::',
+            'in_stock' => true,
+            'quantity' => 10,
+        ]);
 
-        $this->assertEquals(['A' => 10], $data->msiQuantity);
-        $this->assertEquals(['A' => false], $data->msiStatus);
+        $this->assertTrue(true, 'No exception thrown');
     }
 
-    /**
-     * @dataProvider msiStockDataProvider
-     */
-    public function test_it_compares_msi_stock(StockData $a, StockData $b, bool $equals): void
+    #[Test]
+    public function it_fails_simple_rules(): void
     {
-        config()->set('magento-stock.msi', true);
+        config()->set('magento-stock.repository', FakeRepository::class);
 
-        $this->assertEquals(
-            $equals,
-            $a->equals($b)
-        );
+        $this->expectException(ValidationException::class);
+
+        StockData::of([
+            'sku' => '::sku::',
+            'quantity' => 'invalid type',
+        ]);
     }
 
-    public static function msiStockDataProvider(): array
+    #[Test]
+    public function it_passes_msi_rules(): void
     {
-        return [
-            'Unchanged' => [
-                'a' => new StockData(
-                    sku: '::sku::',
-                    msiQuantity: [
-                        'A' => 5,
-                        'B' => 0,
-                        'C' => 0,
-                    ],
-                    msiStatus: [
-                        'A' => true,
-                        'B' => true,
-                        'C' => false,
-                    ]
-                ),
-                'b' => new StockData(
-                    sku: '::sku::',
-                    msiQuantity: [
-                        'A' => 5,
-                        'B' => 0,
-                        'C' => 0,
-                    ],
-                    msiStatus: [
-                        'A' => true,
-                        'B' => true,
-                        'C' => false,
-                    ]
-                ),
-                'equals' => true,
+        config()->set('magento-stock.repository', FakeMsiRepository::class);
+
+        StockData::of([
+            'sku' => '::sku::',
+            'msi_quantity' => [
+                'A' => 0,
+                'B' => 10,
             ],
-            'Quantity change' => [
-                'a' => new StockData(
-                    sku: '::sku::',
-                    msiQuantity: [
-                        'A' => 5,
-                        'B' => 2,
-                        'C' => 0,
-                    ],
-                    msiStatus: [
-                        'A' => true,
-                        'B' => true,
-                        'C' => false,
-                    ]
-                ),
-                'b' => new StockData(
-                    sku: '::sku::',
-                    msiQuantity: [
-                        'A' => 5,
-                        'B' => 0,
-                        'C' => 0,
-                    ],
-                    msiStatus: [
-                        'A' => true,
-                        'B' => true,
-                        'C' => false,
-                    ]
-                ),
-                'equals' => false,
+            'msi_status' => [
+                'A' => false,
+                'B' => true,
             ],
-            'Status change' => [
-                'a' => new StockData(
-                    sku: '::sku::',
-                    msiQuantity: [
-                        'A' => 5,
-                        'B' => 0,
-                        'C' => 0,
-                    ],
-                    msiStatus: [
-                        'A' => true,
-                        'B' => false,
-                        'C' => false,
-                    ]
-                ),
-                'b' => new StockData(
-                    sku: '::sku::',
-                    msiQuantity: [
-                        'A' => 5,
-                        'B' => 0,
-                        'C' => 0,
-                    ],
-                    msiStatus: [
-                        'A' => true,
-                        'B' => true,
-                        'C' => false,
-                    ]
-                ),
-                'equals' => false,
+        ]);
+
+        $this->assertTrue(true, 'No exception thrown');
+    }
+
+    #[Test]
+    public function it_fails_msi_rules(): void
+    {
+        config()->set('magento-stock.repository', FakeMsiRepository::class);
+
+        $this->expectException(ValidationException::class);
+
+        StockData::of([
+            'sku' => '::sku::',
+            'msi_quantity' => 10,
+            'msi_status' => [
+                'A' => 'invalid_type',
             ],
-            'Count change' => [
-                'a' => new StockData(
-                    sku: '::sku::',
-                    msiQuantity: [
-                        'A' => 5,
-                        'B' => 0,
-                    ],
-                    msiStatus: [
-                        'A' => true,
-                        'B' => true,
-                    ]
-                ),
-                'b' => new StockData(
-                    sku: '::sku::',
-                    msiQuantity: [
-                        'A' => 5,
-                        'B' => 0,
-                        'C' => 0,
-                    ],
-                    msiStatus: [
-                        'A' => true,
-                        'B' => true,
-                        'C' => false,
-                    ]
-                ),
-                'equals' => false,
-            ],
-            'In Stock Equals' => [
-                'a' => new StockData(
-                    sku: '::sku::',
-                    inStock: true,
-                    msiQuantity: [
-                        'A' => 5,
-                    ],
-                    msiStatus: [
-                        'A' => true,
-                    ]
-                ),
-                'b' => new StockData(
-                    sku: '::sku::',
-                    inStock: true,
-                    msiQuantity: [
-                        'A' => 5,
-                    ],
-                    msiStatus: [
-                        'A' => true,
-                    ]
-                ),
-                'equals' => true,
-            ],
-            'Backorders Equals' => [
-                'a' => new StockData(
-                    sku: '::sku::',
-                    backorders: true,
-                    msiQuantity: [
-                        'A' => 5,
-                    ],
-                    msiStatus: [
-                        'A' => true,
-                    ]
-                ),
-                'b' => new StockData(
-                    sku: '::sku::',
-                    backorders: true,
-                    msiQuantity: [
-                        'A' => 5,
-                    ],
-                    msiStatus: [
-                        'A' => true,
-                    ]
-                ),
-                'equals' => true,
-            ],
-            'In Stock Change' => [
-                'a' => new StockData(
-                    sku: '::sku::',
-                    inStock: true,
-                    msiQuantity: [
-                        'A' => 5,
-                    ],
-                    msiStatus: [
-                        'A' => true,
-                    ]
-                ),
-                'b' => new StockData(
-                    sku: '::sku::',
-                    inStock: false,
-                    msiQuantity: [
-                        'A' => 5,
-                    ],
-                    msiStatus: [
-                        'A' => true,
-                    ]
-                ),
-                'equals' => false,
-            ],
-            'Backorders change' => [
-                'a' => new StockData(
-                    sku: '::sku::',
-                    backorders: true,
-                    msiQuantity: [
-                        'A' => 5,
-                    ],
-                    msiStatus: [
-                        'A' => true,
-                    ]
-                ),
-                'b' => new StockData(
-                    sku: '::sku::',
-                    backorders: false,
-                    msiQuantity: [
-                        'A' => 5,
-                    ],
-                    msiStatus: [
-                        'A' => true,
-                    ]
-                ),
-                'equals' => false,
-            ],
-        ];
+        ]);
+    }
+
+    #[Test]
+    public function it_calculates_checksum(): void
+    {
+        $data = StockData::of([
+            'sku' => '::sku::',
+            'in_stock' => true,
+            'quantity' => 10,
+        ]);
+
+        $this->assertEquals('895786ff2cebbee5a27a2950e0001abf', $data->checksum());
+    }
+
+    #[Test]
+    public function it_handles_array_operations(): void
+    {
+        $data = StockData::of([
+            'sku' => '::sku::',
+            'in_stock' => true,
+            'quantity' => 10,
+        ]);
+
+        $data['quantity'] = 20;
+
+        $this->assertEquals(20, $data['quantity']);
+        unset($data['quantity']);
+
+        $this->assertNull($data['quantity']);
     }
 }

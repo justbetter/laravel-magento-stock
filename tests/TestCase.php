@@ -5,9 +5,6 @@ namespace JustBetter\MagentoStock\Tests;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Illuminate\Support\Facades\Http;
 use JustBetter\MagentoClient\Client\Magento;
-use JustBetter\MagentoStock\Calculator\SimpleStockCalculator;
-use JustBetter\MagentoStock\Retriever\DummySkuRetriever;
-use JustBetter\MagentoStock\Retriever\DummyStockRetriever;
 use JustBetter\MagentoStock\ServiceProvider;
 use Orchestra\Testbench\TestCase as BaseTestCase;
 use Spatie\Activitylog\ActivitylogServiceProvider;
@@ -21,10 +18,6 @@ abstract class TestCase extends BaseTestCase
         Magento::fake();
 
         Http::preventStrayRequests();
-
-        config()->set('magento-stock.retriever.sku', DummySkuRetriever::class);
-        config()->set('magento-stock.retriever.stock', DummyStockRetriever::class);
-        config()->set('magento-stock.calculator', SimpleStockCalculator::class);
 
         config()->set('database.default', 'testbench');
         config()->set('database.connections.testbench', [
@@ -41,8 +34,9 @@ abstract class TestCase extends BaseTestCase
         return [
             ServiceProvider::class,
             \JustBetter\MagentoClient\ServiceProvider::class,
+            \JustBetter\MagentoProducts\ServiceProvider::class,
+            \JustBetter\MagentoAsync\ServiceProvider::class,
             ActivitylogServiceProvider::class,
-            \JustBetter\ErrorLogger\ServiceProvider::class,
         ];
     }
 }
