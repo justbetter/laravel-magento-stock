@@ -8,6 +8,9 @@ A few highlights:
 - Simplified implementation
 - Support for in backorder, notify stock
 - Support updating stock via Magento 2 bulk async requests
+- Removed error logger, replaced with activity log
+- Dropped support for Laravel 10
+
 
 ### Update your project
 
