@@ -55,7 +55,6 @@ class CompareSimpleStockTest extends TestCase
             ]),
         ]);
 
-
         /** @var Stock $stock */
         $stock = Stock::query()->create([
             'sku' => '::sku::',

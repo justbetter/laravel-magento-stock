@@ -19,14 +19,15 @@ class RetrieveAllStockCommandTest extends TestCase
 
         Bus::assertDispatched(RetrieveAllStockJob::class);
     }
-        #[Test]
+
+    #[Test]
     public function it_dispatches_job_with_date(): void
     {
         Bus::fake();
 
         $this->artisan(RetrieveAllStockCommand::class, ['from' => 'now']);
 
-        Bus::assertDispatched(RetrieveAllStockJob::class, function(RetrieveAllStockJob $job): bool {
+        Bus::assertDispatched(RetrieveAllStockJob::class, function (RetrieveAllStockJob $job): bool {
             return $job->from !== null;
         });
     }

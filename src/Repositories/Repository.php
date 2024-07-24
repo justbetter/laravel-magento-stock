@@ -12,7 +12,7 @@ class Repository extends BaseRepository
 {
     public function retrieve(string $sku): ?StockData
     {
-        throw new NotImplementedException();
+        throw new NotImplementedException;
     }
 
     public function skus(?Carbon $from = null): Collection

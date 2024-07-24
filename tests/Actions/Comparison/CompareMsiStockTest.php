@@ -52,7 +52,7 @@ class CompareMsiStockTest extends TestCase
         ]);
 
         /** @var Stock $stock */
-       $stock = Stock::query()->create([
+        $stock = Stock::query()->create([
             'sku' => '::sku::',
             'msi_stock' => $localStocks,
             'in_stock' => true,

@@ -52,27 +52,27 @@ class UpdateSimpleStockAsyncTest extends TestCase
 
         Http::assertSent(function (Request $request): bool {
             return $request->data() === [
-                    [
-                        'product' => [
-                            'extension_attributes' => [
-                                'stock_item' => [
-                                    'is_in_stock' => null,
-                                    'qty' => null,
-                                ],
+                [
+                    'product' => [
+                        'extension_attributes' => [
+                            'stock_item' => [
+                                'is_in_stock' => null,
+                                'qty' => null,
                             ],
                         ],
                     ],
-                    [
-                        'product' => [
-                            'extension_attributes' => [
-                                'stock_item' => [
-                                    'is_in_stock' => null,
-                                    'qty' => null,
-                                ],
+                ],
+                [
+                    'product' => [
+                        'extension_attributes' => [
+                            'stock_item' => [
+                                'is_in_stock' => null,
+                                'qty' => null,
                             ],
                         ],
                     ],
-                ];
+                ],
+            ];
         });
     }
 }

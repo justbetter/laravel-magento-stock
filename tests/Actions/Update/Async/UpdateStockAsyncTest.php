@@ -107,7 +107,7 @@ class UpdateStockAsyncTest extends TestCase
                 'A' => 10,
                 'B' => 10,
                 'C' => 10,
-            ]
+            ],
         ]);
 
         /** @var UpdateStockAsync $action */
@@ -117,5 +117,4 @@ class UpdateStockAsyncTest extends TestCase
 
         $this->assertEquals(0, Stock::query()->where('update', '=', true)->count());
     }
-
 }

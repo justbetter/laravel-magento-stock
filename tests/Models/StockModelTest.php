@@ -93,7 +93,7 @@ class StockModelTest extends TestCase
     public function activity_log_msi(): void
     {
         config()->set('magento-stock.repository', FakeMsiRepository::class);
-        $model = new Stock();
+        $model = new Stock;
 
         $options = $model->getActivitylogOptions();
 

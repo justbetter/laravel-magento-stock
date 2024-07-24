@@ -51,7 +51,7 @@ class UpdateMsiStockAsyncTest extends TestCase
                 'A' => 10,
                 'B' => 10,
                 'C' => 10,
-            ]
+            ],
         ]);
 
         $stocks[] = Stock::query()->create([
@@ -65,15 +65,14 @@ class UpdateMsiStockAsyncTest extends TestCase
                 'A' => 10,
                 'B' => 10,
                 'C' => 10,
-            ]
+            ],
         ]);
 
         $stocks[] = Stock::query()->create([
             'sku' => '::sku_3::',
             'msi_status' => [],
-            'msi_stock' => []
+            'msi_stock' => [],
         ]);
-
 
         /** @var UpdateMsiStockAsync $action */
         $action = app(UpdateMsiStockAsync::class);
@@ -82,39 +81,39 @@ class UpdateMsiStockAsyncTest extends TestCase
 
         Http::assertSent(function (Request $request): bool {
             return $request->data() === [
-                    [
-                        'sourceItems' => [
-                            [
-                                'sku' => '::sku_1::',
-                                'source_code' => 'A',
-                                'quantity' => 10,
-                                'status' => '1',
-                            ],
-                            [
-                                'sku' => '::sku_1::',
-                                'source_code' => 'B',
-                                'quantity' => 10,
-                                'status' => '1',
-                            ],
+                [
+                    'sourceItems' => [
+                        [
+                            'sku' => '::sku_1::',
+                            'source_code' => 'A',
+                            'quantity' => 10,
+                            'status' => '1',
+                        ],
+                        [
+                            'sku' => '::sku_1::',
+                            'source_code' => 'B',
+                            'quantity' => 10,
+                            'status' => '1',
                         ],
                     ],
-                    [
-                        'sourceItems' => [
-                            [
-                                'sku' => '::sku_2::',
-                                'source_code' => 'A',
-                                'quantity' => 10,
-                                'status' => '1',
-                            ],
-                            [
-                                'sku' => '::sku_2::',
-                                'source_code' => 'B',
-                                'quantity' => 10,
-                                'status' => '1',
-                            ],
+                ],
+                [
+                    'sourceItems' => [
+                        [
+                            'sku' => '::sku_2::',
+                            'source_code' => 'A',
+                            'quantity' => 10,
+                            'status' => '1',
                         ],
-                    ]
-                ];
+                        [
+                            'sku' => '::sku_2::',
+                            'source_code' => 'B',
+                            'quantity' => 10,
+                            'status' => '1',
+                        ],
+                    ],
+                ],
+            ];
         });
     }
 }

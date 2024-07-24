@@ -13,7 +13,7 @@ class RetrieveAllStock implements RetrievesAllStock
     {
         $repository = BaseRepository::resolve();
 
-        $repository->skus($from)->each(fn(string $sku) => RetrieveStockJob::dispatch($sku));
+        $repository->skus($from)->each(fn (string $sku) => RetrieveStockJob::dispatch($sku));
     }
 
     public static function bind(): void
