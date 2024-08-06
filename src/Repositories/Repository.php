@@ -20,6 +20,8 @@ class Repository extends BaseRepository
         /** @var Collection<int, string> $skus */
         $skus = MagentoProduct::query()
             ->where('exists_in_magento', '=', true)
+            ->select(['sku'])
+            ->distinct()
             ->pluck('sku');
 
         return $skus;

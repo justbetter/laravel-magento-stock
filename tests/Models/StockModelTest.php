@@ -39,7 +39,7 @@ class StockModelTest extends TestCase
 
         $model->failed();
 
-        $this->assertEquals(101, $model->fail_count);
+        $this->assertEquals(0, $model->fail_count);
         $this->assertFalse($model->retrieve);
         $this->assertFalse($model->update);
     }

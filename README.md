@@ -171,7 +171,6 @@ After you've created and configured the repository you have to set it in your co
 return [
     'repository' => \App\Integrations\MagentoStock\MyStockRepository::class,
 ];
-
 ```
 
 ### Usage

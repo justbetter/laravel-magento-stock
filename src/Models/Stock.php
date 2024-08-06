@@ -80,6 +80,7 @@ class Stock extends Model
         if (! $shouldRetry) {
             $this->update = false;
             $this->retrieve = false;
+            $this->fail_count = 0;
         }
 
         $this->save();
