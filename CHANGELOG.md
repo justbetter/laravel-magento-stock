@@ -1,6 +1,14 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/justbetter/laravel-magento-stock/compare/2.0.0...main)
+[Unreleased changes](https://github.com/justbetter/laravel-magento-stock/compare/2.0.1...main)
+## [2.0.1](https://github.com/justbetter/laravel-magento-stock/releases/tag/2.0.1) - 2024-08-06
+
+### What's Changed
+* Small fixes by @VincentBean in https://github.com/justbetter/laravel-magento-stock/pull/19
+
+
+**Full Changelog**: https://github.com/justbetter/laravel-magento-stock/compare/2.0.0...2.0.1
+
 ## [2.0.0](https://github.com/justbetter/laravel-magento-stock/releases/tag/2.0.0) - 2024-07-24
 
 ### What's Changed
