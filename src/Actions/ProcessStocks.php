@@ -18,6 +18,7 @@ class ProcessStocks implements ProcessesStocks
         $repository = BaseRepository::resolve();
 
         Stock::query()
+            ->where('sync', '=', true)
             ->where('retrieve', '=', true)
             ->select(['sku'])
             ->take($repository->retrieveLimit())
@@ -26,6 +27,7 @@ class ProcessStocks implements ProcessesStocks
 
         if (config('magento-stock.async')) {
             $stocks = Stock::query()
+                ->where('sync', '=', true)
                 ->where('update', '=', true)
                 ->whereHas('product', function (Builder $query): void {
                     $query->where('exists_in_magento', '=', true);
@@ -37,6 +39,7 @@ class ProcessStocks implements ProcessesStocks
             UpdateStockAsyncJob::dispatch($stocks);
         } else {
             Stock::query()
+                ->where('sync', '=', true)
                 ->where('update', '=', true)
                 ->select(['id', 'sku'])
                 ->take($repository->updateLimit())
