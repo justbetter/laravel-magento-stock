@@ -1,6 +1,14 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/justbetter/laravel-magento-stock/compare/2.0.1...main)
+[Unreleased changes](https://github.com/justbetter/laravel-magento-stock/compare/2.0.2...main)
+## [2.0.2](https://github.com/justbetter/laravel-magento-stock/releases/tag/2.0.2) - 2024-08-14
+
+### What's Changed
+* Support MSI quantity decimals by @VincentBean in https://github.com/justbetter/laravel-magento-stock/pull/20
+
+
+**Full Changelog**: https://github.com/justbetter/laravel-magento-stock/compare/2.0.1...2.0.2
+
 ## [2.0.1](https://github.com/justbetter/laravel-magento-stock/releases/tag/2.0.1) - 2024-08-06
 
 ### What's Changed
