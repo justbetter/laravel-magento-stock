@@ -20,7 +20,7 @@ class StockData extends Data
         if ($repository->msi()) {
             $rules = array_merge($rules, [
                 'msi_quantity' => ['required', 'array'],
-                'msi_quantity.*' => ['integer'],
+                'msi_quantity.*' => ['numeric'],
 
                 'msi_status' => ['required', 'array'],
                 'msi_status.*' => ['boolean'],
