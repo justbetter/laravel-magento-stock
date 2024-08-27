@@ -53,6 +53,7 @@ class UpdateBackordersAsyncTest extends TestCase
             return $request->data() === [
                 [
                     'product' => [
+                        'sku' => '::sku_1::',
                         'extension_attributes' => [
                             'stock_item' => [
                                 'use_config_backorders' => false,
@@ -63,6 +64,7 @@ class UpdateBackordersAsyncTest extends TestCase
                 ],
                 [
                     'product' => [
+                        'sku' => '::sku_2::',
                         'extension_attributes' => [
                             'stock_item' => [
                                 'use_config_backorders' => false,
