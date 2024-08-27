@@ -54,6 +54,7 @@ class UpdateSimpleStockAsyncTest extends TestCase
             return $request->data() === [
                 [
                     'product' => [
+                        'sku' => '::sku_1::',
                         'extension_attributes' => [
                             'stock_item' => [
                                 'is_in_stock' => null,
@@ -64,6 +65,7 @@ class UpdateSimpleStockAsyncTest extends TestCase
                 ],
                 [
                     'product' => [
+                        'sku' => '::sku_2::',
                         'extension_attributes' => [
                             'stock_item' => [
                                 'is_in_stock' => null,

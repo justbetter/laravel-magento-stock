@@ -16,6 +16,7 @@ class UpdateSimpleStockAsync implements UpdatesSimpleStockAsync
         $payload = $stocks
             ->map(fn (Stock $stock) => [
                 'product' => [
+                    'sku' => $stock->sku,
                     'extension_attributes' => [
                         'stock_item' => [
                             'is_in_stock' => $stock->in_stock,

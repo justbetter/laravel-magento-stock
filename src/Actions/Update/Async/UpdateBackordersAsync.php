@@ -16,6 +16,7 @@ class UpdateBackordersAsync implements UpdatesBackordersAsync
         $payload = $stocks
             ->map(fn (Stock $stock): array => [
                 'product' => [
+                    'sku' => $stock->sku,
                     'extension_attributes' => [
                         'stock_item' => [
                             'use_config_backorders' => false,
