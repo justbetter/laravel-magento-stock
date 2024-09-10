@@ -4,6 +4,7 @@ namespace JustBetter\MagentoStock\Actions;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Bus\PendingDispatch;
+use JustBetter\MagentoClient\Client\Magento;
 use JustBetter\MagentoStock\Contracts\ProcessesStocks;
 use JustBetter\MagentoStock\Jobs\Retrieval\RetrieveStockJob;
 use JustBetter\MagentoStock\Jobs\Update\UpdateStockAsyncJob;
@@ -13,6 +14,8 @@ use JustBetter\MagentoStock\Repositories\BaseRepository;
 
 class ProcessStocks implements ProcessesStocks
 {
+    public function __construct(protected Magento $magento) {}
+
     public function process(): void
     {
         $repository = BaseRepository::resolve();
@@ -24,6 +27,10 @@ class ProcessStocks implements ProcessesStocks
             ->take($repository->retrieveLimit())
             ->get()
             ->each(fn (Stock $stock): PendingDispatch => RetrieveStockJob::dispatch($stock->sku));
+
+        if (! $this->magento->available()) {
+            return;
+        }
 
         if (config('magento-stock.async')) {
             $stocks = Stock::query()

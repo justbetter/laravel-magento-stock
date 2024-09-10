@@ -9,6 +9,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use JustBetter\MagentoClient\Jobs\Middleware\AvailableMiddleware;
 use JustBetter\MagentoStock\Contracts\Comparison\ComparesStock;
 use JustBetter\MagentoStock\Models\Stock;
 
@@ -39,6 +40,13 @@ class CompareStockJob implements ShouldBeUnique, ShouldQueue
     {
         return [
             $this->stock->sku,
+        ];
+    }
+
+    public function middleware(): array
+    {
+        return [
+            new AvailableMiddleware,
         ];
     }
 }
