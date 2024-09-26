@@ -65,10 +65,10 @@ Add the following commands to your scheduler.
        $schedule->command(\JustBetter\MagentoStock\Commands\ProcessStocksCommand::class)->everyMinute();
 
        // Retrieve all stock daily
-       $schedule->job(\JustBetter\MagentoStock\Commands\Retrieval\RetrieveAllStockCommand::class)->dailyAt('05:00');
+       $schedule->command(\JustBetter\MagentoStock\Commands\Retrieval\RetrieveAllStockCommand::class)->dailyAt('05:00');
 
        // Retrieve modified stock every fifteen minutes, with a small overlap
-       $schedule->job(\JustBetter\MagentoStock\Commands\Retrieval\RetrieveAllStockCommand::class, ['from' => 'now -1 hour'])->everyFifteenMinutes();
+       $schedule->command(\JustBetter\MagentoStock\Commands\Retrieval\RetrieveAllStockCommand::class, ['from' => 'now -1 hour'])->everyFifteenMinutes();
     }
 ```
 
