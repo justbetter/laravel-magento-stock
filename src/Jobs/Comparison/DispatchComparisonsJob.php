@@ -5,6 +5,7 @@ namespace JustBetter\MagentoStock\Jobs\Comparison;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Bus;
@@ -24,6 +25,9 @@ class DispatchComparisonsJob implements ShouldBeUnique, ShouldQueue
     public function handle(): void
     {
         $batch = Stock::query()
+            ->whereHas('product', function (Builder $query): void {
+                $query->where('exists_in_magento', '=', true);
+            })
             ->get()
             ->mapInto(CompareStockJob::class);
 
