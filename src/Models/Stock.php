@@ -28,6 +28,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @property string $checksum
  * @property int $fail_count
  * @property ?Carbon $last_failed
+ * @property ?MagentoProduct $product
  */
 class Stock extends Model
 {
