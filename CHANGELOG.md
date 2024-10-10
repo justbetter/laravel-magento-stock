@@ -1,6 +1,14 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/justbetter/laravel-magento-stock/compare/2.1.0...main)
+[Unreleased changes](https://github.com/justbetter/laravel-magento-stock/compare/2.1.1...main)
+## [2.1.1](https://github.com/justbetter/laravel-magento-stock/releases/tag/2.1.1) - 2024-10-10
+
+### What's Changed
+* Only compare products that exist in Magento by @VincentBean in https://github.com/justbetter/laravel-magento-stock/pull/23
+
+
+**Full Changelog**: https://github.com/justbetter/laravel-magento-stock/compare/2.1.0...2.1.1
+
 ## [2.1.0](https://github.com/justbetter/laravel-magento-stock/releases/tag/2.1.0) - 2024-09-10
 
 
