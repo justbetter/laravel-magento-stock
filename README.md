@@ -95,7 +95,7 @@ use JustBetter\MagentoStock\Repositories\Repository;
 use JustBetter\MagentoStock\Data\StockData;
 use JustBetter\MagentoStock\Enums\Backorders;
 
-class MyStockRepository implements Repository
+class MyStockRepository extends Repository
 {
     public function retrieve(string $sku): ?StockData
     {
@@ -128,7 +128,7 @@ use JustBetter\MagentoStock\Repositories\Repository;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 
-class MyStockRepository implements Repository
+class MyStockRepository extends Repository
 {
     public function skus(?Carbon $from = null): ?Collection
     {
@@ -230,7 +230,7 @@ use JustBetter\MagentoStock\Repositories\Repository;
 use JustBetter\MagentoStock\Data\StockData;
 use JustBetter\MagentoStock\Enums\Backorders;
 
-class MyStockRepository implements Repository
+class MyStockRepository extends Repository
 {
     public function retrieve(string $sku): ?StockData
     {
