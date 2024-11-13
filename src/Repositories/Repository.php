@@ -17,7 +17,7 @@ class Repository extends BaseRepository
 
     public function skus(?Carbon $from = null): Enumerable
     {
-        /** @var Collection<int, string> $skus */
+        /** @var Enumerable<int, string> $skus */
         $skus = MagentoProduct::query()
             ->where('exists_in_magento', '=', true)
             ->select(['sku'])

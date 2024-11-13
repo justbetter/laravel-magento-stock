@@ -126,11 +126,11 @@ namespace App\Integrations\MagentoStock;
 
 use JustBetter\MagentoStock\Repositories\Repository;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Collection;
+use Illuminate\Support\Enumerable;
 
 class MyStockRepository extends Repository
 {
-    public function skus(?Carbon $from = null): ?Collection
+    public function skus(?Carbon $from = null): ?Enumerable
     {
         return collect(['sku_1', 'sku_2']);
     }
