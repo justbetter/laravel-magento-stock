@@ -3,7 +3,7 @@
 namespace JustBetter\MagentoStock\Repositories;
 
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Collection;
+use Illuminate\Support\Enumerable;
 use JustBetter\MagentoStock\Data\StockData;
 
 abstract class BaseRepository
@@ -63,8 +63,8 @@ abstract class BaseRepository
         return $instance;
     }
 
-    /** @return Collection<int, string> */
-    abstract public function skus(?Carbon $from = null): Collection;
+    /** @return Enumerable<int, string> */
+    abstract public function skus(?Carbon $from = null): Enumerable;
 
     abstract public function retrieve(string $sku): ?StockData;
 }
