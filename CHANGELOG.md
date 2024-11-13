@@ -1,6 +1,17 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/justbetter/laravel-magento-stock/compare/2.1.1...main)
+[Unreleased changes](https://github.com/justbetter/laravel-magento-stock/compare/2.1.2...main)
+## [2.1.2](https://github.com/justbetter/laravel-magento-stock/releases/tag/2.1.2) - 2024-11-13
+
+### What's Changed
+* Fix README code snippet by @FinnPaes in https://github.com/justbetter/laravel-magento-stock/pull/24
+* Enumerable skus instead of Collection by @fritsjustbetter in https://github.com/justbetter/laravel-magento-stock/pull/25
+
+### New Contributors
+* @fritsjustbetter made their first contribution in https://github.com/justbetter/laravel-magento-stock/pull/25
+
+**Full Changelog**: https://github.com/justbetter/laravel-magento-stock/compare/2.1.1...2.1.2
+
 ## [2.1.1](https://github.com/justbetter/laravel-magento-stock/releases/tag/2.1.1) - 2024-10-10
 
 ### What's Changed
