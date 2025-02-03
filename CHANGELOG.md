@@ -1,6 +1,14 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/justbetter/laravel-magento-stock/compare/2.1.2...main)
+[Unreleased changes](https://github.com/justbetter/laravel-magento-stock/compare/2.2.0...main)
+## [2.2.0](https://github.com/justbetter/laravel-magento-stock/releases/tag/2.2.0) - 2025-02-03
+
+### What's Changed
+* Prevent async update if existing operation is not finished by @VincentBean in https://github.com/justbetter/laravel-magento-stock/pull/26
+
+
+**Full Changelog**: https://github.com/justbetter/laravel-magento-stock/compare/2.1.2...2.2.0
+
 ## [2.1.2](https://github.com/justbetter/laravel-magento-stock/releases/tag/2.1.2) - 2024-11-13
 
 ### What's Changed
