@@ -4,6 +4,7 @@ namespace JustBetter\MagentoStock\Actions;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Bus\PendingDispatch;
+use JustBetter\MagentoAsync\Enums\OperationStatus;
 use JustBetter\MagentoClient\Client\Magento;
 use JustBetter\MagentoStock\Contracts\ProcessesStocks;
 use JustBetter\MagentoStock\Jobs\Retrieval\RetrieveStockJob;
@@ -39,11 +40,16 @@ class ProcessStocks implements ProcessesStocks
                 ->whereHas('product', function (Builder $query): void {
                     $query->where('exists_in_magento', '=', true);
                 })
+                ->whereDoesntHave('bulkOperations', function (Builder $query): void {
+                    $query
+                        ->where('status', '=', OperationStatus::Open)
+                        ->orWhereNull('status');
+                })
                 ->select(['id', 'sku'])
                 ->take($repository->updateLimit())
                 ->get();
 
-            UpdateStockAsyncJob::dispatch($stocks);
+            UpdateStockAsyncJob::dispatchIf($stocks->isNotEmpty(), $stocks);
         } else {
             Stock::query()
                 ->where('sync', '=', true)

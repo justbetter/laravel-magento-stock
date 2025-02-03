@@ -3,7 +3,10 @@
 namespace JustBetter\MagentoStock\Tests\Actions;
 
 use Illuminate\Support\Facades\Bus;
+use JustBetter\MagentoAsync\Enums\OperationStatus;
+use JustBetter\MagentoAsync\Models\BulkRequest;
 use JustBetter\MagentoClient\Contracts\ChecksMagento;
+use JustBetter\MagentoProducts\Models\MagentoProduct;
 use JustBetter\MagentoStock\Actions\ProcessStocks;
 use JustBetter\MagentoStock\Jobs\Retrieval\RetrieveStockJob;
 use JustBetter\MagentoStock\Jobs\Update\UpdateStockAsyncJob;
@@ -58,6 +61,11 @@ class ProcessStocksTest extends TestCase
         Bus::fake();
         config()->set('magento-stock.async', true);
 
+        MagentoProduct::query()->create([
+            'sku' => '::sku::',
+            'exists_in_magento' => true,
+        ]);
+
         Stock::query()->create([
             'sku' => '::sku::',
             'update' => true,
@@ -68,6 +76,65 @@ class ProcessStocksTest extends TestCase
         $action->process();
 
         Bus::assertDispatched(UpdateStockAsyncJob::class);
+    }
+
+    #[Test]
+    public function it_does_not_dispatch_stocks_with_open_async_operations(): void
+    {
+        Bus::fake();
+        config()->set('magento-stock.async', true);
+
+        MagentoProduct::query()->create([
+            'sku' => '::sku_1::',
+            'exists_in_magento' => true,
+        ]);
+
+        MagentoProduct::query()->create([
+            'sku' => '::sku_2::',
+            'exists_in_magento' => true,
+        ]);
+
+        /** @var Stock $stock */
+        $stock = Stock::query()->create([
+            'sku' => '::sku_1::',
+            'update' => true,
+        ]);
+
+        /** @var BulkRequest $request */
+        $request = BulkRequest::query()->create([
+            'magento_connection' => '::magento-connection::',
+            'store_code' => '::store-code::',
+            'method' => 'POST',
+            'path' => '::path::',
+            'bulk_uuid' => '::bulk-uuid-1::',
+            'request' => [
+                [
+                    'call-1',
+                ],
+            ],
+            'response' => [],
+            'created_at' => now(),
+        ]);
+
+        $request->operations()->create([
+            'operation_id' => 0,
+            'subject_type' => $stock->getMorphClass(),
+            'subject_id' => $stock->getKey(),
+            'status' => OperationStatus::Open,
+        ]);
+
+        Stock::query()->create([
+            'sku' => '::sku_2::',
+            'update' => true,
+        ]);
+
+        /** @var ProcessStocks $action */
+        $action = app(ProcessStocks::class);
+        $action->process();
+
+        Bus::assertDispatched(UpdateStockAsyncJob::class, function (UpdateStockAsyncJob $job): bool {
+            return $job->stocks->count() === 1 && $job->stocks->first()?->sku === '::sku_2::';
+        });
     }
 
     #[Test]
