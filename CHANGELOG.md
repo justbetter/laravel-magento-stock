@@ -1,6 +1,14 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/justbetter/laravel-magento-stock/compare/2.2.0...main)
+[Unreleased changes](https://github.com/justbetter/laravel-magento-stock/compare/2.3.0...main)
+## [2.3.0](https://github.com/justbetter/laravel-magento-stock/releases/tag/2.3.0) - 2025-02-13
+
+### What's Changed
+* Laravel 12 support by @VincentBean in https://github.com/justbetter/laravel-magento-stock/pull/27
+
+
+**Full Changelog**: https://github.com/justbetter/laravel-magento-stock/compare/2.2.0...2.3.0
+
 ## [2.2.0](https://github.com/justbetter/laravel-magento-stock/releases/tag/2.2.0) - 2025-02-03
 
 ### What's Changed
