@@ -1,6 +1,17 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/justbetter/laravel-magento-stock/compare/2.3.0...main)
+[Unreleased changes](https://github.com/justbetter/laravel-magento-stock/compare/2.3.1...main)
+## [2.3.1](https://github.com/justbetter/laravel-magento-stock/releases/tag/2.3.1) - 2025-03-25
+
+### What's Changed
+* Update README.md by @cosmicvibes in https://github.com/justbetter/laravel-magento-stock/pull/28
+* Update state by @ramonrietdijk in https://github.com/justbetter/laravel-magento-stock/pull/29
+
+### New Contributors
+* @cosmicvibes made their first contribution in https://github.com/justbetter/laravel-magento-stock/pull/28
+
+**Full Changelog**: https://github.com/justbetter/laravel-magento-stock/compare/2.3.0...2.3.1
+
 ## [2.3.0](https://github.com/justbetter/laravel-magento-stock/releases/tag/2.3.0) - 2025-02-13
 
 ### What's Changed
