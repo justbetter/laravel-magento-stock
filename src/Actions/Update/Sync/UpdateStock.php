@@ -49,6 +49,8 @@ class UpdateStock implements UpdatesStock
         $stock->update([
             'update' => false,
             'last_updated' => now(),
+            'last_failed' => null,
+            'fail_count' => 0,
         ]);
 
         event(new StockUpdatedEvent($stock));
