@@ -18,7 +18,11 @@ class BulkOperationStatusListener extends BaseBulkOperationStatusListener
         $stock = $operation->subject;
 
         if ($operation->status === OperationStatus::Complete) {
-            $stock->update(['last_updated' => now()]);
+            $stock->update([
+                'last_updated' => now(),
+                'last_failed' => null,
+                'fail_count' => 0,
+            ]);
 
             event(new StockUpdatedEvent($stock));
 

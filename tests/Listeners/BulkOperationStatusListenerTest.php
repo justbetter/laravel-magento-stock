@@ -24,6 +24,8 @@ class BulkOperationStatusListenerTest extends TestCase
             'sku' => 'sku',
             'in_stock' => true,
             'quantity' => 5,
+            'last_failed' => now(),
+            'fail_count' => 1,
         ]);
 
         /** @var BulkRequest $request */
@@ -47,11 +49,15 @@ class BulkOperationStatusListenerTest extends TestCase
 
         /** @var BulkOperationStatusListener $listener */
         $listener = app(BulkOperationStatusListener::class);
-
         $listener->execute($operation);
 
+        $model->refresh();
+
+        $this->assertNotNull($model->last_updated);
+        $this->assertNull($model->last_failed);
+        $this->assertEquals(0, $model->fail_count);
+
         Event::assertDispatched(StockUpdatedEvent::class);
-        $this->assertNotNull($model->refresh()->last_updated);
     }
 
     #[Test]
@@ -87,10 +93,12 @@ class BulkOperationStatusListenerTest extends TestCase
 
         /** @var BulkOperationStatusListener $listener */
         $listener = app(BulkOperationStatusListener::class);
-
         $listener->execute($operation);
 
+        $model->refresh();
+
+        $this->assertNull($model->last_updated);
+
         Event::assertNotDispatched(StockUpdatedEvent::class);
-        $this->assertNull($model->refresh()->last_updated);
     }
 }

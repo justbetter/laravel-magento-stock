@@ -38,6 +38,7 @@ class UpdateStockTest extends TestCase
         $model->refresh();
 
         $this->assertFalse($model->update);
+        $this->assertNull($model->last_updated);
     }
 
     #[Test]
@@ -62,6 +63,8 @@ class UpdateStockTest extends TestCase
         $model = Stock::query()->create([
             'sku' => '::sku::',
             'update' => true,
+            'last_failed' => now(),
+            'fail_count' => 1,
         ]);
 
         /** @var UpdateStock $action */
@@ -72,6 +75,8 @@ class UpdateStockTest extends TestCase
 
         $this->assertFalse($model->update);
         $this->assertNotNull($model->last_updated);
+        $this->assertNull($model->last_failed);
+        $this->assertEquals(0, $model->fail_count);
 
         Event::assertDispatched(StockUpdatedEvent::class);
     }
@@ -95,6 +100,8 @@ class UpdateStockTest extends TestCase
         $model = Stock::query()->create([
             'sku' => '::sku::',
             'update' => true,
+            'last_failed' => now(),
+            'fail_count' => 1,
         ]);
 
         /** @var UpdateStock $action */
@@ -105,6 +112,8 @@ class UpdateStockTest extends TestCase
 
         $this->assertFalse($model->update);
         $this->assertNotNull($model->last_updated);
+        $this->assertNull($model->last_failed);
+        $this->assertEquals(0, $model->fail_count);
 
         Event::assertDispatched(StockUpdatedEvent::class);
     }
