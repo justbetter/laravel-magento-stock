@@ -1,6 +1,14 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/justbetter/laravel-magento-stock/compare/2.3.1...main)
+[Unreleased changes](https://github.com/justbetter/laravel-magento-stock/compare/2.3.2...main)
+## [2.3.2](https://github.com/justbetter/laravel-magento-stock/releases/tag/2.3.2) - 2025-03-26
+
+### What's Changed
+* Do not set update to false if it's currently true by @VincentBean in https://github.com/justbetter/laravel-magento-stock/pull/30
+
+
+**Full Changelog**: https://github.com/justbetter/laravel-magento-stock/compare/2.3.1...2.3.2
+
 ## [2.3.1](https://github.com/justbetter/laravel-magento-stock/releases/tag/2.3.1) - 2025-03-25
 
 ### What's Changed
