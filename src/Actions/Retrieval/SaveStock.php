@@ -28,7 +28,7 @@ class SaveStock implements SavesStock
         $model->retrieve = false;
         $model->last_retrieved = now();
 
-        $model->update = $forceUpdate || $model->checksum !== $stock->checksum();
+        $model->update = $forceUpdate || $model->checksum !== $stock->checksum() || $model->update;
         $model->checksum = $stock->checksum();
 
         $model->save();

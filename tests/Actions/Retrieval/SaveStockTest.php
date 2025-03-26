@@ -92,4 +92,29 @@ class SaveStockTest extends TestCase
 
         $this->assertTrue($model->refresh()->update);
     }
+
+    #[Test]
+    public function it_does_not_reset_update_boolean(): void
+    {
+        $stockData = StockData::of([
+            'sku' => '::sku::',
+            'in_stock' => true,
+            'quantity' => 10,
+        ]);
+
+        /** @var SaveStock $action */
+        $action = app(SaveStock::class);
+        $action->save($stockData, false);
+
+        /** @var Stock $model */
+        $model = Stock::query()->firstWhere('sku', '=', '::sku::');
+
+        $this->assertTrue($model->update);
+
+        $model->update(['update' => true]);
+
+        $action->save($stockData, false);
+
+        $this->assertTrue($model->refresh()->update);
+    }
 }
