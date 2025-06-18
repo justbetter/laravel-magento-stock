@@ -6,8 +6,10 @@ use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Http;
 use JustBetter\MagentoProducts\Contracts\ChecksMagentoExistence;
 use JustBetter\MagentoStock\Actions\Comparison\CompareMsiStock;
+use JustBetter\MagentoStock\Enums\Backorders;
 use JustBetter\MagentoStock\Events\DifferenceDetectedEvent;
 use JustBetter\MagentoStock\Models\Stock;
+use JustBetter\MagentoStock\Tests\Fakes\FakeBackorderRepository;
 use JustBetter\MagentoStock\Tests\TestCase;
 use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -37,24 +39,33 @@ class CompareMsiStockTest extends TestCase
 
     #[Test]
     #[DataProvider('dataProvider')]
-    public function quantity_equals(array $magentoStocks, array $localStocks, bool $shouldUpdate): void
+    public function it_checks_if_equals(array $magentoStocks, array $localStocks, int $magentoBackorders, Backorders $localBackorders, bool $shouldUpdate): void
     {
         Event::fake();
+        config()->set('magento-stock.repository', FakeBackorderRepository::class);
 
         $this->mock(ChecksMagentoExistence::class, function (MockInterface $mock) {
             $mock->shouldReceive('exists')->andReturnTrue();
         });
 
         Http::fake([
-            '*inventory/source-items*' => Http::response([
+            'magento/rest/all/V1/products/%3A%3Asku%3A%3A' => Http::response([
+                'extension_attributes' => [
+                    'stock_item' => [
+                        'backorders' => $magentoBackorders,
+                    ],
+                ],
+            ]),
+            'magento/rest/all/V1/inventory/source-items*' => Http::response([
                 'items' => $magentoStocks,
             ]),
-        ]);
+        ])->preventStrayRequests();
 
         /** @var Stock $stock */
         $stock = Stock::query()->create([
             'sku' => '::sku::',
             'msi_stock' => $localStocks,
+            'backorders' => $localBackorders,
             'in_stock' => true,
             'update' => false,
         ]);
@@ -90,6 +101,8 @@ class CompareMsiStockTest extends TestCase
                     ],
                 ],
                 'localStocks' => ['A' => 10, 'B' => 0],
+                'magentoBackorders' => 0,
+                'localBackorders' => Backorders::NoBackorders,
                 'shouldUpdate' => true,
             ],
             'equals' => [
@@ -104,6 +117,8 @@ class CompareMsiStockTest extends TestCase
                     ],
                 ],
                 'localStocks' => ['A' => 10, 'B' => 10],
+                'magentoBackorders' => 0,
+                'localBackorders' => Backorders::NoBackorders,
                 'shouldUpdate' => false,
             ],
             'ignores extra local stock' => [
@@ -114,8 +129,23 @@ class CompareMsiStockTest extends TestCase
                     ],
                 ],
                 'localStocks' => [],
+                'magentoBackorders' => 0,
+                'localBackorders' => Backorders::NoBackorders,
                 'shouldUpdate' => false,
             ],
+            'backorders not equal' => [
+                'magentoStocks' => [
+                    [
+                        'source_code' => 'A',
+                        'quantity' => 10,
+                    ],
+                ],
+                'localStocks' => [],
+                'magentoBackorders' => 0,
+                'localBackorders' => Backorders::Backorders,
+                'shouldUpdate' => true,
+            ],
+
         ];
     }
 }

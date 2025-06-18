@@ -9,6 +9,7 @@ use JustBetter\MagentoProducts\Contracts\ChecksMagentoExistence;
 use JustBetter\MagentoStock\Contracts\Comparison\ComparesMsiStock;
 use JustBetter\MagentoStock\Events\DifferenceDetectedEvent;
 use JustBetter\MagentoStock\Models\Stock;
+use JustBetter\MagentoStock\Repositories\BaseRepository;
 
 class CompareMsiStock implements ComparesMsiStock
 {
@@ -27,11 +28,22 @@ class CompareMsiStock implements ComparesMsiStock
             ->where('sku', '=', $stock->sku)
             ->get();
 
+        $shouldCompareBackorders = BaseRepository::resolve()->backorders();
+
+        if ($shouldCompareBackorders) {
+            $product = $this->magento
+                ->get('products/'.urlencode($stock->sku))
+                ->throw();
+
+            $backorders = $product->json('extension_attributes.stock_item.backorders');
+            $backordersEqual = $stock->backorders->value === $backorders;
+        }
+
         $msiStock = $this->magento
             ->lazy('inventory/source-items', $search)
             ->collect();
 
-        if ($this->quantityEquals($stock, $msiStock)) {
+        if ($this->quantityEquals($stock, $msiStock) && ($shouldCompareBackorders ? $backordersEqual : true)) {
             return;
         }
 
