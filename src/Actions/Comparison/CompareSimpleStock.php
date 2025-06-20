@@ -7,6 +7,7 @@ use JustBetter\MagentoProducts\Contracts\ChecksMagentoExistence;
 use JustBetter\MagentoStock\Contracts\Comparison\ComparesSimpleStock;
 use JustBetter\MagentoStock\Events\DifferenceDetectedEvent;
 use JustBetter\MagentoStock\Models\Stock;
+use JustBetter\MagentoStock\Repositories\BaseRepository;
 
 class CompareSimpleStock implements ComparesSimpleStock
 {
@@ -27,7 +28,11 @@ class CompareSimpleStock implements ComparesSimpleStock
 
         $stockItem = $product->json('extension_attributes.stock_item', []);
 
-        if ($stockItem === null || $this->quantityEquals($stock, $stockItem)) {
+        $shouldCompareBackorders = BaseRepository::resolve()->backorders();
+
+        $isEqual = $this->quantityEquals($stock, $stockItem) && ($shouldCompareBackorders ? $stock->backorders->value === $stockItem['backorders'] : true);
+
+        if ($stockItem === null || $isEqual) {
             return;
         }
 

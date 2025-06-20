@@ -6,8 +6,10 @@ use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Http;
 use JustBetter\MagentoProducts\Contracts\ChecksMagentoExistence;
 use JustBetter\MagentoStock\Actions\Comparison\CompareSimpleStock;
+use JustBetter\MagentoStock\Enums\Backorders;
 use JustBetter\MagentoStock\Events\DifferenceDetectedEvent;
 use JustBetter\MagentoStock\Models\Stock;
+use JustBetter\MagentoStock\Tests\Fakes\FakeBackorderRepository;
 use JustBetter\MagentoStock\Tests\TestCase;
 use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -37,9 +39,10 @@ class CompareSimpleStockTest extends TestCase
 
     #[Test]
     #[DataProvider('dataProvider')]
-    public function test_quantity_equals(int $magentoQty, int $localQty, bool $shouldUpdate): void
+    public function it_checks_if_equal(int $magentoQty, int $localQty, int $magentoBackorders, Backorders $localBackorders, bool $shouldUpdate): void
     {
         Event::fake();
+        config()->set('magento-stock.repository', FakeBackorderRepository::class);
 
         $this->mock(ChecksMagentoExistence::class, function (MockInterface $mock) {
             $mock->shouldReceive('exists')->andReturnTrue();
@@ -50,6 +53,7 @@ class CompareSimpleStockTest extends TestCase
                 'extension_attributes' => [
                     'stock_item' => [
                         'qty' => $magentoQty,
+                        'backorders' => $magentoBackorders,
                     ],
                 ],
             ]),
@@ -59,6 +63,7 @@ class CompareSimpleStockTest extends TestCase
         $stock = Stock::query()->create([
             'sku' => '::sku::',
             'quantity' => $localQty,
+            'backorders' => $localBackorders,
             'in_stock' => true,
             'update' => false,
         ]);
@@ -84,12 +89,23 @@ class CompareSimpleStockTest extends TestCase
             'differs' => [
                 'magentoQty' => 100,
                 'localQty' => 1,
+                'magentoBackorders' => 0,
+                'localBackorders' => Backorders::NoBackorders,
                 'shouldUpdate' => true,
             ],
             'equals' => [
                 'magentoQty' => 100,
                 'localQty' => 100,
+                'magentoBackorders' => 0,
+                'localBackorders' => Backorders::NoBackorders,
                 'shouldUpdate' => false,
+            ],
+            'backorders' => [
+                'magentoQty' => 100,
+                'localQty' => 100,
+                'magentoBackorders' => 0,
+                'localBackorders' => Backorders::Backorders,
+                'shouldUpdate' => true,
             ],
         ];
     }
