@@ -30,6 +30,7 @@ class RetrieveAllStock implements RetrievesAllStock
 
             Stock::query()
                 ->whereIn('sku', $existing)
+                ->where('sync', '=', true)
                 ->update(['retrieve' => true]);
 
             Stock::query()->insert(
