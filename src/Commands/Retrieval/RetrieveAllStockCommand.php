@@ -8,7 +8,7 @@ use JustBetter\MagentoStock\Jobs\Retrieval\RetrieveAllStockJob;
 
 class RetrieveAllStockCommand extends Command
 {
-    protected $signature = 'magento-stock:retrieve-all {from?}';
+    protected $signature = 'magento-stock:retrieve-all {from?} {--queue}';
 
     protected $description = 'Retrieve all (modified) stock';
 
@@ -17,11 +17,14 @@ class RetrieveAllStockCommand extends Command
         /** @var ?string $from */
         $from = $this->argument('from');
 
+        /** @var bool $defer */
+        $defer = ! $this->option('queue');
+
         $date = $from !== null
             ? Carbon::parse($from)
             : null;
 
-        RetrieveAllStockJob::dispatch($date);
+        RetrieveAllStockJob::dispatch($date, $defer);
 
         return static::SUCCESS;
     }

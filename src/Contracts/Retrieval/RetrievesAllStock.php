@@ -6,5 +6,5 @@ use Illuminate\Support\Carbon;
 
 interface RetrievesAllStock
 {
-    public function retrieve(?Carbon $from): void;
+    public function retrieve(?Carbon $from, bool $defer = true): void;
 }
