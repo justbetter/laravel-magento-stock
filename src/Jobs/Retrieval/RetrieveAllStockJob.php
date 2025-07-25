@@ -16,13 +16,13 @@ class RetrieveAllStockJob implements ShouldBeUnique, ShouldQueue
     use InteractsWithQueue;
     use Queueable;
 
-    public function __construct(public ?Carbon $from = null)
+    public function __construct(public ?Carbon $from = null, public bool $defer = true)
     {
-        $this->onQueue(config('magento-stock.queue'));
+        $this->onQueue(config()->string('magento-stock.queue'));
     }
 
     public function handle(RetrievesAllStock $stock): void
     {
-        $stock->retrieve($this->from);
+        $stock->retrieve($this->from, $this->defer);
     }
 }
