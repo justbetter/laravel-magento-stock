@@ -1,6 +1,14 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/justbetter/laravel-magento-stock/compare/2.3.3...main)
+[Unreleased changes](https://github.com/justbetter/laravel-magento-stock/compare/2.3.4...main)
+## [2.3.4](https://github.com/justbetter/laravel-magento-stock/releases/tag/2.3.4) - 2025-07-25
+
+### What's Changed
+* Defer retrieve all by @VincentBean in https://github.com/justbetter/laravel-magento-stock/pull/33
+
+
+**Full Changelog**: https://github.com/justbetter/laravel-magento-stock/compare/2.3.3...2.3.4
+
 ## [2.3.3](https://github.com/justbetter/laravel-magento-stock/releases/tag/2.3.3) - 2025-06-20
 
 ### What's Changed
