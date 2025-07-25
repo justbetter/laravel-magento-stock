@@ -1,6 +1,14 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/justbetter/laravel-magento-stock/compare/2.3.4...main)
+[Unreleased changes](https://github.com/justbetter/laravel-magento-stock/compare/2.3.5...main)
+## [2.3.5](https://github.com/justbetter/laravel-magento-stock/releases/tag/2.3.5) - 2025-07-25
+
+### What's Changed
+* Check for sync boolean by @VincentBean in https://github.com/justbetter/laravel-magento-stock/pull/34
+
+
+**Full Changelog**: https://github.com/justbetter/laravel-magento-stock/compare/2.3.4...2.3.5
+
 ## [2.3.4](https://github.com/justbetter/laravel-magento-stock/releases/tag/2.3.4) - 2025-07-25
 
 ### What's Changed
