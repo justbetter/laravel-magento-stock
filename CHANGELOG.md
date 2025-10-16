@@ -1,6 +1,14 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/justbetter/laravel-magento-stock/compare/2.3.5...main)
+[Unreleased changes](https://github.com/justbetter/laravel-magento-stock/compare/2.3.6...main)
+## [2.3.6](https://github.com/justbetter/laravel-magento-stock/releases/tag/2.3.6) - 2025-10-16
+
+### What's Changed
+* Bulk operations stale by @VincentBean in https://github.com/justbetter/laravel-magento-stock/pull/35
+
+
+**Full Changelog**: https://github.com/justbetter/laravel-magento-stock/compare/2.3.5...2.3.6
+
 ## [2.3.5](https://github.com/justbetter/laravel-magento-stock/releases/tag/2.3.5) - 2025-07-25
 
 ### What's Changed
