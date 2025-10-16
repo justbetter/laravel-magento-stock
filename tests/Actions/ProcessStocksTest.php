@@ -98,6 +98,7 @@ class ProcessStocksTest extends TestCase
         $stock = Stock::query()->create([
             'sku' => '::sku_1::',
             'update' => true,
+            'created_at' => now()->subMinutes(10),
         ]);
 
         /** @var BulkRequest $request */
@@ -134,6 +135,57 @@ class ProcessStocksTest extends TestCase
 
         Bus::assertDispatched(UpdateStockAsyncJob::class, function (UpdateStockAsyncJob $job): bool {
             return $job->stocks->count() === 1 && $job->stocks->first()?->sku === '::sku_2::';
+        });
+    }
+
+    #[Test]
+    public function it_dispatches_stocks_with_stale_async_operations(): void
+    {
+        Bus::fake();
+        config()->set('magento-stock.async', true);
+        config()->set('magento-stock.async_stale_hours', 24);
+
+        MagentoProduct::query()->create([
+            'sku' => '::sku::',
+            'exists_in_magento' => true,
+        ]);
+
+        /** @var Stock $stock */
+        $stock = Stock::query()->create([
+            'sku' => '::sku::',
+            'update' => true,
+        ]);
+
+        /** @var BulkRequest $request */
+        $request = BulkRequest::query()->create([
+            'magento_connection' => '::magento-connection::',
+            'store_code' => '::store-code::',
+            'method' => 'POST',
+            'path' => '::path::',
+            'bulk_uuid' => '::bulk-uuid::',
+            'request' => [
+                [
+                    'call-1',
+                ],
+            ],
+            'response' => [],
+            'created_at' => now()->subHours(25),
+        ]);
+
+        $request->operations()->create([
+            'operation_id' => 0,
+            'subject_type' => $stock->getMorphClass(),
+            'subject_id' => $stock->getKey(),
+            'status' => OperationStatus::Open,
+            'created_at' => now()->subHours(25),
+        ]);
+
+        /** @var ProcessStocks $action */
+        $action = app(ProcessStocks::class);
+        $action->process();
+
+        Bus::assertDispatched(UpdateStockAsyncJob::class, function (UpdateStockAsyncJob $job): bool {
+            return $job->stocks->count() === 1 && $job->stocks->first()?->sku === '::sku::';
         });
     }
 
