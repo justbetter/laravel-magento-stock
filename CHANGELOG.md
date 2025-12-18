@@ -1,6 +1,14 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/justbetter/laravel-magento-stock/compare/2.3.6...main)
+[Unreleased changes](https://github.com/justbetter/laravel-magento-stock/compare/2.3.7...main)
+## [2.3.7](https://github.com/justbetter/laravel-magento-stock/releases/tag/2.3.7) - 2025-12-18
+
+### What's Changed
+* Retry when async update fails by @VincentBean in https://github.com/justbetter/laravel-magento-stock/pull/36
+
+
+**Full Changelog**: https://github.com/justbetter/laravel-magento-stock/compare/2.3.6...2.3.7
+
 ## [2.3.6](https://github.com/justbetter/laravel-magento-stock/releases/tag/2.3.6) - 2025-10-16
 
 ### What's Changed
