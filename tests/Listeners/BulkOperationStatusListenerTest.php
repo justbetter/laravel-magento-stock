@@ -98,6 +98,9 @@ class BulkOperationStatusListenerTest extends TestCase
         $model->refresh();
 
         $this->assertNull($model->last_updated);
+        $this->assertNotNull($model->last_failed);
+        $this->assertEquals(1, $model->fail_count);
+        $this->assertTrue($model->update);
 
         Event::assertNotDispatched(StockUpdatedEvent::class);
     }
