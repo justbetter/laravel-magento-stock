@@ -29,8 +29,17 @@ class BulkOperationStatusListener extends BaseBulkOperationStatusListener
             return;
         }
 
+        $stock->failed();
+
+        if ($stock->shouldRetry()) {
+            $stock->update([
+                'update' => true,
+            ]);
+        }
+
         activity()
             ->useLog('error')
+            ->on($stock)
             ->withProperties([
                 'status' => $operation->status->name ?? 'unknown',
                 'response' => $operation->response,

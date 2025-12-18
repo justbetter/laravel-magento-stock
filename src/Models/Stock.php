@@ -75,7 +75,7 @@ class Stock extends Model
         $this->last_failed = now();
         $this->fail_count++;
 
-        $shouldRetry = $this->fail_count < BaseRepository::resolve()->failLimit();
+        $shouldRetry = $this->shouldRetry();
         $this->sync = $shouldRetry;
 
         if (! $shouldRetry) {
@@ -85,6 +85,11 @@ class Stock extends Model
         }
 
         $this->save();
+    }
+
+    public function shouldRetry(): bool
+    {
+        return $this->fail_count < BaseRepository::resolve()->failLimit();
     }
 
     public function getActivitylogOptions(): LogOptions
