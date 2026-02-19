@@ -1,6 +1,16 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/justbetter/laravel-magento-stock/compare/2.3.7...main)
+[Unreleased changes](https://github.com/justbetter/laravel-magento-stock/compare/2.3.8...main)
+## [2.3.8](https://github.com/justbetter/laravel-magento-stock/releases/tag/2.3.8) - 2026-02-19
+
+### What's Changed
+* Add missing doc blocks by @RubenStap in https://github.com/justbetter/laravel-magento-stock/pull/37
+
+### New Contributors
+* @RubenStap made their first contribution in https://github.com/justbetter/laravel-magento-stock/pull/37
+
+**Full Changelog**: https://github.com/justbetter/laravel-magento-stock/compare/2.3.7...2.3.8
+
 ## [2.3.7](https://github.com/justbetter/laravel-magento-stock/releases/tag/2.3.7) - 2025-12-18
 
 ### What's Changed
