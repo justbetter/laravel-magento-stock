@@ -29,7 +29,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @property int $fail_count
  * @property ?Carbon $last_failed
  * @property ?Carbon $created_at
- * @property ?Carbon $Updated_at
+ * @property ?Carbon $updated_at
  * @property ?MagentoProduct $product
  */
 class Stock extends Model
