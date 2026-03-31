@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoStock\Data;
 
 use Illuminate\Validation\Rule;
@@ -8,6 +10,7 @@ use JustBetter\MagentoStock\Repositories\BaseRepository;
 
 class StockData extends Data
 {
+    #[\Override]
     public function rules(): array
     {
         $repository = BaseRepository::resolve();
@@ -18,21 +21,19 @@ class StockData extends Data
         ];
 
         if ($repository->msi()) {
-            $rules = array_merge($rules, [
+            return array_merge($rules, [
                 'msi_quantity' => ['required', 'array'],
                 'msi_quantity.*' => ['numeric'],
 
                 'msi_status' => ['required', 'array'],
                 'msi_status.*' => ['boolean'],
             ]);
-        } else {
-            $rules = array_merge($rules, [
-                'in_stock' => ['required', 'boolean'],
-                'quantity' => ['required', 'numeric'],
-            ]);
         }
 
-        return $rules;
+        return array_merge($rules, [
+            'in_stock' => ['required', 'boolean'],
+            'quantity' => ['required', 'numeric'],
+        ]);
     }
 
     public function checksum(): string

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoStock\Tests\Repositories;
 
 use JustBetter\MagentoProducts\Models\MagentoProduct;
@@ -10,7 +12,7 @@ use JustBetter\MagentoStock\Tests\Fakes\FakeRepository;
 use JustBetter\MagentoStock\Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
 
-class RepositoryTest extends TestCase
+final class RepositoryTest extends TestCase
 {
     #[Test]
     public function getters(): void

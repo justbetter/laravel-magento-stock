@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoStock\Tests\Actions\Update\Sync;
 
 use Illuminate\Http\Client\Request;
@@ -11,7 +13,7 @@ use JustBetter\MagentoStock\Models\Stock;
 use JustBetter\MagentoStock\Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
 
-class UpdateSimpleStockTest extends TestCase
+final class UpdateSimpleStockTest extends TestCase
 {
     #[Test]
     public function it_updates_simple_stock(): void

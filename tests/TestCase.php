@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoStock\Tests;
 
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;

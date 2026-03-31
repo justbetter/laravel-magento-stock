@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoStock\Tests\Actions\Comparison;
 
 use JustBetter\MagentoStock\Actions\Comparison\CompareStock;
@@ -12,7 +14,7 @@ use JustBetter\MagentoStock\Tests\TestCase;
 use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\Test;
 
-class CompareStockTest extends TestCase
+final class CompareStockTest extends TestCase
 {
     #[Test]
     public function it_calls_simple_stock_compare_action(): void

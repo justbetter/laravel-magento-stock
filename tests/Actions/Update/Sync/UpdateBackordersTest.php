@@ -1,15 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoStock\Tests\Actions\Update\Sync;
 
 use Illuminate\Http\Client\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Http;
 use JustBetter\MagentoStock\Actions\Update\Sync\UpdateBackorders;
 use JustBetter\MagentoStock\Models\Stock;
 use JustBetter\MagentoStock\Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
 
-class UpdateBackordersTest extends TestCase
+final class UpdateBackordersTest extends TestCase
 {
     #[Test]
     public function it_updates_backorders(): void
@@ -30,7 +33,7 @@ class UpdateBackordersTest extends TestCase
 
         $action->update($model);
 
-        Http::assertSent(function (Request $request) {
+        Http::assertSent(function (Request $request): bool {
             $expectedData = [
                 'product' => [
                     'extension_attributes' => [
@@ -68,6 +71,6 @@ class UpdateBackordersTest extends TestCase
         $model->refresh();
 
         $this->assertEquals(1, $model->fail_count);
-        $this->assertNotNull($model->last_failed);
+        $this->assertInstanceOf(Carbon::class, $model->last_failed);
     }
 }

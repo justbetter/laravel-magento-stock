@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoStock\Actions\Retrieval;
 
 use JustBetter\MagentoStock\Contracts\Retrieval\RetrievesStock;
+use JustBetter\MagentoStock\Data\StockData;
 use JustBetter\MagentoStock\Jobs\Retrieval\SaveStockJob;
 use JustBetter\MagentoStock\Models\Stock;
 use JustBetter\MagentoStock\Repositories\BaseRepository;
@@ -15,7 +18,7 @@ class RetrieveStock implements RetrievesStock
 
         $stockData = $repository->retrieve($sku);
 
-        if ($stockData === null) {
+        if (! $stockData instanceof StockData) {
             Stock::query()
                 ->where('sku', '=', $sku)
                 ->update(['retrieve' => false]);

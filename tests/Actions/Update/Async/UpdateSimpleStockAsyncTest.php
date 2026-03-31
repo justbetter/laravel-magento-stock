@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoStock\Tests\Actions\Update\Async;
 
 use Illuminate\Http\Client\Request;
@@ -11,7 +13,7 @@ use JustBetter\MagentoStock\Models\Stock;
 use JustBetter\MagentoStock\Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
 
-class UpdateSimpleStockAsyncTest extends TestCase
+final class UpdateSimpleStockAsyncTest extends TestCase
 {
     #[Test]
     public function it_updates_simple_stock_async(): void
@@ -50,31 +52,29 @@ class UpdateSimpleStockAsyncTest extends TestCase
 
         $action->update($stocks);
 
-        Http::assertSent(function (Request $request): bool {
-            return $request->data() === [
-                [
-                    'product' => [
-                        'sku' => '::sku_1::',
-                        'extension_attributes' => [
-                            'stock_item' => [
-                                'is_in_stock' => null,
-                                'qty' => null,
-                            ],
+        Http::assertSent(fn (Request $request): bool => $request->data() === [
+            [
+                'product' => [
+                    'sku' => '::sku_1::',
+                    'extension_attributes' => [
+                        'stock_item' => [
+                            'is_in_stock' => null,
+                            'qty' => null,
                         ],
                     ],
                 ],
-                [
-                    'product' => [
-                        'sku' => '::sku_2::',
-                        'extension_attributes' => [
-                            'stock_item' => [
-                                'is_in_stock' => null,
-                                'qty' => null,
-                            ],
+            ],
+            [
+                'product' => [
+                    'sku' => '::sku_2::',
+                    'extension_attributes' => [
+                        'stock_item' => [
+                            'is_in_stock' => null,
+                            'qty' => null,
                         ],
                     ],
                 ],
-            ];
-        });
+            ],
+        ]);
     }
 }

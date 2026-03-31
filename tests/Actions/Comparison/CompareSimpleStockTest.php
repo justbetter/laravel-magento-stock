@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoStock\Tests\Actions\Comparison;
 
 use Illuminate\Support\Facades\Event;
@@ -15,12 +17,12 @@ use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 
-class CompareSimpleStockTest extends TestCase
+final class CompareSimpleStockTest extends TestCase
 {
     #[Test]
     public function it_does_nothing(): void
     {
-        $this->mock(ChecksMagentoExistence::class, function (MockInterface $mock) {
+        $this->mock(ChecksMagentoExistence::class, function (MockInterface $mock): void {
             $mock->shouldReceive('exists')->andReturnFalse()->once();
         });
 
@@ -44,7 +46,7 @@ class CompareSimpleStockTest extends TestCase
         Event::fake();
         config()->set('magento-stock.repository', FakeBackorderRepository::class);
 
-        $this->mock(ChecksMagentoExistence::class, function (MockInterface $mock) {
+        $this->mock(ChecksMagentoExistence::class, function (MockInterface $mock): void {
             $mock->shouldReceive('exists')->andReturnTrue();
         });
 
@@ -83,30 +85,28 @@ class CompareSimpleStockTest extends TestCase
         }
     }
 
-    public static function dataProvider(): array
+    public static function dataProvider(): \Iterator
     {
-        return [
-            'differs' => [
-                'magentoQty' => 100,
-                'localQty' => 1,
-                'magentoBackorders' => 0,
-                'localBackorders' => Backorders::NoBackorders,
-                'shouldUpdate' => true,
-            ],
-            'equals' => [
-                'magentoQty' => 100,
-                'localQty' => 100,
-                'magentoBackorders' => 0,
-                'localBackorders' => Backorders::NoBackorders,
-                'shouldUpdate' => false,
-            ],
-            'backorders' => [
-                'magentoQty' => 100,
-                'localQty' => 100,
-                'magentoBackorders' => 0,
-                'localBackorders' => Backorders::Backorders,
-                'shouldUpdate' => true,
-            ],
+        yield 'differs' => [
+            'magentoQty' => 100,
+            'localQty' => 1,
+            'magentoBackorders' => 0,
+            'localBackorders' => Backorders::NoBackorders,
+            'shouldUpdate' => true,
+        ];
+        yield 'equals' => [
+            'magentoQty' => 100,
+            'localQty' => 100,
+            'magentoBackorders' => 0,
+            'localBackorders' => Backorders::NoBackorders,
+            'shouldUpdate' => false,
+        ];
+        yield 'backorders' => [
+            'magentoQty' => 100,
+            'localQty' => 100,
+            'magentoBackorders' => 0,
+            'localBackorders' => Backorders::Backorders,
+            'shouldUpdate' => true,
         ];
     }
 }

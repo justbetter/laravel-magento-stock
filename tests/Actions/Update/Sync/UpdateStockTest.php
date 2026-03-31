@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoStock\Tests\Actions\Update\Sync;
 
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Event;
 use JustBetter\MagentoProducts\Contracts\ChecksMagentoExistence;
 use JustBetter\MagentoStock\Actions\Update\Sync\UpdateStock;
@@ -16,7 +19,7 @@ use JustBetter\MagentoStock\Tests\TestCase;
 use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\Test;
 
-class UpdateStockTest extends TestCase
+final class UpdateStockTest extends TestCase
 {
     #[Test]
     public function it_resets_update_when_product_does_not_exist(): void
@@ -38,7 +41,7 @@ class UpdateStockTest extends TestCase
         $model->refresh();
 
         $this->assertFalse($model->update);
-        $this->assertNull($model->last_updated);
+        $this->assertNotInstanceOf(Carbon::class, $model->last_updated);
     }
 
     #[Test]
@@ -74,8 +77,8 @@ class UpdateStockTest extends TestCase
         $model->refresh();
 
         $this->assertFalse($model->update);
-        $this->assertNotNull($model->last_updated);
-        $this->assertNull($model->last_failed);
+        $this->assertInstanceOf(Carbon::class, $model->last_updated);
+        $this->assertNotInstanceOf(Carbon::class, $model->last_failed);
         $this->assertEquals(0, $model->fail_count);
 
         Event::assertDispatched(StockUpdatedEvent::class);
@@ -111,8 +114,8 @@ class UpdateStockTest extends TestCase
         $model->refresh();
 
         $this->assertFalse($model->update);
-        $this->assertNotNull($model->last_updated);
-        $this->assertNull($model->last_failed);
+        $this->assertInstanceOf(Carbon::class, $model->last_updated);
+        $this->assertNotInstanceOf(Carbon::class, $model->last_failed);
         $this->assertEquals(0, $model->fail_count);
 
         Event::assertDispatched(StockUpdatedEvent::class);

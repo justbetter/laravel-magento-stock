@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoStock\Tests\Jobs\Comparison;
 
 use Illuminate\Support\Facades\Bus;
@@ -11,7 +13,7 @@ use JustBetter\MagentoStock\Models\Stock;
 use JustBetter\MagentoStock\Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
 
-class DispatchComparisonsJobTest extends TestCase
+final class DispatchComparisonsJobTest extends TestCase
 {
     #[Test]
     public function it_dispatches_comparisons(): void
@@ -33,8 +35,6 @@ class DispatchComparisonsJobTest extends TestCase
 
         DispatchComparisonsJob::dispatch();
 
-        Bus::assertBatched(function (PendingBatchFake $batchFake): bool {
-            return $batchFake->jobs->count() === 1;
-        });
+        Bus::assertBatched(fn (PendingBatchFake $batchFake): bool => $batchFake->jobs->count() === 1);
     }
 }

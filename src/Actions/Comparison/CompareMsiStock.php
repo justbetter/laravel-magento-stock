@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoStock\Actions\Comparison;
 
 use Illuminate\Support\Collection;
@@ -67,7 +69,7 @@ class CompareMsiStock implements ComparesMsiStock
             if ($stock['quantity'] !== $localQuantity) {
                 activity()
                     ->on($localStock)
-                    ->log("Detected MSI quantity difference {$stock['source_code']} Magento: {$stock['quantity']} - local: $localQuantity");
+                    ->log(sprintf('Detected MSI quantity difference %s Magento: %s - local: %s', $stock['source_code'], $stock['quantity'], $localQuantity));
 
                 return false;
             }

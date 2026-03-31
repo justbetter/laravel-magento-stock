@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoStock\Tests\Commands\Update;
 
 use JustBetter\MagentoStock\Commands\Update\UpdateAllStockCommand;
@@ -7,7 +9,7 @@ use JustBetter\MagentoStock\Models\Stock;
 use JustBetter\MagentoStock\Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
 
-class UpdateAllStockCommandTest extends TestCase
+final class UpdateAllStockCommandTest extends TestCase
 {
     #[Test]
     public function it_sets_update(): void

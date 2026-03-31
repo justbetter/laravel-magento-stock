@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoStock\Tests\Jobs\Update;
 
 use JustBetter\MagentoStock\Contracts\Update\Sync\UpdatesStock;
@@ -9,7 +11,7 @@ use JustBetter\MagentoStock\Tests\TestCase;
 use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\Test;
 
-class UpdateStockJobTest extends TestCase
+final class UpdateStockJobTest extends TestCase
 {
     #[Test]
     public function it_calls_action(): void
@@ -52,6 +54,6 @@ class UpdateStockJobTest extends TestCase
 
         $job = new UpdateStockJob($model);
 
-        $this->assertEquals(['::sku::'], $job->tags());
+        $this->assertSame(['::sku::'], $job->tags());
     }
 }

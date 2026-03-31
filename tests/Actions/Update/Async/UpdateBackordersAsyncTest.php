@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoStock\Tests\Actions\Update\Async;
 
 use Illuminate\Http\Client\Request;
@@ -11,7 +13,7 @@ use JustBetter\MagentoStock\Models\Stock;
 use JustBetter\MagentoStock\Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
 
-class UpdateBackordersAsyncTest extends TestCase
+final class UpdateBackordersAsyncTest extends TestCase
 {
     #[Test]
     public function it_updates_backorders(): void
@@ -49,31 +51,29 @@ class UpdateBackordersAsyncTest extends TestCase
         $action = app(UpdateBackordersAsync::class);
         $action->update($stocks);
 
-        Http::assertSent(function (Request $request) {
-            return $request->data() === [
-                [
-                    'product' => [
-                        'sku' => '::sku_1::',
-                        'extension_attributes' => [
-                            'stock_item' => [
-                                'use_config_backorders' => false,
-                                'backorders' => 1,
-                            ],
+        Http::assertSent(fn (Request $request): bool => $request->data() === [
+            [
+                'product' => [
+                    'sku' => '::sku_1::',
+                    'extension_attributes' => [
+                        'stock_item' => [
+                            'use_config_backorders' => false,
+                            'backorders' => 1,
                         ],
                     ],
                 ],
-                [
-                    'product' => [
-                        'sku' => '::sku_2::',
-                        'extension_attributes' => [
-                            'stock_item' => [
-                                'use_config_backorders' => false,
-                                'backorders' => 0,
-                            ],
+            ],
+            [
+                'product' => [
+                    'sku' => '::sku_2::',
+                    'extension_attributes' => [
+                        'stock_item' => [
+                            'use_config_backorders' => false,
+                            'backorders' => 0,
                         ],
                     ],
                 ],
-            ];
-        });
+            ],
+        ]);
     }
 }

@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoStock\Tests\Actions\Update\Sync;
 
 use Illuminate\Http\Client\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Http;
 use JustBetter\MagentoClient\Client\Magento;
 use JustBetter\MagentoStock\Actions\Update\Sync\UpdateMsiStock;
@@ -12,7 +15,7 @@ use JustBetter\MagentoStock\Tests\TestCase;
 use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\Test;
 
-class UpdateMsiStockTest extends TestCase
+final class UpdateMsiStockTest extends TestCase
 {
     #[Test]
     public function it_updates_msi_stock(): void
@@ -46,24 +49,22 @@ class UpdateMsiStockTest extends TestCase
 
         $action->update($stock);
 
-        Http::assertSent(function (Request $request): bool {
-            return $request->data() == [
-                'sourceItems' => [
-                    [
-                        'sku' => '::sku::',
-                        'source_code' => 'A',
-                        'quantity' => 4,
-                        'status' => '1',
-                    ],
-                    [
-                        'sku' => '::sku::',
-                        'source_code' => 'B',
-                        'quantity' => 0,
-                        'status' => '0',
-                    ],
+        Http::assertSent(fn (Request $request): bool => $request->data() == [
+            'sourceItems' => [
+                [
+                    'sku' => '::sku::',
+                    'source_code' => 'A',
+                    'quantity' => 4,
+                    'status' => '1',
                 ],
-            ];
-        });
+                [
+                    'sku' => '::sku::',
+                    'source_code' => 'B',
+                    'quantity' => 0,
+                    'status' => '0',
+                ],
+            ],
+        ]);
     }
 
     #[Test]
@@ -119,6 +120,6 @@ class UpdateMsiStockTest extends TestCase
         $stock->refresh();
 
         $this->assertEquals(1, $stock->fail_count);
-        $this->assertNotNull($stock->last_failed);
+        $this->assertInstanceOf(Carbon::class, $stock->last_failed);
     }
 }

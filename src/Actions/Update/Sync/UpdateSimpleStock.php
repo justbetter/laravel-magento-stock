@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoStock\Actions\Update\Sync;
 
 use Illuminate\Http\Client\Response;
@@ -43,7 +45,7 @@ class UpdateSimpleStock implements UpdatesSimpleStock
             activity()
                 ->withProperties($payload)
                 ->performedOn($stock)
-                ->log("Updated Stock for $stock->sku in Magento to ".($stock->in_stock ? 'in stock' : 'out of stock')." with quantity $stock->quantity");
+                ->log(sprintf('Updated Stock for %s in Magento to ', $stock->sku).($stock->in_stock ? 'in stock' : 'out of stock').(' with quantity '.$stock->quantity));
         }
     }
 
