@@ -1,7 +1,9 @@
 <?php
 
+use JustBetter\MagentoStock\Repositories\Repository;
+
 return [
-    'repository' => \JustBetter\MagentoStock\Repositories\Repository::class,
+    'repository' => Repository::class,
 
     /* Queue for the retrieve / update jobs */
     'queue' => 'default',

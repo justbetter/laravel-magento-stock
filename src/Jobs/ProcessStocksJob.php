@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoStock\Jobs;
 
 use Illuminate\Bus\Queueable;

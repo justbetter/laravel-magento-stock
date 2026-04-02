@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoStock\Tests\Commands\Retrieval;
 
 use Illuminate\Support\Facades\Bus;
@@ -8,7 +10,7 @@ use JustBetter\MagentoStock\Jobs\Retrieval\RetrieveStockJob;
 use JustBetter\MagentoStock\Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
 
-class RetrieveStockCommandTest extends TestCase
+final class RetrieveStockCommandTest extends TestCase
 {
     #[Test]
     public function it_dispatches_job(): void

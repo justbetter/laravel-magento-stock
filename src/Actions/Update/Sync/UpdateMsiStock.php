@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoStock\Actions\Update\Sync;
 
 use Illuminate\Http\Client\Response;
@@ -62,7 +64,7 @@ class UpdateMsiStock implements UpdatesMsiStock
             activity()
                 ->withProperties($payload)
                 ->performedOn($stock)
-                ->log("$stock->sku: Updated MSI Stock in Magento");
+                ->log($stock->sku.': Updated MSI Stock in Magento');
         }
     }
 

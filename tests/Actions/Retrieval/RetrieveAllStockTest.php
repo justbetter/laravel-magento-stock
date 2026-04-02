@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoStock\Tests\Actions\Retrieval;
 
 use Illuminate\Support\Facades\Bus;
@@ -10,7 +12,7 @@ use JustBetter\MagentoStock\Tests\Fakes\FakeRepository;
 use JustBetter\MagentoStock\Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
 
-class RetrieveAllStockTest extends TestCase
+final class RetrieveAllStockTest extends TestCase
 {
     #[Test]
     public function it_dispatches_jobs(): void

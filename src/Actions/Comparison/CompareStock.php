@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoStock\Actions\Comparison;
 
 use JustBetter\MagentoStock\Contracts\Comparison\ComparesMsiStock;

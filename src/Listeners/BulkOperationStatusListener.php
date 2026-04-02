@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoStock\Listeners;
 
 use JustBetter\MagentoAsync\Enums\OperationStatus;

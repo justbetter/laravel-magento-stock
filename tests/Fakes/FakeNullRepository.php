@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoStock\Tests\Fakes;
 
 use Illuminate\Support\Carbon;
@@ -16,6 +18,7 @@ class FakeNullRepository extends Repository
         return null;
     }
 
+    #[\Override]
     public function skus(?Carbon $from = null): Collection
     {
         return collect(['sku_1', 'sku_2']);

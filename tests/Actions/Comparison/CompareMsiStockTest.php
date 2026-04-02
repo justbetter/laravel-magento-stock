@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoStock\Tests\Actions\Comparison;
 
 use Illuminate\Support\Facades\Event;
@@ -15,12 +17,12 @@ use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 
-class CompareMsiStockTest extends TestCase
+final class CompareMsiStockTest extends TestCase
 {
     #[Test]
     public function it_does_nothing(): void
     {
-        $this->mock(ChecksMagentoExistence::class, function (MockInterface $mock) {
+        $this->mock(ChecksMagentoExistence::class, function (MockInterface $mock): void {
             $mock->shouldReceive('exists')->andReturnFalse()->once();
         });
 
@@ -44,7 +46,7 @@ class CompareMsiStockTest extends TestCase
         Event::fake();
         config()->set('magento-stock.repository', FakeBackorderRepository::class);
 
-        $this->mock(ChecksMagentoExistence::class, function (MockInterface $mock) {
+        $this->mock(ChecksMagentoExistence::class, function (MockInterface $mock): void {
             $mock->shouldReceive('exists')->andReturnTrue();
         });
 
@@ -86,66 +88,63 @@ class CompareMsiStockTest extends TestCase
         }
     }
 
-    public static function dataProvider(): array
+    public static function dataProvider(): \Iterator
     {
-        return [
-            'differs' => [
-                'magentoStocks' => [
-                    [
-                        'source_code' => 'A',
-                        'quantity' => 10,
-                    ],
-                    [
-                        'source_code' => 'B',
-                        'quantity' => 10,
-                    ],
+        yield 'differs' => [
+            'magentoStocks' => [
+                [
+                    'source_code' => 'A',
+                    'quantity' => 10,
                 ],
-                'localStocks' => ['A' => 10, 'B' => 0],
-                'magentoBackorders' => 0,
-                'localBackorders' => Backorders::NoBackorders,
-                'shouldUpdate' => true,
-            ],
-            'equals' => [
-                'magentoStocks' => [
-                    [
-                        'source_code' => 'A',
-                        'quantity' => 10,
-                    ],
-                    [
-                        'source_code' => 'B',
-                        'quantity' => 10,
-                    ],
+                [
+                    'source_code' => 'B',
+                    'quantity' => 10,
                 ],
-                'localStocks' => ['A' => 10, 'B' => 10],
-                'magentoBackorders' => 0,
-                'localBackorders' => Backorders::NoBackorders,
-                'shouldUpdate' => false,
             ],
-            'ignores extra local stock' => [
-                'magentoStocks' => [
-                    [
-                        'source_code' => 'A',
-                        'quantity' => 10,
-                    ],
+            'localStocks' => ['A' => 10, 'B' => 0],
+            'magentoBackorders' => 0,
+            'localBackorders' => Backorders::NoBackorders,
+            'shouldUpdate' => true,
+        ];
+        yield 'equals' => [
+            'magentoStocks' => [
+                [
+                    'source_code' => 'A',
+                    'quantity' => 10,
                 ],
-                'localStocks' => [],
-                'magentoBackorders' => 0,
-                'localBackorders' => Backorders::NoBackorders,
-                'shouldUpdate' => false,
-            ],
-            'backorders not equal' => [
-                'magentoStocks' => [
-                    [
-                        'source_code' => 'A',
-                        'quantity' => 10,
-                    ],
+                [
+                    'source_code' => 'B',
+                    'quantity' => 10,
                 ],
-                'localStocks' => [],
-                'magentoBackorders' => 0,
-                'localBackorders' => Backorders::Backorders,
-                'shouldUpdate' => true,
             ],
-
+            'localStocks' => ['A' => 10, 'B' => 10],
+            'magentoBackorders' => 0,
+            'localBackorders' => Backorders::NoBackorders,
+            'shouldUpdate' => false,
+        ];
+        yield 'ignores extra local stock' => [
+            'magentoStocks' => [
+                [
+                    'source_code' => 'A',
+                    'quantity' => 10,
+                ],
+            ],
+            'localStocks' => [],
+            'magentoBackorders' => 0,
+            'localBackorders' => Backorders::NoBackorders,
+            'shouldUpdate' => false,
+        ];
+        yield 'backorders not equal' => [
+            'magentoStocks' => [
+                [
+                    'source_code' => 'A',
+                    'quantity' => 10,
+                ],
+            ],
+            'localStocks' => [],
+            'magentoBackorders' => 0,
+            'localBackorders' => Backorders::Backorders,
+            'shouldUpdate' => true,
         ];
     }
 }

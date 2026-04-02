@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoStock\Tests\Actions\Retrieval;
 
+use Illuminate\Support\Carbon;
 use JustBetter\MagentoStock\Actions\Retrieval\SaveStock;
 use JustBetter\MagentoStock\Data\StockData;
 use JustBetter\MagentoStock\Enums\Backorders;
@@ -9,7 +12,7 @@ use JustBetter\MagentoStock\Models\Stock;
 use JustBetter\MagentoStock\Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
 
-class SaveStockTest extends TestCase
+final class SaveStockTest extends TestCase
 {
     #[Test]
     public function it_saves_fields(): void
@@ -40,7 +43,7 @@ class SaveStockTest extends TestCase
         $this->assertTrue($model->sync);
         $this->assertFalse($model->retrieve);
         $this->assertTrue($model->update);
-        $this->assertNotNull($model->last_retrieved);
+        $this->assertInstanceOf(Carbon::class, $model->last_retrieved);
     }
 
     #[Test]

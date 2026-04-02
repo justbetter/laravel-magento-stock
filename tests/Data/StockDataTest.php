@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoStock\Tests\Data;
 
 use Illuminate\Validation\ValidationException;
@@ -9,7 +11,7 @@ use JustBetter\MagentoStock\Tests\Fakes\FakeRepository;
 use JustBetter\MagentoStock\Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
 
-class StockDataTest extends TestCase
+final class StockDataTest extends TestCase
 {
     #[Test]
     public function it_passes_simple_rules(): void
@@ -83,7 +85,7 @@ class StockDataTest extends TestCase
             'quantity' => 10,
         ]);
 
-        $this->assertEquals('895786ff2cebbee5a27a2950e0001abf', $data->checksum());
+        $this->assertSame('895786ff2cebbee5a27a2950e0001abf', $data->checksum());
     }
 
     #[Test]
@@ -97,7 +99,7 @@ class StockDataTest extends TestCase
 
         $data['quantity'] = 20;
 
-        $this->assertEquals(20, $data['quantity']);
+        $this->assertSame(20, $data['quantity']);
         unset($data['quantity']);
 
         $this->assertNull($data['quantity']);

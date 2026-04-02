@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoStock\Tests\Jobs\Retrieval;
 
 use JustBetter\MagentoStock\Contracts\Retrieval\RetrievesStock;
@@ -8,7 +10,7 @@ use JustBetter\MagentoStock\Tests\TestCase;
 use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\Test;
 
-class RetrieveStockJobTest extends TestCase
+final class RetrieveStockJobTest extends TestCase
 {
     #[Test]
     public function it_calls_action(): void
@@ -25,7 +27,7 @@ class RetrieveStockJobTest extends TestCase
     {
         $job = new RetrieveStockJob('::sku::', false);
 
-        $this->assertEquals('::sku::', $job->uniqueId());
+        $this->assertSame('::sku::', $job->uniqueId());
     }
 
     #[Test]
@@ -33,6 +35,6 @@ class RetrieveStockJobTest extends TestCase
     {
         $job = new RetrieveStockJob('::sku::', false);
 
-        $this->assertEquals(['::sku::'], $job->tags());
+        $this->assertSame(['::sku::'], $job->tags());
     }
 }

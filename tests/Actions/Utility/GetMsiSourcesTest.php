@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoStock\Tests\Actions\Utility;
 
 use Illuminate\Support\Facades\Http;
@@ -8,7 +10,7 @@ use JustBetter\MagentoStock\Actions\Utility\GetMsiSources;
 use JustBetter\MagentoStock\Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
 
-class GetMsiSourcesTest extends TestCase
+final class GetMsiSourcesTest extends TestCase
 {
     #[Test]
     public function it_gets_msi_sources(): void

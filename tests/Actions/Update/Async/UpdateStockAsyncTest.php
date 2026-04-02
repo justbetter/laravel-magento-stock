@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoStock\Tests\Actions\Update\Async;
 
 use JustBetter\MagentoStock\Actions\Update\Async\UpdateStockAsync;
@@ -13,7 +15,7 @@ use JustBetter\MagentoStock\Tests\TestCase;
 use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\Test;
 
-class UpdateStockAsyncTest extends TestCase
+final class UpdateStockAsyncTest extends TestCase
 {
     #[Test]
     public function it_does_nothing_without_stocks(): void

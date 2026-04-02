@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoStock\Actions\Update\Async;
 
 use Illuminate\Support\Collection;
@@ -14,7 +16,7 @@ class UpdateSimpleStockAsync implements UpdatesSimpleStockAsync
     public function update(Collection $stocks): void
     {
         $payload = $stocks
-            ->map(fn (Stock $stock) => [
+            ->map(fn (Stock $stock): array => [
                 'product' => [
                     'sku' => $stock->sku,
                     'extension_attributes' => [

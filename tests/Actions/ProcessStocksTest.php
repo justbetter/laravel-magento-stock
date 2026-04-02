@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoStock\Tests\Actions;
 
 use Illuminate\Support\Facades\Bus;
@@ -16,7 +18,7 @@ use JustBetter\MagentoStock\Tests\TestCase;
 use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\Test;
 
-class ProcessStocksTest extends TestCase
+final class ProcessStocksTest extends TestCase
 {
     #[Test]
     public function it_dispatches_retrieval_jobs(): void
@@ -133,9 +135,7 @@ class ProcessStocksTest extends TestCase
         $action = app(ProcessStocks::class);
         $action->process();
 
-        Bus::assertDispatched(UpdateStockAsyncJob::class, function (UpdateStockAsyncJob $job): bool {
-            return $job->stocks->count() === 1 && $job->stocks->first()?->sku === '::sku_2::';
-        });
+        Bus::assertDispatched(UpdateStockAsyncJob::class, fn (UpdateStockAsyncJob $job): bool => $job->stocks->count() === 1 && $job->stocks->first()?->sku === '::sku_2::');
     }
 
     #[Test]
@@ -184,9 +184,7 @@ class ProcessStocksTest extends TestCase
         $action = app(ProcessStocks::class);
         $action->process();
 
-        Bus::assertDispatched(UpdateStockAsyncJob::class, function (UpdateStockAsyncJob $job): bool {
-            return $job->stocks->count() === 1 && $job->stocks->first()?->sku === '::sku::';
-        });
+        Bus::assertDispatched(UpdateStockAsyncJob::class, fn (UpdateStockAsyncJob $job): bool => $job->stocks->count() === 1 && $job->stocks->first()?->sku === '::sku::');
     }
 
     #[Test]

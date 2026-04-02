@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoStock\Tests\Commands;
 
 use Illuminate\Support\Facades\Bus;
@@ -8,7 +10,7 @@ use JustBetter\MagentoStock\Jobs\ProcessStocksJob;
 use JustBetter\MagentoStock\Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
 
-class ProcessStocksCommandTest extends TestCase
+final class ProcessStocksCommandTest extends TestCase
 {
     #[Test]
     public function it_dispatches_job(): void

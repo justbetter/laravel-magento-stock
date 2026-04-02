@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoStock\Tests\Actions\Retrieval;
 
 use Illuminate\Support\Facades\Bus;
@@ -11,7 +13,7 @@ use JustBetter\MagentoStock\Tests\Fakes\FakeRepository;
 use JustBetter\MagentoStock\Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
 
-class RetrieveStockTest extends TestCase
+final class RetrieveStockTest extends TestCase
 {
     #[Test]
     public function it_sets_retrieve_when_no_stockdata(): void
@@ -54,8 +56,6 @@ class RetrieveStockTest extends TestCase
         $action = app(RetrieveStock::class);
         $action->retrieve('::sku::', true);
 
-        Bus::assertDispatched(SaveStockJob::class, function (SaveStockJob $job): bool {
-            return $job->data['sku'] === '::sku::' && $job->forceUpdate;
-        });
+        Bus::assertDispatched(SaveStockJob::class, fn (SaveStockJob $job): bool => $job->data['sku'] === '::sku::' && $job->forceUpdate);
     }
 }

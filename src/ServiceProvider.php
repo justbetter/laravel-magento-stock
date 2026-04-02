@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoStock;
 
 use Illuminate\Support\Facades\Event;
@@ -30,6 +32,7 @@ use JustBetter\MagentoStock\Listeners\BulkOperationStatusListener;
 
 class ServiceProvider extends BaseServiceProvider
 {
+    #[\Override]
     public function register(): void
     {
         $this->mergeConfigFrom(__DIR__.'/../config/magento-stock.php', 'magento-stock');

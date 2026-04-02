@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoStock\Jobs\Retrieval;
 
 use Illuminate\Bus\Queueable;
@@ -50,9 +52,7 @@ class SaveStockJob implements ShouldBeUnique, ShouldQueue
         $model = Stock::query()->firstWhere('sku', '=', $this->data['sku']);
 
         activity()
-            ->when($model, function (ActivityLogger $logger, Stock $stock): ActivityLogger {
-                return $logger->on($stock);
-            })
+            ->when($model, fn (ActivityLogger $logger, Stock $stock): ActivityLogger => $logger->on($stock))
             ->useLog('error')
             ->log('Failed to save stock: '.$exception->getMessage());
     }

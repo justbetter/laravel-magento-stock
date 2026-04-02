@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoStock\Actions\Comparison;
 
 use JustBetter\MagentoClient\Client\Magento;
@@ -48,10 +50,7 @@ class CompareSimpleStock implements ComparesSimpleStock
 
     protected function quantityEquals(Stock $stock, array $magentoStockItem): bool
     {
-        $magentoQuantity = $magentoStockItem['qty'];
-        $currentQuantity = $stock->quantity;
-
-        return $magentoQuantity == $currentQuantity;
+        return $magentoStockItem['qty'] == $stock->quantity;
     }
 
     public static function bind(): void

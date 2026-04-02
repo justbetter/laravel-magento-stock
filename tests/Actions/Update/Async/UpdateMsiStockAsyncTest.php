@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoStock\Tests\Actions\Update\Async;
 
 use Illuminate\Http\Client\Request;
@@ -12,7 +14,7 @@ use JustBetter\MagentoStock\Tests\TestCase;
 use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\Test;
 
-class UpdateMsiStockAsyncTest extends TestCase
+final class UpdateMsiStockAsyncTest extends TestCase
 {
     #[Test]
     public function it_updates_msi_async(): void
@@ -79,41 +81,39 @@ class UpdateMsiStockAsyncTest extends TestCase
 
         $action->update($stocks);
 
-        Http::assertSent(function (Request $request): bool {
-            return $request->data() === [
-                [
-                    'sourceItems' => [
-                        [
-                            'sku' => '::sku_1::',
-                            'source_code' => 'A',
-                            'quantity' => 10,
-                            'status' => '1',
-                        ],
-                        [
-                            'sku' => '::sku_1::',
-                            'source_code' => 'B',
-                            'quantity' => 10,
-                            'status' => '1',
-                        ],
+        Http::assertSent(fn (Request $request): bool => $request->data() === [
+            [
+                'sourceItems' => [
+                    [
+                        'sku' => '::sku_1::',
+                        'source_code' => 'A',
+                        'quantity' => 10,
+                        'status' => '1',
+                    ],
+                    [
+                        'sku' => '::sku_1::',
+                        'source_code' => 'B',
+                        'quantity' => 10,
+                        'status' => '1',
                     ],
                 ],
-                [
-                    'sourceItems' => [
-                        [
-                            'sku' => '::sku_2::',
-                            'source_code' => 'A',
-                            'quantity' => 10,
-                            'status' => '1',
-                        ],
-                        [
-                            'sku' => '::sku_2::',
-                            'source_code' => 'B',
-                            'quantity' => 10,
-                            'status' => '1',
-                        ],
+            ],
+            [
+                'sourceItems' => [
+                    [
+                        'sku' => '::sku_2::',
+                        'source_code' => 'A',
+                        'quantity' => 10,
+                        'status' => '1',
+                    ],
+                    [
+                        'sku' => '::sku_2::',
+                        'source_code' => 'B',
+                        'quantity' => 10,
+                        'status' => '1',
                     ],
                 ],
-            ];
-        });
+            ],
+        ]);
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoStock\Actions\Update\Sync;
 
 use Illuminate\Http\Client\Response;
@@ -26,7 +28,7 @@ class UpdateBackorders implements UpdatesBackorders
 
         $response = $this->magento
             ->put('products/'.urlencode($stock->sku), $payload)
-            ->onError(function (Response $response) use ($stock, $payload) {
+            ->onError(function (Response $response) use ($stock, $payload): void {
                 $stock->failed();
 
                 activity()
@@ -42,7 +44,7 @@ class UpdateBackorders implements UpdatesBackorders
         if ($response->successful()) {
             activity()
                 ->performedOn($stock)
-                ->log("$stock->sku: Set backorder in Magento to: {$stock->backorders->name}");
+                ->log(sprintf('%s: Set backorder in Magento to: %s', $stock->sku, $stock->backorders->name));
         }
     }
 

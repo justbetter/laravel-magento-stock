@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoStock\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -54,9 +56,10 @@ class Stock extends Model
 
     protected $guarded = [];
 
-    public static function booted(): void
+    #[\Override]
+    protected static function booted(): void
     {
-        static::updating(function (self $model) {
+        static::updating(function (self $model): void {
             if ($model->update && $model->retrieve) {
                 if (! $model->isDirty(['retrieve'])) {
                     $model->retrieve = false;

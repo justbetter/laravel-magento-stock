@@ -1,14 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoStock\Tests\Models;
 
+use Illuminate\Support\Carbon;
 use JustBetter\MagentoStock\Models\Stock;
 use JustBetter\MagentoStock\Tests\Fakes\FakeMsiRepository;
 use JustBetter\MagentoStock\Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
 use Spatie\Activitylog\LogOptions;
 
-class StockModelTest extends TestCase
+final class StockModelTest extends TestCase
 {
     #[Test]
     public function it_can_register_failures(): void
@@ -21,7 +24,7 @@ class StockModelTest extends TestCase
 
         $model->failed();
 
-        $this->assertNotNull($model->last_failed);
+        $this->assertInstanceOf(Carbon::class, $model->last_failed);
         $this->assertEquals(1, $model->fail_count);
         $this->assertTrue($model->update);
     }
@@ -97,6 +100,6 @@ class StockModelTest extends TestCase
 
         $options = $model->getActivitylogOptions();
 
-        $this->assertTrue(is_a($options, LogOptions::class));
+        $this->assertInstanceOf(LogOptions::class, $options);
     }
 }

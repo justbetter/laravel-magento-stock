@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JustBetter\MagentoStock\Commands\Update;
 
 use Illuminate\Console\Command;
