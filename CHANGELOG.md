@@ -1,6 +1,14 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/justbetter/laravel-magento-stock/compare/2.3.8...main)
+[Unreleased changes](https://github.com/justbetter/laravel-magento-stock/compare/2.4.0...main)
+## [2.4.0](https://github.com/justbetter/laravel-magento-stock/releases/tag/2.4.0) - 2026-04-02
+
+### What's Changed
+* Laravel 13 support by @VincentBean in https://github.com/justbetter/laravel-magento-stock/pull/38
+
+
+**Full Changelog**: https://github.com/justbetter/laravel-magento-stock/compare/2.3.8...2.4.0
+
 ## [2.3.8](https://github.com/justbetter/laravel-magento-stock/releases/tag/2.3.8) - 2026-02-19
 
 ### What's Changed
