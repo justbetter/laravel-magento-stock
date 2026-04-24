@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace JustBetter\MagentoStock\Actions\Comparison;
 
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use JustBetter\MagentoClient\Client\Magento;
 use JustBetter\MagentoClient\Query\SearchCriteria;
 use JustBetter\MagentoProducts\Contracts\ChecksMagentoExistence;
@@ -51,8 +52,12 @@ class CompareMsiStock implements ComparesMsiStock
 
         event(new DifferenceDetectedEvent($stock));
 
-        $stock->update = true;
-        $stock->save();
+        DB::transaction(function () use ($stock): void {
+            /** @var Stock $locked */
+            $locked = Stock::query()->lockForUpdate()->findOrFail($stock->id);
+            $locked->update = true;
+            $locked->save();
+        });
     }
 
     protected function quantityEquals(Stock $localStock, Collection $msiStock): bool
