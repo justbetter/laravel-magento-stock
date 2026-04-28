@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace JustBetter\MagentoStock\Actions\Comparison;
 
+use Illuminate\Support\Facades\DB;
 use JustBetter\MagentoClient\Client\Magento;
 use JustBetter\MagentoProducts\Contracts\ChecksMagentoExistence;
 use JustBetter\MagentoStock\Contracts\Comparison\ComparesSimpleStock;
@@ -42,8 +43,12 @@ class CompareSimpleStock implements ComparesSimpleStock
             ->performedOn($stock)
             ->log('Detected quantity difference, Magento: '.$stockItem['qty'].'. Should be: '.$stock->quantity);
 
-        $stock->update = true;
-        $stock->save();
+        DB::transaction(function () use ($stock): void {
+            /** @var Stock $locked */
+            $locked = Stock::query()->lockForUpdate()->findOrFail($stock->id);
+            $locked->update = true;
+            $locked->save();
+        });
 
         event(new DifferenceDetectedEvent($stock));
     }
