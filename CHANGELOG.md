@@ -1,6 +1,14 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/justbetter/laravel-magento-stock/compare/2.4.0...main)
+[Unreleased changes](https://github.com/justbetter/laravel-magento-stock/compare/2.4.1...main)
+## [2.4.1](https://github.com/justbetter/laravel-magento-stock/releases/tag/2.4.1) - 2026-04-28
+
+### What's Changed
+* Fix race condition when SaveStock and comparisons run concurrently by @VincentBean in https://github.com/justbetter/laravel-magento-stock/pull/39
+
+
+**Full Changelog**: https://github.com/justbetter/laravel-magento-stock/compare/2.4.0...2.4.1
+
 ## [2.4.0](https://github.com/justbetter/laravel-magento-stock/releases/tag/2.4.0) - 2026-04-02
 
 ### What's Changed
