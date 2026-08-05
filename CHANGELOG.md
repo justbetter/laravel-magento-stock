@@ -1,6 +1,14 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/justbetter/laravel-magento-stock/compare/2.4.1...main)
+[Unreleased changes](https://github.com/justbetter/laravel-magento-stock/compare/2.4.2...main)
+## [2.4.2](https://github.com/justbetter/laravel-magento-stock/releases/tag/2.4.2) - 2026-08-05
+
+### What's Changed
+* Handle concurrent async update and saving of stocks by @VincentBean in https://github.com/justbetter/laravel-magento-stock/pull/40
+
+
+**Full Changelog**: https://github.com/justbetter/laravel-magento-stock/compare/2.4.1...2.4.2
+
 ## [2.4.1](https://github.com/justbetter/laravel-magento-stock/releases/tag/2.4.1) - 2026-04-28
 
 ### What's Changed
