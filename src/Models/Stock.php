@@ -27,7 +27,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @property bool $update
  * @property ?Carbon $last_retrieved
  * @property ?Carbon $last_updated
- * @property string $checksum
+ * @property ?string $checksum
  * @property int $fail_count
  * @property ?Carbon $last_failed
  * @property ?Carbon $created_at

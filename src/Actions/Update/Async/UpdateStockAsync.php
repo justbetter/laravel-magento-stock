@@ -38,9 +38,12 @@ class UpdateStockAsync implements UpdatesStockAsync
             $this->simpleStock->update($stocks);
         }
 
-        $stocks->each(fn (Stock $stock) => $stock->update([
-            'update' => false,
-        ]));
+        $stocks->each(function (Stock $stock): void {
+            Stock::query()
+                ->whereKey($stock->id)
+                ->where('checksum', '=', $stock->checksum)
+                ->update(['update' => false]);
+        });
     }
 
     public static function bind(): void
