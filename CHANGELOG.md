@@ -1,6 +1,14 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/justbetter/laravel-magento-stock/compare/2.4.3...main)
+[Unreleased changes](https://github.com/justbetter/laravel-magento-stock/compare/2.4.4...main)
+## [2.4.4](https://github.com/justbetter/laravel-magento-stock/releases/tag/2.4.4) - 2026-10-12
+
+### What's Changed
+* Fix loop by @VincentBean in https://github.com/justbetter/laravel-magento-stock/pull/42
+
+
+**Full Changelog**: https://github.com/justbetter/laravel-magento-stock/compare/2.4.3...2.4.4
+
 ## [2.4.3](https://github.com/justbetter/laravel-magento-stock/releases/tag/2.4.3) - 2026-10-12
 
 ### What's Changed
