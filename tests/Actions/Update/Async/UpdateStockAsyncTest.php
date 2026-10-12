@@ -74,44 +74,7 @@ final class UpdateStockAsyncTest extends TestCase
 
         $action->update($stocks);
 
-        $this->assertEquals(0, Stock::query()->where('update', '=', true)->count());
-    }
-
-    #[Test]
-    public function it_does_not_clear_the_update_flag_when_the_stock_changed_concurrently(): void
-    {
-        config()->set('magento-stock.repository', FakeBackorderRepository::class);
-
-        $this->mock(UpdatesBackordersAsync::class, function (MockInterface $mock): void {
-            $mock->shouldReceive('update')->once();
-        });
-
-        $this->mock(UpdatesSimpleStockAsync::class, function (MockInterface $mock): void {
-            $mock->shouldReceive('update')->once();
-        });
-
-        $this->mock(UpdatesMsiStockAsync::class, function (MockInterface $mock): void {
-            $mock->shouldNotReceive('update');
-        });
-
-        /** @var Stock $stock */
-        $stock = Stock::query()->create([
-            'sku' => '::sku::',
-            'update' => true,
-            'checksum' => '::original::',
-        ]);
-
-        Stock::query()->whereKey($stock->id)->update(['checksum' => '::changed::']);
-
-        $action = app(UpdateStockAsync::class);
-
-        $action->update(collect([$stock]));
-
-        /** @var Stock $fresh */
-        $fresh = Stock::query()->findOrFail($stock->id);
-
-        $this->assertTrue($fresh->update);
-        $this->assertSame('::changed::', $fresh->checksum);
+        $this->assertSame(2, Stock::query()->where('update', '=', true)->count());
     }
 
     #[Test]
@@ -135,6 +98,7 @@ final class UpdateStockAsyncTest extends TestCase
 
         $stocks[] = Stock::query()->create([
             'sku' => '::sku_1::',
+            'update' => true,
             'msi_status' => [
                 'A' => true,
                 'B' => true,
@@ -151,6 +115,6 @@ final class UpdateStockAsyncTest extends TestCase
 
         $action->update($stocks);
 
-        $this->assertEquals(0, Stock::query()->where('update', '=', true)->count());
+        $this->assertSame(1, Stock::query()->where('update', '=', true)->count());
     }
 }

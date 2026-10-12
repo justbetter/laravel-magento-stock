@@ -9,7 +9,6 @@ use JustBetter\MagentoStock\Contracts\Update\Async\UpdatesBackordersAsync;
 use JustBetter\MagentoStock\Contracts\Update\Async\UpdatesMsiStockAsync;
 use JustBetter\MagentoStock\Contracts\Update\Async\UpdatesSimpleStockAsync;
 use JustBetter\MagentoStock\Contracts\Update\Async\UpdatesStockAsync;
-use JustBetter\MagentoStock\Models\Stock;
 use JustBetter\MagentoStock\Repositories\BaseRepository;
 
 class UpdateStockAsync implements UpdatesStockAsync
@@ -37,13 +36,6 @@ class UpdateStockAsync implements UpdatesStockAsync
         } else {
             $this->simpleStock->update($stocks);
         }
-
-        $stocks->each(function (Stock $stock): void {
-            Stock::query()
-                ->whereKey($stock->id)
-                ->where('checksum', '=', $stock->checksum)
-                ->update(['update' => false]);
-        });
     }
 
     public static function bind(): void
