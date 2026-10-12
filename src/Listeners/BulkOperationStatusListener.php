@@ -40,12 +40,6 @@ class BulkOperationStatusListener extends BaseBulkOperationStatusListener
 
         $stock->failed();
 
-        if ($stock->shouldRetry()) {
-            $stock->update([
-                'update' => true,
-            ]);
-        }
-
         activity()
             ->useLog('error')
             ->on($stock)

@@ -89,6 +89,7 @@ final class BulkOperationStatusListenerTest extends TestCase
             'sku' => 'sku',
             'in_stock' => true,
             'quantity' => 5,
+            'update' => true,
         ]);
 
         /** @var BulkRequest $request */
